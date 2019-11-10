@@ -11,6 +11,9 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import static com.evteam.purposefulcommunitycloud.constant.ConfigConstants.PURPOSEFUL_COMMUNITY_MAIL_ADRESS;
+import static com.evteam.purposefulcommunitycloud.constant.ConfigConstants.PURPOSEFUL_COMMUNITY_URL;
+
 /**
  * Created by Emir Gökdemir
  * on 12 Eki 2019
@@ -33,7 +36,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("Eyetrade")
                 .description("Trading Management REST API")
-                .contact(new Contact("Eyetrade", "http://100.26.202.213:8080", "eyetrade451@gmail.com"))
+                .contact(new Contact("PurposefulCommunity", PURPOSEFUL_COMMUNITY_URL,PURPOSEFUL_COMMUNITY_MAIL_ADRESS ))
                 .license("Apache 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
                 .version("1.0.0")
