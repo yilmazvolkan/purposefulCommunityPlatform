@@ -39,6 +39,8 @@ public class User {
     private Integer studentId;
 
     @Column(name = "pword")
+    @Length(max = 30, message = "The password cannot be longer than 30")
+    @Length(min = 8, message = "The password cannot be shorter than 8")
     @NotEmpty(message = "Please provide your password")
     private String pword;
 
