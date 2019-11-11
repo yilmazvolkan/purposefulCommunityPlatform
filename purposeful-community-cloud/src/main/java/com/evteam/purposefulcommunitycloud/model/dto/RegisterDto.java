@@ -16,7 +16,7 @@ public class RegisterDto {
 
     private String pword;
 
-    private String studentId;
+    private int studentId;
 
     private String name;
 

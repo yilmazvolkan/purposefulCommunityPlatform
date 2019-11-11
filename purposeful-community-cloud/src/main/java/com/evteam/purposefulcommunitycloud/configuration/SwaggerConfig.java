@@ -26,7 +26,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.eyetrade.backend.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.evteam.purposefulcommunitycloud.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiEndPointsInfo());
@@ -34,8 +34,8 @@ public class SwaggerConfig {
 
     private ApiInfo apiEndPointsInfo() {
         return new ApiInfoBuilder()
-                .title("Eyetrade")
-                .description("Trading Management REST API")
+                .title("EVteam")
+                .description("Purposeful Community REST API")
                 .contact(new Contact("PurposefulCommunity", PURPOSEFUL_COMMUNITY_URL,PURPOSEFUL_COMMUNITY_MAIL_ADRESS ))
                 .license("Apache 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
