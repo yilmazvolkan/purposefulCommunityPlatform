@@ -1,16 +1,16 @@
 package com.evteam.purposefulcommunitycloud.model.entity;
 
+import com.evteam.purposefulcommunitycloud.common.AbstractEntity;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
-
-import static com.evteam.purposefulcommunitycloud.constant.GeneralConstants.ID_LENGTH;
 
 /**
  * Created by Emir Gökdemir
@@ -19,17 +19,11 @@ import static com.evteam.purposefulcommunitycloud.constant.GeneralConstants.ID_L
 @Data
 @Entity
 @Table(name="users", uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO,generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
-    @Column(name = "id", length = ID_LENGTH)
-    private UUID id;
+public class User extends AbstractEntity {
 
     @NotNull
     @Column(name = "email")
-    @Email(message = "Please provide accepltable mail address")
+    @Email(message = "Please provide acceptable mail address")
     private String email;
 
     @NotNull
@@ -51,10 +45,10 @@ public class User {
     private String surname;
 
     @Column(name = "phone")
-    @Length(min = 0,max = 11,message = "Phone number should be 11 digits.")
+    @Length(min = 10,max = 13,message = "Phone number should be 11 digits.")
     private String phone;
 
     @Column(name = "confirmed")
-    private boolean confirmed;
+    private boolean confirmed=false;
 
 }

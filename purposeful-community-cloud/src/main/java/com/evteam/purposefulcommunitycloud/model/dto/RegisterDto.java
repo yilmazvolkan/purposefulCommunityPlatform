@@ -14,6 +14,8 @@ public class RegisterDto {
 
     private String email;
 
+    private String pword;
+
     private String studentId;
 
     private String name;
