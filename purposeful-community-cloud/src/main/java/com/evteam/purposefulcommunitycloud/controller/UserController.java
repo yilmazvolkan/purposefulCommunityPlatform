@@ -1,6 +1,8 @@
 package com.evteam.purposefulcommunitycloud.controller;
 
+import com.evteam.purposefulcommunitycloud.model.dto.LoginDto;
 import com.evteam.purposefulcommunitycloud.model.dto.RegisterDto;
+import com.evteam.purposefulcommunitycloud.model.resource.LoginResource;
 import com.evteam.purposefulcommunitycloud.model.resource.UserResource;
 import com.evteam.purposefulcommunitycloud.service.UserService;
 import io.swagger.annotations.Api;
@@ -26,8 +28,14 @@ public class UserController {
 
     @ApiOperation(value = "Register an user with the needed information", response = UserResource.class)
     @PostMapping("/register")
-    public ResponseEntity<UserResource> register(@RequestBody RegisterDto dto){
-        return ResponseEntity.ok(service.register(dto));
+    public ResponseEntity<UserResource> register(@RequestBody RegisterDto registerDto){
+        return ResponseEntity.ok(service.register(registerDto));
+    }
+
+    @ApiOperation(value = "Login an user with the needed information", response = LoginResource.class)
+    @PostMapping("/login")
+    public ResponseEntity<UserResource> login(@RequestBody LoginDto loginDto){
+        return ResponseEntity.ok(service.login(loginDto));
     }
 
 }
