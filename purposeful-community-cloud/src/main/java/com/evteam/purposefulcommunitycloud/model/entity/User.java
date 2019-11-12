@@ -28,8 +28,6 @@ public class User extends AbstractEntity {
 
     @NotNull
     @Column(name = "studentId")
-    @Email
-    @Length(min = 10,max = 10,message = "Student Id must be 10 digits.")
     private Integer studentId;
 
     @Column(name = "pword")
