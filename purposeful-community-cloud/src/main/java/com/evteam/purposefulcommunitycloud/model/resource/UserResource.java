@@ -17,7 +17,7 @@ public class UserResource {
 
     private String email;
 
-    private String studentId;
+    private Integer studentId;
     
     private String phone;
 
