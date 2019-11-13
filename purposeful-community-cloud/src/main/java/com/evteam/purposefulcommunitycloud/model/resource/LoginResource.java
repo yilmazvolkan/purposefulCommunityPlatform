@@ -1,7 +1,11 @@
 package com.evteam.purposefulcommunitycloud.model.resource;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.annotation.Resource;
 
 /**
  * Created by Emir Gökdemir
@@ -9,6 +13,9 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class LoginResource {
+@Resource
+@AllArgsConstructor
+@NoArgsConstructor
+public class LoginResource extends UserResource{
     private String token;
 }

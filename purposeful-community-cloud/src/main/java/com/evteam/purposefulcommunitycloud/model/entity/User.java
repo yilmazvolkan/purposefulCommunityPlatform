@@ -30,11 +30,11 @@ public class User extends AbstractEntity {
     @Column(name = "studentId")
     private Integer studentId;
 
-    @Column(name = "pword")
+    @Column(name = "password")
     @Length(max = 30, message = "The password cannot be longer than 30")
     @Length(min = 8, message = "The password cannot be shorter than 8")
     @NotEmpty(message = "Please provide your password")
-    private String pword;
+    private String password;
 
     @Column(name = "name")
     private String name;
