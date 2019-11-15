@@ -1,2 +1,2 @@
 # Purposeful Community
-Purposeful Community for people who has common things and want to gather and do activities.
+In this project, we aim to create an application that assists people who want to create a community within the scope of a purpose. We want to achieve creating a community based on certain rules and structures by letting users create their own types. With these community specific data types, a user now is able to share her/his information in well structured format and easy to comprehend from other users.
