@@ -11,10 +11,8 @@ import com.evteam.purposefulcommunitycloud.model.resource.UserResource;
 import com.evteam.purposefulcommunitycloud.repository.UserRepository;
 import com.evteam.purposefulcommunitycloud.security.JwtGenerator;
 import com.evteam.purposefulcommunitycloud.security.JwtResolver;
-import org.omg.PortableInterceptor.USER_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -24,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.evteam.purposefulcommunitycloud.constant.ErrorConstants.USER_NOT_EXIST;
