@@ -26,9 +26,6 @@ public class User extends AbstractEntity {
     @Email(message = "Please provide acceptable mail address")
     private String email;
 
-    @NotNull
-    @Column(name = "studentId")
-    private Integer studentId;
 
     @Column(name = "password")
     @Length(max = 30, message = "The password cannot be longer than 30")
@@ -41,10 +38,6 @@ public class User extends AbstractEntity {
 
     @Column(name = "surname")
     private String surname;
-
-    @Column(name = "phone")
-    @Length(min = 10,max = 13,message = "Phone number should be 11 digits.")
-    private String phone;
 
     @Column(name = "confirmed")
     private boolean confirmed=false;

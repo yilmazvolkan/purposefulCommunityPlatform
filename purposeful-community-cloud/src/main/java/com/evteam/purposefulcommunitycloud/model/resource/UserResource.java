@@ -20,10 +20,6 @@ public class UserResource {
 
     private String email;
 
-    private Integer studentId;
-    
-    private String phone;
-
     private String name;
 
     private String surname;
