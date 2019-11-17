@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.annotation.Resource;
+import java.util.UUID;
 
 /**
  * Created by Emir Gökdemir
@@ -15,11 +16,9 @@ import javax.annotation.Resource;
 @Resource
 public class UserResource {
 
-    private String email;
+    private UUID id;
 
-    private Integer studentId;
-    
-    private String phone;
+    private String email;
 
     private String name;
 

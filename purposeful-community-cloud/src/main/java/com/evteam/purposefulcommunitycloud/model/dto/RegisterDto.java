@@ -16,12 +16,7 @@ public class RegisterDto {
 
     private String password;
 
-    private Integer studentId;
-
     private String name;
 
     private String surname;
-
-    @Length(min=10,max=13)
-    private String phone;
 }

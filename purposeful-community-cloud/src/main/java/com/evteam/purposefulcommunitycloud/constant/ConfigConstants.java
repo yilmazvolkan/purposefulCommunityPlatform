@@ -7,6 +7,6 @@ package com.evteam.purposefulcommunitycloud.constant;
 
 public class ConfigConstants {
 
-    public static final String PURPOSEFUL_COMMUNITY_URL ="13.59.3.13:8080";
+    public static final String PURPOSEFUL_COMMUNITY_URL ="http://18.184.25.234:8080";
     public static final String PURPOSEFUL_COMMUNITY_MAIL_ADRESS ="purposefulcommunity@gmail.com";
 }
