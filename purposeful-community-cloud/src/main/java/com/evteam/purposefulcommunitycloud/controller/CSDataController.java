@@ -25,7 +25,7 @@ public class CSDataController {
     @Autowired
     private CSDataService service;
 
-    @ApiOperation(value = "Save community specific data template with the needed information", response = DataTemplateResource.class)
+    @ApiOperation(value = "Create community specific data template with the needed information", response = DataTemplateResource.class)
     @PostMapping("/create-csd")
     public ResponseEntity<DataTemplateResource> createCSDTemplate(@RequestBody DataTemplateDto templateDto){
         return ResponseEntity.ok(service.createCSDTemplate(templateDto));

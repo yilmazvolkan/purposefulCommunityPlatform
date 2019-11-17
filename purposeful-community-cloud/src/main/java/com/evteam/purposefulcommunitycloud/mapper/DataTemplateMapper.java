@@ -13,4 +13,7 @@ public interface DataTemplateMapper extends Converter<DataTemplateDto, DataTempl
 
     @Mapping(source = "fields", target = "fieldResources")
     DataTemplateResource toResource(DataTemplate dataTemplate);
+//
+//    Set<DataTemplateResource> toResource(Set<DataTemplate> templates);
+
 }

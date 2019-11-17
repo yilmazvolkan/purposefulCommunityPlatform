@@ -20,7 +20,9 @@ public class DataTemplate extends AbstractEntity {
     @NotNull
     String name;
 
-    // TODO: 16 Kas 2019  community will be added
+    @ManyToOne
+    @JoinColumn(name = "community_id")
+    Community community;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

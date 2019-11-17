@@ -1,7 +1,6 @@
 package com.evteam.purposefulcommunitycloud.model.entity;
 
 import com.evteam.purposefulcommunitycloud.common.AbstractEntity;
-import com.evteam.purposefulcommunitycloud.constant.FieldType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,21 +10,30 @@ import javax.validation.constraints.NotNull;
 
 /**
  * Created by Emir Gökdemir
- * on 16 Kas 2019
+ * on 17 Kas 2019
  */
-@Data
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "data_field")
-public class DataField extends AbstractEntity {
+@Table(name = "community")
+public class Community extends AbstractEntity {
 
     @NotNull
+    @Column(name = "name")
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    private FieldType fieldType;
+    @NotNull
+    @Column(name = "description")
+    private String description;
 
-//    @ManyToMany(mappedBy = "fields")
-//    Set<DataTemplate> templates;
+    @Column(name = "size")
+    private Integer size;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User creator;
+
+    @Column(name = "is_private")
+    private Boolean isPrivate;
 }

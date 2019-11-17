@@ -45,7 +45,6 @@ public class CSDataService {
 
         DataTemplate dataTemplate=templateMapper.toEntity(templateDto);
         dataTemplate.setCreator(userRepository.findUserById(templateDto.getUserId()));
-        dataTemplate.setCreator(userRepository.findUserById(templateDto.getUserId()));
         for(DataField field: CollectionUtils.emptyIfNull(dataTemplate.getFields())){
             fieldRepository.saveAndFlush(field);
         }
