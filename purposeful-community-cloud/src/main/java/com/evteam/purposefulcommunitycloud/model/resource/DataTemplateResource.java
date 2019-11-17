@@ -22,10 +22,10 @@ public class DataTemplateResource {
 
     private ZonedDateTime createdDate;
 
-    private ZonedDateTime modifiedDate;
+    private ZonedDateTime lastModifiedDate;
 
     private String name;
 
-    private Set<DataField> fields;
+    private Set<DataFieldResource> fieldResources;
 
 }

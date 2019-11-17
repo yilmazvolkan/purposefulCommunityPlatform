@@ -1,16 +1,17 @@
 package com.evteam.purposefulcommunitycloud.controller;
 
 import com.evteam.purposefulcommunitycloud.model.dto.DataTemplateDto;
+import com.evteam.purposefulcommunitycloud.model.resource.DataFieldResource;
 import com.evteam.purposefulcommunitycloud.model.resource.DataTemplateResource;
 import com.evteam.purposefulcommunitycloud.service.CSDataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by Emir Gökdemir
@@ -29,4 +30,17 @@ public class CSDataController {
     public ResponseEntity<DataTemplateResource> createCSDTemplate(@RequestBody DataTemplateDto templateDto){
         return ResponseEntity.ok(service.createCSDTemplate(templateDto));
     }
+
+    @ApiOperation(value = "Get community specific data template with id", response = DataTemplateResource.class)
+    @GetMapping("/{id}")
+    public ResponseEntity<DataTemplateResource> getCSDTemplate(@PathVariable("id")UUID id){
+        return ResponseEntity.ok(service.getCSDTemplate(id));
+    }
+
+    @ApiOperation(value = "Get fields of community specific data template with id of data template", response = DataFieldResource.class)
+    @GetMapping("/fields/{id}")
+    public ResponseEntity<Set<DataFieldResource>> getFieldsOfCSDTemplate(@PathVariable("id")UUID id){
+        return ResponseEntity.ok(service.getFieldsOfCSDTemplate(id));
+    }
+
 }

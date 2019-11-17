@@ -5,6 +5,7 @@ import com.evteam.purposefulcommunitycloud.mapper.DataTemplateMapper;
 import com.evteam.purposefulcommunitycloud.model.dto.DataTemplateDto;
 import com.evteam.purposefulcommunitycloud.model.entity.DataField;
 import com.evteam.purposefulcommunitycloud.model.entity.DataTemplate;
+import com.evteam.purposefulcommunitycloud.model.resource.DataFieldResource;
 import com.evteam.purposefulcommunitycloud.model.resource.DataTemplateResource;
 import com.evteam.purposefulcommunitycloud.repository.DataFieldRepository;
 import com.evteam.purposefulcommunitycloud.repository.DataTemplateRepository;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by Emir Gökdemir
@@ -48,5 +51,13 @@ public class CSDataService {
         }
         templateRepository.save(dataTemplate);
         return templateMapper.toResource(dataTemplate);
+    }
+
+    public DataTemplateResource getCSDTemplate(UUID id) {
+        return templateMapper.toResource(templateRepository.findDataTemplateById(id));
+    }
+
+    public Set<DataFieldResource> getFieldsOfCSDTemplate(UUID id) {
+        return templateMapper.toResource(templateRepository.findDataTemplateById(id)).getFieldResources();
     }
 }

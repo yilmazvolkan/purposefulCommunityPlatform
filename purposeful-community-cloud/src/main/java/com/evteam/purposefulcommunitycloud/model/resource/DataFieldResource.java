@@ -1,11 +1,12 @@
 package com.evteam.purposefulcommunitycloud.model.resource;
 
-import com.evteam.purposefulcommunitycloud.model.entity.DataField;
-import com.evteam.purposefulcommunitycloud.model.entity.DataTemplate;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.annotation.Resource;
 import java.time.ZonedDateTime;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -13,16 +14,18 @@ import java.util.UUID;
  * on 17 Kas 2019
  */
 @Resource
+@AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class DataFieldResource {
 
     UUID id;
 
     private ZonedDateTime createdDate;
 
-    private ZonedDateTime modifiedDate;
+    private ZonedDateTime lastModifiedDate;
 
     private String name;
-
-    private Set<DataTemplate> templates;
 
 }

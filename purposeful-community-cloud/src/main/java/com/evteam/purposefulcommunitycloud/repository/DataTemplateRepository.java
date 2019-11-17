@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface DataTemplateRepository extends JpaRepository<DataTemplate, UUID> {
-
+    DataTemplate findDataTemplateById(UUID id);
 }
