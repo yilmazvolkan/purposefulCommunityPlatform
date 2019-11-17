@@ -20,9 +20,9 @@ public class DataTemplateDto  {
 
     private String name;
 
-    // TODO: 16 Kas 2019 community will be added
-
     private UUID userId;
 
     private Set<DataFieldDto> fields;
+
+    private UUID communityId;
 }

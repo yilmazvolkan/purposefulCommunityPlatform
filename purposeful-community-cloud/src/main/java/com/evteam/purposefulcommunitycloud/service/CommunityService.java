@@ -10,6 +10,7 @@ import com.evteam.purposefulcommunitycloud.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.UUID;
 
 /**
@@ -28,6 +29,7 @@ public class CommunityService {
     @Autowired
     private CommunityRepository repository;
 
+    @Transactional
     public CommunityResource createCommunity(CommunityDto dto, UUID userId) {
         Community community = mapper.toEntity(dto);
         User creator = userRepository.findUserById(userId);
@@ -36,7 +38,6 @@ public class CommunityService {
     }
 
     public CommunityResource getCommunity(UUID communityId, UUID userId) {
-
         Community community = repository.findCommunityById(communityId);
         if (community.getIsPrivate() && community.getCreator().getId().equals(userId) ) {
             throw new RuntimeException("Community is private");
