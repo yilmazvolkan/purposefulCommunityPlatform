@@ -31,7 +31,8 @@ public class CSDataController {
     @Autowired
     private JwtResolver jwtResolver;
 
-    @ApiOperation(value = "Create community specific data template with the needed information", response = DataTemplateResource.class)
+    @ApiOperation(value = "Create community specific data template with the needed information. Field types are TEXT,NUMBER, DECIMAL,DATE,LOCATION,TIME",
+            response = DataTemplateResource.class)
     @PostMapping("/create-csd")
     public ResponseEntity<DataTemplateResource> createCSDTemplate(@RequestHeader String token, @RequestBody DataTemplateDto templateDto) {
         return ResponseEntity.ok(service.createCSDTemplate(templateDto, jwtResolver.getIdFromToken(token)));
