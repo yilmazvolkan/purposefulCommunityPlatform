@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Purposeful Community</string>
+
     <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_sign_up">Sign up</string>
+    <string name="communities">Communities</string>
+    <string name="title_activity_community">Communities</string>
 
     <string name="name">Name</string>
     <string name="surname">Surname</string>
@@ -10,5 +14,6 @@
     <string name="sign_up">Sign up</string>
     <string name="create_account">No account yet? Create one</string>
     <string name="go_sigin">Already a member? Login</string>
-    <string name="title_activity_community">Communities</string>
+
+    <string name="size">Size</string>
 </resources>
