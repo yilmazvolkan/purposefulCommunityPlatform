@@ -8,6 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,6 +19,7 @@ import java.util.Set;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface CommunityMapper extends Converter<CommunityDto, Community, CommunityResource> {
 
+    List<CommunityResource> toResource(List<Community> communities);
 //
 //    @Mapping(source = "templates", target = "templateResources")
 //    CommunityResource toResource(Community community);

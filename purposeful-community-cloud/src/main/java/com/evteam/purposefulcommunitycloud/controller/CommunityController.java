@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -39,6 +40,13 @@ public class CommunityController {
     public ResponseEntity<CommunityResource> get(@RequestHeader String token,@PathVariable("id") UUID communityId){
         return ResponseEntity.ok(service.getCommunity(communityId,jwtResolver.getIdFromToken(token)));
     }
+
+    @ApiOperation(value = "Get all communities with the token", response = CommunityResource.class)
+    @GetMapping("/get/all")
+    public ResponseEntity<List<CommunityResource>> get(@RequestHeader String token){
+        return ResponseEntity.ok(service.getAllCommunities(jwtResolver.getIdFromToken(token)));
+    }
+
 
 
 
