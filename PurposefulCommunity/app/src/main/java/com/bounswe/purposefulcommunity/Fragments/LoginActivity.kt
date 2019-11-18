@@ -45,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
                 R.anim.slide_in_right,
                 R.anim.slide_out_left
             )
+            finish()
         }
     }
     private fun signIn(email: String, password: String, editor: SharedPreferences.Editor){
@@ -113,8 +114,4 @@ class LoginActivity : AppCompatActivity() {
     private fun String.isValidEmail(): Boolean
             = this.isNotEmpty() &&
             Patterns.EMAIL_ADDRESS.matcher(this).matches()
-    override fun finish() {
-        super.finish()
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-    }
 }

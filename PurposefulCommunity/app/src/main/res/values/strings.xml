@@ -5,6 +5,7 @@
     <string name="title_activity_sign_up">Sign up</string>
     <string name="communities">Communities</string>
     <string name="title_activity_community">Communities</string>
+    <string name="title_create_community">Create Community</string>
 
     <string name="name">Name</string>
     <string name="surname">Surname</string>
@@ -16,4 +17,9 @@
     <string name="go_sigin">Already a member? Login</string>
 
     <string name="size">Size</string>
+
+    <string name="join_comm">Join a community</string>
+    <string name="create_comm">Create Community</string>
+    <string name="description">Description</string>
+    <string name="priv">Private</string>
 </resources>

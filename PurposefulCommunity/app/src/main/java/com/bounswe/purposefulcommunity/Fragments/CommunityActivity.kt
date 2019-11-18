@@ -1,6 +1,7 @@
 package com.bounswe.purposefulcommunity.Fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -9,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
 import com.bounswe.purposefulcommunity.Adapters.CustomAdapter
+import com.bounswe.purposefulcommunity.CreateCommActivity
 import com.bounswe.purposefulcommunity.Models.CommShowBody
 import com.bounswe.purposefulcommunity.Models.CommunityBody
 import com.bounswe.purposefulcommunity.R
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_community.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,14 +29,21 @@ class CommunityActivity : AppCompatActivity() {
         val actionBar = supportActionBar
         actionBar!!.title = getString(R.string.communities)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        fab.setOnClickListener {
+            createCommunity()
         }
 
         getCommunities()
     }
-
+    private fun createCommunity(){
+        val intent = Intent(this@CommunityActivity, CreateCommActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(
+            R.anim.slide_in_right,
+            R.anim.slide_out_left
+        )
+        finish()
+    }
     private fun getCommunities(){
         val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
         val tokenV = res.getString("token", "Data Not Found!")
