@@ -1,4 +1,4 @@
-package com.bounswe.purposefulcommunity
+package com.bounswe.purposefulcommunity.Fragments
 
 import android.content.Context
 import android.content.Intent
@@ -7,9 +7,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
-import com.bounswe.purposefulcommunity.Fragments.CommunityActivity
 import com.bounswe.purposefulcommunity.Models.CommunityBody
 import com.bounswe.purposefulcommunity.Models.CreateCommBody
+import com.bounswe.purposefulcommunity.R
 import kotlinx.android.synthetic.main.activity_create_comm.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -42,7 +42,6 @@ class CreateCommActivity : AppCompatActivity() {
                 R.anim.slide_in_right,
                 R.anim.slide_out_left
             )
-            finish()
         }
     }
     private fun createCommunity(name: String, desc: String, size: Int, isPrivate: Boolean){

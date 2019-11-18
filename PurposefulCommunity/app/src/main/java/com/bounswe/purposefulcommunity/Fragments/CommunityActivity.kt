@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
 import com.bounswe.purposefulcommunity.Adapters.CustomAdapter
-import com.bounswe.purposefulcommunity.CreateCommActivity
 import com.bounswe.purposefulcommunity.Models.CommShowBody
 import com.bounswe.purposefulcommunity.Models.CommunityBody
 import com.bounswe.purposefulcommunity.R
@@ -42,7 +41,6 @@ class CommunityActivity : AppCompatActivity() {
             R.anim.slide_in_right,
             R.anim.slide_out_left
         )
-        finish()
     }
     private fun getCommunities(){
         val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
@@ -96,5 +94,8 @@ class CommunityActivity : AppCompatActivity() {
             }
         })
     }
-
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+    }
 }

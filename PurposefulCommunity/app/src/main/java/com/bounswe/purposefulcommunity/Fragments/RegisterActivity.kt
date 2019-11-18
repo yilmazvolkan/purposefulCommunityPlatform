@@ -45,7 +45,6 @@ class RegisterActivity : AppCompatActivity() {
                 R.anim.slide_in_right,
                 R.anim.slide_out_left
             )
-            finish()
         }
     }
     private fun signUp(email: String, name: String, surname: String, password: String){
@@ -119,7 +118,6 @@ class RegisterActivity : AppCompatActivity() {
                         R.anim.slide_in_right,
                         R.anim.slide_out_left
                     )
-                    finish()
 
                 } else {
                     Toast.makeText(this@RegisterActivity, "Login failed!", Toast.LENGTH_SHORT).show()
