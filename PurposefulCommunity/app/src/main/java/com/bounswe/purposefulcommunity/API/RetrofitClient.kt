@@ -1,5 +1,6 @@
 package com.bounswe.mercatus.API
 
+import com.bounswe.purposefulcommunity.Models.CommunityBody
 import com.bounswe.purposefulcommunity.Models.SignInBody
 import com.bounswe.purposefulcommunity.Models.SignInRes
 import com.bounswe.purposefulcommunity.Models.SignUpBody
@@ -7,9 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiInterface {
 
@@ -26,6 +25,13 @@ interface ApiInterface {
     fun registerUser(
         @Body info: SignUpBody
     ): retrofit2.Call<SignUpBody>
+
+    // Get community list request
+    @Headers("Content-Type:application/json")
+    @GET("/community/get/all")
+    fun getComList(
+        @Header("token") token: String
+    ): retrofit2.Call<List<CommunityBody>>
 }
 class RetrofitInstance {
     companion object {

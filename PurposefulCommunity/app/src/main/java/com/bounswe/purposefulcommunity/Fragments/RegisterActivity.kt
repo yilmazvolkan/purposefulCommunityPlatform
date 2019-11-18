@@ -25,6 +25,9 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+        val actionBar = supportActionBar
+        actionBar!!.title = getString(R.string.title_activity_sign_up)
+
         btn_signup.setOnClickListener {
             val name = editName.text.toString()
             val surname = editSurname.text.toString()

@@ -24,6 +24,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val actionBar = supportActionBar
+        actionBar!!.title = getString(R.string.title_activity_login)
+
         btn_login.setOnClickListener {
             val email = editMail.text.toString()
             val password = editPassword.text.toString()
