@@ -2,7 +2,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     android:background="@color/colorPrimary">
 
@@ -24,10 +23,25 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:hint="@string/name" >
+            android:hint="@string/name">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/laySurname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:hint="@string/surname" >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editSurname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName" />
@@ -80,6 +94,6 @@
             android:text="@string/go_sigin"
             android:gravity="center"
             android:textColor="@color/colorWhite"
-            android:textSize="16dip"/>>
+            android:textSize="16dip"/>
     </LinearLayout>
 </ScrollView>
