@@ -9,5 +9,5 @@ We created 2 scenarios for prototype purposes. You can find them [here](https://
 ## Create Template Seqeunce Diagram
 <img src="https://github.com/yilmazvolkan/purposefulCommunityPlatform/blob/master/res/diagrams/createTemplate.png" width="400">
 
-## Create Template Seqeunce Diagram
+## Create Community Specific Data(CSD) Seqeunce Diagram
 <img src="https://github.com/yilmazvolkan/purposefulCommunityPlatform/blob/master/res/diagrams/createCSD.png" width="400">
