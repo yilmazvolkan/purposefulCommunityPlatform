@@ -11,9 +11,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Fragments.ShowCommActivity"></activity>
-        <activity android:name=".Fragments.CommunityActivity"></activity>
-        <activity android:name=".Fragments.RegisterActivity"></activity>
+        <activity android:name=".Fragments.CreateCommActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Fragments.CommunityActivity" />
+        </activity>
+        <activity android:name=".Fragments.ShowCommActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Fragments.CommunityActivity" />
+        </activity>
+        <activity android:name=".Fragments.CommunityActivity" />
+        <activity android:name=".Fragments.RegisterActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Fragments.LoginActivity" />
+        </activity>
         <activity android:name=".Fragments.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,5 +36,4 @@
         </activity>
         <activity android:name=".Fragments.MainActivity" />
     </application>
-
 </manifest>

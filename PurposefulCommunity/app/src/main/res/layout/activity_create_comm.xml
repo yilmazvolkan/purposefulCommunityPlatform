@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    android:background="@color/colorPrimary">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="56dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layComName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:hint="@string/name"
+            app:errorTextAppearance="@style/error_appearance">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editComName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorWhite"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:hint="@string/description"
+            app:errorTextAppearance="@style/error_appearance">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textColor="@color/colorWhite"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/laySize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:hint="@string/size"
+            app:errorTextAppearance="@style/error_appearance">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:textColor="@color/colorWhite"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Switch
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/switch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/priv"
+            android:textColor="@android:color/white"
+            android:switchPadding="8dp"/>
+
+        <Button
+            android:id="@+id/btn_create"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:padding="12dp"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/colorWhite"
+            android:text="@string/create_comm"/>
+        <TextView
+            android:id="@+id/join_comm"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="@string/join_comm"
+            android:gravity="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="16dip"/>>
+    </LinearLayout>
+</ScrollView>
