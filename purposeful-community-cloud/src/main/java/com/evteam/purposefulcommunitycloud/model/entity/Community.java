@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by Emir Gökdemir
@@ -36,4 +37,8 @@ public class Community extends AbstractEntity {
 
     @Column(name = "is_private")
     private Boolean isPrivate;
+
+    @OneToMany
+    @JoinColumn(name = "builders")
+    List<User> builders;
 }

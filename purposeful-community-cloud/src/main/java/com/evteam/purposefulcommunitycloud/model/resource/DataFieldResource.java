@@ -1,5 +1,6 @@
 package com.evteam.purposefulcommunitycloud.model.resource;
 
+import com.evteam.purposefulcommunitycloud.constant.FieldType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,8 @@ public class DataFieldResource {
     private ZonedDateTime createdDate;
 
     private ZonedDateTime lastModifiedDate;
+
+    private FieldType fieldType;
 
     private String name;
 

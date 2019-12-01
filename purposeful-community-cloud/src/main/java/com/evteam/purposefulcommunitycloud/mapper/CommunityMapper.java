@@ -9,19 +9,16 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
-import java.util.Set;
-
 /**
  * Created by Emir Gökdemir
  * on 17 Kas 2019
  */
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,unmappedSourcePolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,unmappedSourcePolicy = ReportingPolicy.IGNORE,uses = {RegisterMapper.class})
 public interface CommunityMapper extends Converter<CommunityDto, Community, CommunityResource> {
 
-    List<CommunityResource> toResource(List<Community> communities);
-//
-//    @Mapping(source = "templates", target = "templateResources")
-//    CommunityResource toResource(Community community);
+    @Mapping(source = "creator", target = "creatorUser")
+    CommunityResource toResource(Community community);
 
+    List<CommunityResource> toResource(List<Community> communities);
 }

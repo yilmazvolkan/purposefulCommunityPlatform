@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.annotation.Resource;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -34,5 +35,9 @@ public class CommunityResource {
     private Integer size;
 
     private Boolean isPrivate;
+
+    private UserResource creatorUser;
+
+    private List<UserResource> builders;
 
 }
