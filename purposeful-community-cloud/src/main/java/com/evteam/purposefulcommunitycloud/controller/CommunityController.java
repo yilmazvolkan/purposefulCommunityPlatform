@@ -2,6 +2,7 @@ package com.evteam.purposefulcommunitycloud.controller;
 
 import com.evteam.purposefulcommunitycloud.model.dto.CommunityDto;
 import com.evteam.purposefulcommunitycloud.model.resource.CommunityResource;
+import com.evteam.purposefulcommunitycloud.model.resource.SmallSizeCommunityResource;
 import com.evteam.purposefulcommunitycloud.model.resource.UserResource;
 import com.evteam.purposefulcommunitycloud.security.JwtResolver;
 import com.evteam.purposefulcommunitycloud.service.CommunityService;
@@ -44,7 +45,7 @@ public class CommunityController {
 
     @ApiOperation(value = "Get all communities with the token", response = CommunityResource.class)
     @GetMapping("/get/all")
-    public ResponseEntity<List<CommunityResource>> getAll(@RequestHeader String token){
+    public ResponseEntity<List<SmallSizeCommunityResource>> getAll(@RequestHeader String token){
         return ResponseEntity.ok(service.getAllCommunities(jwtResolver.getIdFromToken(token)));
     }
 
