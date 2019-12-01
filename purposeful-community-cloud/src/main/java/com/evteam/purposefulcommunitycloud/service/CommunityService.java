@@ -64,14 +64,14 @@ public class CommunityService {
         return smallMapper.toResource(communities);
     }
 
-    public CommunityResource addBuilders(UUID communityId,List<String> emailsOfBuilders,UUID creatorId){
+    public CommunityResource addBuilders(UUID communityId,List<UUID> idsOfBuilders,UUID creatorId){
         Community community=repository.getOne(communityId);
         if(!community.getCreator().getId().equals(creatorId)){
             throw new RuntimeException(ONLY_CREATOR_CAN_ADD_BUILDER);
         }
         List<User> builders=community.getBuilders();
-        for(String email: CollectionUtils.emptyIfNull(emailsOfBuilders)){
-            User user=userRepository.findByEmail(email);
+        for(UUID builderId: CollectionUtils.emptyIfNull(idsOfBuilders)){
+            User user=userRepository.findUserById(builderId);
             builders.add(user);
         }
         community.setBuilders(builders);
@@ -109,4 +109,8 @@ public class CommunityService {
         return registerMapper.toResource(community.getFollowers());
     }
 
+    public List<CommunityResource> getSelfFollowings(UUID userId){
+        List<Community> communities=repository.findCommunitiesByFollowers(userRepository.findUserById(userId));
+        return mapper.toResource(communities);
+    }
 }

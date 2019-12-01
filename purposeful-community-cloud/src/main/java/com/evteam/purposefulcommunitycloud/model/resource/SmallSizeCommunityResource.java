@@ -27,4 +27,6 @@ public class SmallSizeCommunityResource {
     private String description;
 
     private Boolean isPrivate;
+
+    private Integer size;
 }
