@@ -11,4 +11,10 @@ public class ErrorConstants {
     public static final String USER_NOT_EXIST = "User could not be found!";
     public static final String MAIL_SEND_FAILED = "Mail couldn't be sent!";
     public static final String WRONG_EMAIL_OR_PASSWORD = "The given email or password is wrong!";
+    public static final String ONLY_CREATOR_CAN_ADD_BUILDER = "Only creators can add builder!";
+    public static final String ONLY_CREATOR_CAN_SEE_BUILDER = "Only creators can see builders!";
+    public static final String USER_ALREADY_FOLLOWED_THIS_COMMUNITY = "User already followed this community";
+    public static final String COMMUNITY_IS_PRIVATE= "Community is private!";
+
+
 }

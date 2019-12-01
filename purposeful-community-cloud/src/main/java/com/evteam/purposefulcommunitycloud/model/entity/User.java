@@ -4,13 +4,12 @@ import com.evteam.purposefulcommunitycloud.common.AbstractEntity;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Emir Gökdemir
@@ -42,4 +41,6 @@ public class User extends AbstractEntity {
     @Column(name = "confirmed")
     private boolean confirmed=false;
 
+    @ManyToMany(mappedBy = "followers")
+    List<Community> followings;
 }

@@ -44,7 +44,7 @@ public class CSDataController {
         return ResponseEntity.ok(service.getCSDTemplate(id, jwtResolver.getIdFromToken(token)));
     }
 
-    @ApiOperation(value = "Get fields of community specific data template with id of data template", response = DataFieldResource.class)
+    @ApiOperation(value = "Get fields of community specific data template with id of data template", response = DataFieldResource.class, responseContainer = "Set")
     @GetMapping("/fields/{id}")
     public ResponseEntity<Set<DataFieldResource>> getFieldsOfCSDTemplate(@RequestHeader String token, @PathVariable("id") UUID id) {
         return ResponseEntity.ok(service.getFieldsOfCSDTemplate(id, jwtResolver.getIdFromToken(token)));
