@@ -14,5 +14,7 @@ public class ErrorConstants {
     public static final String ONLY_CREATOR_CAN_ADD_BUILDER = "Only creators can add builder!";
     public static final String ONLY_CREATOR_CAN_SEE_BUILDER = "Only creators can see builders!";
     public static final String USER_ALREADY_FOLLOWED_THIS_COMMUNITY = "User already followed this community";
+    public static final String COMMUNITY_IS_PRIVATE= "Community is private!";
+
 
 }

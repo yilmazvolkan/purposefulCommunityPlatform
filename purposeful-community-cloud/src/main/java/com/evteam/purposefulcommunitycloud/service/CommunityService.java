@@ -2,20 +2,20 @@ package com.evteam.purposefulcommunitycloud.service;
 
 import com.evteam.purposefulcommunitycloud.mapper.CommunityMapper;
 import com.evteam.purposefulcommunitycloud.mapper.RegisterMapper;
+import com.evteam.purposefulcommunitycloud.mapper.SmallSizeCommunityMapper;
 import com.evteam.purposefulcommunitycloud.model.dto.CommunityDto;
 import com.evteam.purposefulcommunitycloud.model.entity.Community;
 import com.evteam.purposefulcommunitycloud.model.entity.User;
 import com.evteam.purposefulcommunitycloud.model.resource.CommunityResource;
+import com.evteam.purposefulcommunitycloud.model.resource.SmallSizeCommunityResource;
 import com.evteam.purposefulcommunitycloud.model.resource.UserResource;
 import com.evteam.purposefulcommunitycloud.repository.CommunityRepository;
 import com.evteam.purposefulcommunitycloud.repository.UserRepository;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +30,9 @@ public class CommunityService {
 
     @Autowired
     private CommunityMapper mapper;
+
+    @Autowired
+    private SmallSizeCommunityMapper smallMapper;
 
     @Autowired
     private UserRepository userRepository;
@@ -50,16 +53,15 @@ public class CommunityService {
 
     public CommunityResource getCommunity(UUID communityId, UUID userId) {
         Community community = repository.findCommunityById(communityId);
-        if (community.getIsPrivate() && community.getCreator().getId().equals(userId)) {
-            throw new RuntimeException("Community is private");
-            // TODO: 17 Kas 2019 following mechanism will be added
+        if (community.getIsPrivate() && !community.getFollowers().contains(userRepository.findUserById(userId))) {
+            throw new RuntimeException(COMMUNITY_IS_PRIVATE);
         }
         return mapper.toResource(community);
     }
 
-    public List<CommunityResource> getAllCommunities(UUID userId) {
+    public List<SmallSizeCommunityResource> getAllCommunities(UUID userId) {
         List<Community> communities = repository.findAll();
-        return mapper.toResource(communities);
+        return smallMapper.toResource(communities);
     }
 
     public CommunityResource addBuilders(UUID communityId,List<String> emailsOfBuilders,UUID creatorId){
@@ -99,8 +101,11 @@ public class CommunityService {
     }
 
 
-    public List<UserResource> getFollowers(UUID communityId, UUID idFromToken) {
+    public List<UserResource> getFollowers(UUID communityId, UUID userId) {
         Community community=repository.findCommunityById(communityId);
+        if (community.getIsPrivate() && !community.getFollowers().contains(userRepository.findUserById(userId))) {
+            throw new RuntimeException(COMMUNITY_IS_PRIVATE);
+        }
         return registerMapper.toResource(community.getFollowers());
     }
 
