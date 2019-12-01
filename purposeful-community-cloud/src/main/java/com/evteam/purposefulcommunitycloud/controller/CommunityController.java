@@ -43,7 +43,7 @@ public class CommunityController {
 
     @ApiOperation(value = "Get all communities with the token", response = CommunityResource.class)
     @GetMapping("/get/all")
-    public ResponseEntity<List<CommunityResource>> get(@RequestHeader String token){
+    public ResponseEntity<List<CommunityResource>> getAll(@RequestHeader String token){
         return ResponseEntity.ok(service.getAllCommunities(jwtResolver.getIdFromToken(token)));
     }
 
