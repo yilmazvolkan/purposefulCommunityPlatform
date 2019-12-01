@@ -1,10 +1,12 @@
 package com.evteam.purposefulcommunitycloud.service;
 
 import com.evteam.purposefulcommunitycloud.mapper.CommunityMapper;
+import com.evteam.purposefulcommunitycloud.mapper.RegisterMapper;
 import com.evteam.purposefulcommunitycloud.model.dto.CommunityDto;
 import com.evteam.purposefulcommunitycloud.model.entity.Community;
 import com.evteam.purposefulcommunitycloud.model.entity.User;
 import com.evteam.purposefulcommunitycloud.model.resource.CommunityResource;
+import com.evteam.purposefulcommunitycloud.model.resource.UserResource;
 import com.evteam.purposefulcommunitycloud.repository.CommunityRepository;
 import com.evteam.purposefulcommunitycloud.repository.UserRepository;
 import org.apache.commons.collections4.CollectionUtils;
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static com.evteam.purposefulcommunitycloud.constant.ErrorConstants.ONLY_CREATOR_CAN_ADD_BUILDER;
+import static com.evteam.purposefulcommunitycloud.constant.ErrorConstants.*;
 
 /**
  * Created by Emir Gökdemir
@@ -31,6 +33,9 @@ public class CommunityService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RegisterMapper registerMapper;
 
     @Autowired
     private CommunityRepository repository;
@@ -71,4 +76,32 @@ public class CommunityService {
         repository.save(community);
         return mapper.toResource(community);
     }
+
+    public CommunityResource followCommunity(UUID communityId, UUID userId){
+        Community community=repository.getOne(communityId);
+        User user=userRepository.findUserById(userId);
+        if(community.getFollowers().contains(user)){
+            throw new  RuntimeException(USER_ALREADY_FOLLOWED_THIS_COMMUNITY);
+        }
+        List<User> followers=community.getFollowers();
+        followers.add(user);
+        community.setFollowers(followers);
+        repository.save(community);
+        return mapper.toResource(community);
+    }
+
+    public List<UserResource> getBuilders(UUID communityId, UUID userId) {
+        Community community=repository.findCommunityById(communityId);
+        if(!community.getCreator().getId().equals(userId)){
+            throw new RuntimeException(ONLY_CREATOR_CAN_SEE_BUILDER);
+        }
+        return registerMapper.toResource(community.getBuilders());
+    }
+
+
+    public List<UserResource> getFollowers(UUID communityId, UUID idFromToken) {
+        Community community=repository.findCommunityById(communityId);
+        return registerMapper.toResource(community.getFollowers());
+    }
+
 }

@@ -8,6 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Emir Gökdemir
@@ -18,4 +19,7 @@ import java.util.List;
 public interface RegisterMapper extends Converter<RegisterDto, User, UserResource> {
 
     List<UserResource> toResource(List<User> users);
+
+    Set<UserResource> toResource(Set<User> users);
+
 }

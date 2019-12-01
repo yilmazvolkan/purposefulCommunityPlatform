@@ -38,7 +38,12 @@ public class Community extends AbstractEntity {
     @Column(name = "is_private")
     private Boolean isPrivate;
 
-    @OneToMany
+    @ManyToMany
     @JoinColumn(name = "builders")
     List<User> builders;
+
+    @ManyToMany
+    @JoinTable(name = "followers_community", joinColumns = @JoinColumn(name = "community_id"),
+    inverseJoinColumns = @JoinColumn(name = "user_id"))
+    List<User> followers;
 }

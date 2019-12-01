@@ -40,4 +40,6 @@ public class CommunityResource {
 
     private List<UserResource> builders;
 
+    private List<UserResource> followers;
+
 }
