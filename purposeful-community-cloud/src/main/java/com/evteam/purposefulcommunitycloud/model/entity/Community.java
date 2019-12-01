@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 public class Community extends AbstractEntity {
 
     @NotNull
-    @Column(name = "name")
+    @Column(name = "name",unique = true)
     private String name;
 
     @NotNull
