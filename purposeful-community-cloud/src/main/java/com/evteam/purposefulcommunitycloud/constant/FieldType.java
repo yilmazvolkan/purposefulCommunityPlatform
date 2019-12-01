@@ -1,10 +1,13 @@
 package com.evteam.purposefulcommunitycloud.constant;
 
 public enum FieldType {
-    TEXT,
-    NUMBER,
+    STRING,
+    BOOLEAN,
     DECIMAL,
-    DATE,
-    LOCATION,
-    TIME
+    FLOAT,
+    DOUBLE,
+    DURATION,
+    DATE_TIME,
+    TIME,
+    DATE
 }
