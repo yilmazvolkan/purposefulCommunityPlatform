@@ -45,9 +45,12 @@ public class ImageService {
             throw new IllegalAccessException(COMMUNITY_IMAGE_CAN_BE_CHANGED_BY_CREATOR);
         }
         Image img = new Image();
+        img.setCommunity(community);
+        if (repository.existsImageByCommunity(community)){
+             img=repository.getImageByCommunity(community);
+        }
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         img.setName(fileName);
-        img.setCommunity(community);
         try {
             img.setFile(file.getBytes());
         } catch (IOException e) {

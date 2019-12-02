@@ -11,4 +11,8 @@ import java.util.UUID;
 public interface ImageRepository extends JpaRepository<Image, UUID> {
 
     Image findImageByCommunity(Community community);
+
+    Image getImageByCommunity(Community community);
+
+    Boolean existsImageByCommunity(Community community);
 }
