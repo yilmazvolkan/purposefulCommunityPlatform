@@ -24,8 +24,10 @@ class ExploreActivity : AppCompatActivity() {
         setContentView(R.layout.activity_explore)
 
         val actionBar = supportActionBar
-        actionBar!!.title = getString(R.string.communities)
+        actionBar!!.title = getString(R.string.explore)
         actionBar.setDisplayHomeAsUpEnabled(true)
+
+        getCommunities()
     }
 
     private fun getCommunities(){

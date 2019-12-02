@@ -44,7 +44,12 @@ class CommunityFeedActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Toast.makeText(this@CommunityFeedActivity, "Cadadas", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this@CommunityFeedActivity, ExploreActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(
+            R.anim.slide_in_right,
+            R.anim.slide_out_left
+        )
         return super.onOptionsItemSelected(item)
     }
     private fun createCommunity(){
@@ -79,10 +84,6 @@ class CommunityFeedActivity : AppCompatActivity() {
             }
             override fun onResponse(call: Call<List<CommunityBody>>, response: Response<List<CommunityBody>>) {
                 if (response.code() == 200) {
-                    val array: MutableList<String> = ArrayList()
-                    for (i in response.body()!!){
-                        array.add(i.name)
-                    }
                     val rv = findViewById<RecyclerView>(R.id.recyclerView)
                     rv.layoutManager = LinearLayoutManager(this@CommunityFeedActivity, RecyclerView.VERTICAL, false)
 
