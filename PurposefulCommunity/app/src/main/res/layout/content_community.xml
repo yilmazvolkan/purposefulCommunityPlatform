@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.CommunityActivity"
-    tools:showIn="@layout/activity_community">
+    tools:context=".Fragments.Community.CommunityFeedActivity"
+    tools:showIn="@layout/activity_feed_community">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

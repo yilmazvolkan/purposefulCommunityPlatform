@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
+import com.bounswe.purposefulcommunity.Fragments.Community.CommunityFeedActivity
 import com.bounswe.purposefulcommunity.Models.SignInBody
 import com.bounswe.purposefulcommunity.Models.SignInRes
 import com.bounswe.purposefulcommunity.R
@@ -77,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
 
                     Toast.makeText(this@LoginActivity, "Login success!", Toast.LENGTH_SHORT).show()
 
-                    val intent = Intent(this@LoginActivity, CommunityActivity::class.java)
+                    val intent = Intent(this@LoginActivity, CommunityFeedActivity::class.java)
                     startActivity(intent)
                     overridePendingTransition(
                         R.anim.slide_in_right,
@@ -85,7 +86,11 @@ class LoginActivity : AppCompatActivity() {
                     )
                     finish()
 
-                } else {
+                }
+                else if(response.code() == 500) {
+                    Toast.makeText(this@LoginActivity, "The given email or password is wrong!", Toast.LENGTH_SHORT).show()
+                }
+                else{
                     Toast.makeText(this@LoginActivity, "Login failed!", Toast.LENGTH_SHORT).show()
                 }
             }

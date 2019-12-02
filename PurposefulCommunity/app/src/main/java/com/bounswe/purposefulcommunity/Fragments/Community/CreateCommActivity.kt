@@ -1,4 +1,4 @@
-package com.bounswe.purposefulcommunity.Fragments
+package com.bounswe.purposefulcommunity.Fragments.Community
 
 import android.content.Context
 import android.content.Intent
@@ -36,7 +36,7 @@ class CreateCommActivity : AppCompatActivity() {
             }
         }
         join_comm.setOnClickListener {
-            val intent = Intent(this@CreateCommActivity, CommunityActivity::class.java)
+            val intent = Intent(this@CreateCommActivity, CommunityFeedActivity::class.java)
             startActivity(intent)
             overridePendingTransition(
                 R.anim.slide_in_right,

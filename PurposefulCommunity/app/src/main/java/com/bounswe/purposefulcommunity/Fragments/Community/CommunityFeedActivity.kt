@@ -1,4 +1,4 @@
-package com.bounswe.purposefulcommunity.Fragments
+package com.bounswe.purposefulcommunity.Fragments.Community
 
 import android.content.Context
 import android.content.Intent
@@ -9,21 +9,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
-import com.bounswe.purposefulcommunity.Adapters.CustomAdapter
+import com.bounswe.purposefulcommunity.Adapters.CommunityAdapter
 import com.bounswe.purposefulcommunity.Models.CommShowBody
 import com.bounswe.purposefulcommunity.Models.CommunityBody
 import com.bounswe.purposefulcommunity.R
-import kotlinx.android.synthetic.main.activity_community.*
+import kotlinx.android.synthetic.main.activity_feed_community.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.net.ConnectException
 
-class CommunityActivity : AppCompatActivity() {
+class CommunityFeedActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_community)
+        setContentView(R.layout.activity_feed_community)
 
         val actionBar = supportActionBar
         actionBar!!.title = getString(R.string.communities)
@@ -35,7 +35,7 @@ class CommunityActivity : AppCompatActivity() {
         getCommunities()
     }
     private fun createCommunity(){
-        val intent = Intent(this@CommunityActivity, CreateCommActivity::class.java)
+        val intent = Intent(this@CommunityFeedActivity, CreateCommActivity::class.java)
         startActivity(intent)
         overridePendingTransition(
             R.anim.slide_in_right,
@@ -51,14 +51,14 @@ class CommunityActivity : AppCompatActivity() {
             override fun onFailure(call: Call<List<CommunityBody>>, t: Throwable) {
                 if(t.cause is ConnectException){
                     Toast.makeText(
-                        this@CommunityActivity,
+                        this@CommunityFeedActivity,
                         "Check your connection!",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
                 else{
                     Toast.makeText(
-                        this@CommunityActivity,
+                        this@CommunityFeedActivity,
                         "Something bad happened!",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -71,11 +71,11 @@ class CommunityActivity : AppCompatActivity() {
                         array.add(i.name)
                     }
                     val rv = findViewById<RecyclerView>(R.id.recyclerView)
-                    rv.layoutManager = LinearLayoutManager(this@CommunityActivity, RecyclerView.VERTICAL, false)
+                    rv.layoutManager = LinearLayoutManager(this@CommunityFeedActivity, RecyclerView.VERTICAL, false)
 
                     val users = ArrayList<CommShowBody>()
 
-                    var adapter = CustomAdapter(this@CommunityActivity, users)
+                    var adapter = CommunityAdapter(this@CommunityFeedActivity, users)
                     rv.adapter = adapter
 
                     val res: List<CommunityBody>? = response.body()
@@ -84,12 +84,12 @@ class CommunityActivity : AppCompatActivity() {
                         users.add(CommShowBody(i.name, i.size.toString(), i.id, i.isPrivate))
                     }
                     if(users.isEmpty()){
-                        Toast.makeText(this@CommunityActivity, "No users found!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@CommunityFeedActivity, "No users found!", Toast.LENGTH_SHORT).show()
                     }
                     adapter.notifyDataSetChanged()
 
                 } else {
-                    Toast.makeText(this@CommunityActivity, "Com get failed.!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CommunityFeedActivity, "Com get failed.!", Toast.LENGTH_SHORT).show()
                 }
             }
         })

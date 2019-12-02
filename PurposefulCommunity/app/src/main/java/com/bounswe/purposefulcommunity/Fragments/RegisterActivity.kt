@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
+import com.bounswe.purposefulcommunity.Fragments.Community.CommunityFeedActivity
 import com.bounswe.purposefulcommunity.Models.SignInBody
 import com.bounswe.purposefulcommunity.Models.SignInRes
 import com.bounswe.purposefulcommunity.Models.SignUpBody
@@ -112,7 +113,7 @@ class RegisterActivity : AppCompatActivity() {
                     editor.putString("token", response.body()?.token)
                     editor.commit()
 
-                    val intent = Intent(this@RegisterActivity, CommunityActivity::class.java)
+                    val intent = Intent(this@RegisterActivity, CommunityFeedActivity::class.java)
                     startActivity(intent)
                     overridePendingTransition(
                         R.anim.slide_in_right,

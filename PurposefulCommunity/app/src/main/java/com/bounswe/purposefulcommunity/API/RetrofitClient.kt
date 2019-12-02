@@ -37,6 +37,21 @@ interface ApiInterface {
         @Body info: CreateCommBody,
         @Header("token") token: String
     ): retrofit2.Call<CommunityBody>
+
+    // Get my following request
+    @Headers("Content-Type:application/json")
+    @GET("/community/get-self-followings")
+    fun getMyFollowing(
+        @Header("token") token: String
+    ): retrofit2.Call<List<GetOneCommBody>>
+
+    // Create Community Template
+    @Headers("Content-Type:application/json")
+    @POST("/community/create")
+    fun createTemp(
+        @Body info: CreateTemplateBody,
+        @Header("token") token: String
+    ): retrofit2.Call<CommunityBody>
 }
 class RetrofitInstance {
     companion object {
