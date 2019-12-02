@@ -46,4 +46,8 @@ public class Community extends AbstractEntity {
     @JoinTable(name = "followers_community", joinColumns = @JoinColumn(name = "community_id"),
     inverseJoinColumns = @JoinColumn(name = "user_id"))
     List<User> followers;
+
+    @OneToOne(mappedBy = "community")
+    @Lob
+    private Image image;
 }
