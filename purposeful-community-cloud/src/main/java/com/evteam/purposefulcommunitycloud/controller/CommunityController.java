@@ -49,7 +49,7 @@ public class CommunityController {
         return ResponseEntity.ok(service.getAllCommunities(jwtResolver.getIdFromToken(token)));
     }
 
-    @ApiOperation(value = "Add builders to a community with builder emails and token", response = CommunityResource.class)
+    @ApiOperation(value = "Add builders to a community with builder ids and token", response = CommunityResource.class)
     @PostMapping("/builder/add")
     public ResponseEntity<CommunityResource> addBuilders(@RequestHeader String token,@RequestBody List<UUID> idsOfUsers,@RequestParam UUID communityId){
         return ResponseEntity.ok(service.addBuilders(communityId,idsOfUsers,jwtResolver.getIdFromToken(token)));
