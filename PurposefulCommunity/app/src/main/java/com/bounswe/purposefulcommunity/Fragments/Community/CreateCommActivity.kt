@@ -1,4 +1,4 @@
-package com.bounswe.purposefulcommunity.Fragments
+package com.bounswe.purposefulcommunity.Fragments.Community
 
 import android.content.Context
 import android.content.Intent
@@ -11,6 +11,7 @@ import com.bounswe.purposefulcommunity.Models.CommunityBody
 import com.bounswe.purposefulcommunity.Models.CreateCommBody
 import com.bounswe.purposefulcommunity.R
 import kotlinx.android.synthetic.main.activity_create_comm.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,7 +37,7 @@ class CreateCommActivity : AppCompatActivity() {
             }
         }
         join_comm.setOnClickListener {
-            val intent = Intent(this@CreateCommActivity, CommunityActivity::class.java)
+            val intent = Intent(this@CreateCommActivity, CommunityFeedActivity::class.java)
             startActivity(intent)
             overridePendingTransition(
                 R.anim.slide_in_right,
@@ -70,13 +71,53 @@ class CreateCommActivity : AppCompatActivity() {
             }
             override fun onResponse(call: Call<CommunityBody>, response: Response<CommunityBody>) {
                 if (response.code() == 200) {
-                    Toast.makeText(this@CreateCommActivity, "Community created!", Toast.LENGTH_SHORT)
+                    Toast.makeText(this@CreateCommActivity, "Community is created!", Toast.LENGTH_SHORT)
                         .show()
-
+                    followCommunity(response.body()!!.id, response.body()!!.name)
                 }
                 else  {
                     Toast.makeText(this@CreateCommActivity, "Create failed", Toast.LENGTH_SHORT)
                         .show()
+                }
+            }
+        })
+    }
+    private fun followCommunity(communityID: String, communityName: String){
+        val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
+        val tokenV = res.getString("token", "Data Not Found!")
+        val purApp = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
+
+        purApp.followCommunity(communityID, tokenV!!).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                if(t.cause is ConnectException){
+                    Toast.makeText(
+                        this@CreateCommActivity,
+                        "Check your connection!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else{
+                    Toast.makeText(
+                        this@CreateCommActivity,
+                        t.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == 200) {
+                    val intent = Intent(this@CreateCommActivity, CommunityActivity::class.java)
+                    intent.putExtra("comm_id", communityID)
+                    intent.putExtra("comm_name", communityName)
+                    startActivity(intent)
+                    overridePendingTransition(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left
+                    )
+                    finish()
+                }
+                else {
+                    Toast.makeText(this@CreateCommActivity, "Join failed!", Toast.LENGTH_SHORT).show()
                 }
             }
         })

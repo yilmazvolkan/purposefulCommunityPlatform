@@ -4,6 +4,7 @@
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_sign_up">Sign up</string>
     <string name="communities">Communities</string>
+    <string name="my_communities">My Communities</string>
     <string name="title_activity_community">Communities</string>
     <string name="title_create_community">Create Community</string>
 
@@ -22,4 +23,20 @@
     <string name="create_comm">Create Community</string>
     <string name="description">Description</string>
     <string name="priv">Private</string>
+
+    <string name="add_template">Add More Temp</string>
+    <string name="add_csd">Add More Csd</string>
+
+    <string name="template_name">Template Name</string>
+    <string name="template_number">Number of Templates</string>
+    <string name="enter_template">Enter Templates</string>
+    <string name="property_name">Property Name</string>
+    <string name="property_type">Property Type</string>
+    <string name="create">Create</string>
+    <string name="title_activity_enter_templates">EnterTemplatesActivity</string>
+
+    <string name="about">About</string>
+    <string name="join">Join</string>
+
+    <string name="explore">Explore</string>
 </resources>

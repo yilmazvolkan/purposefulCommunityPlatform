@@ -11,18 +11,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Fragments.CreateCommActivity">
+        <activity android:name=".Fragments.Community.ExploreActivity"></activity>
+        <activity android:name=".Fragments.Community.CommunityActivity" />
+        <activity android:name=".Fragments.Templates.EnterTemplatesActivity" />
+        <activity android:name=".Fragments.Templates.CreateTemplateActivity" />
+        <activity android:name=".Fragments.Community.CreateCommActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Fragments.CommunityActivity" />
+                android:value=".Fragments.Community.CommunityFeedActivity" />
         </activity>
-        <activity android:name=".Fragments.ShowCommActivity" >
+        <activity android:name=".Fragments.Community.ShowCommActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Fragments.CommunityActivity" />
+                android:value=".Fragments.Community.CommunityFeedActivity" />
         </activity>
-        <activity android:name=".Fragments.CommunityActivity" />
-        <activity android:name=".Fragments.RegisterActivity" >
+        <activity android:name=".Fragments.Community.CommunityFeedActivity" />
+        <activity android:name=".Fragments.RegisterActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Fragments.LoginActivity" />
@@ -36,4 +40,5 @@
         </activity>
         <activity android:name=".Fragments.MainActivity" />
     </application>
+
 </manifest>

@@ -2,6 +2,7 @@ package com.bounswe.mercatus.API
 
 import com.bounswe.purposefulcommunity.Models.*
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -30,11 +31,42 @@ interface ApiInterface {
         @Header("token") token: String
     ): retrofit2.Call<List<CommunityBody>>
 
+    // Get one community  request
+    @Headers("Content-Type:application/json")
+    @GET("/community/get/{id}")
+    fun getOneComm(
+        @Path("id") id: String,
+        @Header("token") token: String
+    ): retrofit2.Call<GetOneCommBody>
+
     // Create Community request
     @Headers("Content-Type:application/json")
     @POST("/community/create")
     fun createComm(
         @Body info: CreateCommBody,
+        @Header("token") token: String
+    ): retrofit2.Call<CommunityBody>
+
+    // Get my following request
+    @Headers("Content-Type:application/json")
+    @GET("/community/get-self-followings")
+    fun getMyFollowing(
+        @Header("token") token: String
+    ): retrofit2.Call<List<GetOneCommBody>>
+
+    // Follow a community request
+    @Headers("Content-Type:application/json")
+    @GET("/community/follow-community")
+    fun followCommunity(
+        @Query("communityId") communityId: String,
+        @Header("token") token: String
+    ): retrofit2.Call<ResponseBody>
+
+    // Create Community Template
+    @Headers("Content-Type:application/json")
+    @POST("/community/create")
+    fun createTemp(
+        @Body info: CreateTemplateBody,
         @Header("token") token: String
     ): retrofit2.Call<CommunityBody>
 }
