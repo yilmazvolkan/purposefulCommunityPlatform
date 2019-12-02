@@ -72,7 +72,13 @@ class CreateCommActivity : AppCompatActivity() {
                 if (response.code() == 200) {
                     Toast.makeText(this@CreateCommActivity, "Community created!", Toast.LENGTH_SHORT)
                         .show()
-
+                    val intent = Intent(this@CreateCommActivity, CommunityFeedActivity::class.java)
+                    startActivity(intent)
+                    overridePendingTransition(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left
+                    )
+                    finish()
                 }
                 else  {
                     Toast.makeText(this@CreateCommActivity, "Create failed", Toast.LENGTH_SHORT)

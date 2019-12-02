@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Fragments.Community.CommunityActivity"></activity>
+        <activity android:name=".Fragments.Community.ExploreActivity"></activity>
+        <activity android:name=".Fragments.Community.CommunityActivity" />
         <activity android:name=".Fragments.Templates.EnterTemplatesActivity" />
         <activity android:name=".Fragments.Templates.CreateTemplateActivity" />
         <activity android:name=".Fragments.Community.CreateCommActivity">

@@ -88,19 +88,22 @@ class CommunityAdapter(val context : Context, val userList: ArrayList<CommShowBo
             override fun onResponse(call: Call<List<GetOneCommBody>>, response: Response<List<GetOneCommBody>>) {
                 if (response.code() == 200) {
                     val resp: List<GetOneCommBody>? = response.body()
-
+                    var isJoined = false
                     for(item in resp.orEmpty()){
                         if(comm_id == item.id){
                             val intent = Intent(context, CommunityActivity::class.java)
                             intent.putExtra("comm_id", comm_id)
                             intent.putExtra("comm_name", comm_name)
                             context.startActivity(intent)
+                            isJoined = true
                         }
                     }
-                    val intent = Intent(context, ShowCommActivity::class.java)
-                    intent.putExtra("comm_id", comm_id)
-                    intent.putExtra("comm_name", comm_name)
-                    context.startActivity(intent)
+                    if(!isJoined){
+                        val intent = Intent(context, ShowCommActivity::class.java)
+                        intent.putExtra("comm_id", comm_id)
+                        intent.putExtra("comm_name", comm_name)
+                        context.startActivity(intent)
+                    }
                 }
                 else  {
                     Toast.makeText(context, "Get my followings is failed.", Toast.LENGTH_SHORT)

@@ -1,10 +1,7 @@
 package com.bounswe.purposefulcommunity.Fragments.Community
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,46 +12,22 @@ import com.bounswe.purposefulcommunity.Adapters.CommunityAdapter
 import com.bounswe.purposefulcommunity.Models.CommShowBody
 import com.bounswe.purposefulcommunity.Models.CommunityBody
 import com.bounswe.purposefulcommunity.R
-import kotlinx.android.synthetic.main.activity_feed_community.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.net.ConnectException
 
-class CommunityFeedActivity : AppCompatActivity() {
+class ExploreActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_feed_community)
+        setContentView(R.layout.activity_explore)
 
         val actionBar = supportActionBar
         actionBar!!.title = getString(R.string.communities)
         actionBar.setDisplayHomeAsUpEnabled(true)
-
-        fab.setOnClickListener {
-            createCommunity()
-        }
-
-        getCommunities()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Toast.makeText(this@CommunityFeedActivity, "Cadadas", Toast.LENGTH_SHORT).show()
-        return super.onOptionsItemSelected(item)
-    }
-    private fun createCommunity(){
-        val intent = Intent(this@CommunityFeedActivity, CreateCommActivity::class.java)
-        startActivity(intent)
-        overridePendingTransition(
-            R.anim.slide_in_right,
-            R.anim.slide_out_left
-        )
-    }
     private fun getCommunities(){
         val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
         val tokenV = res.getString("token", "Data Not Found!")
@@ -64,14 +37,14 @@ class CommunityFeedActivity : AppCompatActivity() {
             override fun onFailure(call: Call<List<CommunityBody>>, t: Throwable) {
                 if(t.cause is ConnectException){
                     Toast.makeText(
-                        this@CommunityFeedActivity,
+                        this@ExploreActivity,
                         "Check your connection!",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
                 else{
                     Toast.makeText(
-                        this@CommunityFeedActivity,
+                        this@ExploreActivity,
                         "Something bad happened!",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -84,11 +57,11 @@ class CommunityFeedActivity : AppCompatActivity() {
                         array.add(i.name)
                     }
                     val rv = findViewById<RecyclerView>(R.id.recyclerView)
-                    rv.layoutManager = LinearLayoutManager(this@CommunityFeedActivity, RecyclerView.VERTICAL, false)
+                    rv.layoutManager = LinearLayoutManager(this@ExploreActivity, RecyclerView.VERTICAL, false)
 
                     val users = ArrayList<CommShowBody>()
 
-                    var adapter = CommunityAdapter(this@CommunityFeedActivity, users)
+                    var adapter = CommunityAdapter(this@ExploreActivity, users)
                     rv.adapter = adapter
 
                     val res: List<CommunityBody>? = response.body()
@@ -97,15 +70,19 @@ class CommunityFeedActivity : AppCompatActivity() {
                         users.add(CommShowBody(i.name, i.size.toString(), i.id, i.isPrivate))
                     }
                     if(users.isEmpty()){
-                        Toast.makeText(this@CommunityFeedActivity, "No users found!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ExploreActivity, "No community found!", Toast.LENGTH_SHORT).show()
                     }
                     adapter.notifyDataSetChanged()
 
                 } else {
-                    Toast.makeText(this@CommunityFeedActivity, "Com get failed.!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ExploreActivity, "Communities cannot retrieve!", Toast.LENGTH_SHORT).show()
                 }
             }
         })
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
     override fun finish() {
         super.finish()
