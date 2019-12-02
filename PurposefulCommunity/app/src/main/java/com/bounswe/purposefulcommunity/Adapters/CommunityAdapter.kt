@@ -25,7 +25,7 @@ import java.net.ConnectException
 class CommunityAdapter(val context : Context, val userList: ArrayList<CommShowBody>): RecyclerView.Adapter<CommunityAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setData(userList[position].name, userList[position].size.toString(), userList[position].id, userList[position].isPrivate, position)
+        holder.setData(userList[position].name, userList[position].size.toString(), userList[position].id, userList[position].isPrivate, userList[position].about, position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -45,10 +45,14 @@ class CommunityAdapter(val context : Context, val userList: ArrayList<CommShowBo
         init {
             itemView.eachItem.setOnClickListener {
 
-                getMyFollowings(currentSearchShow?.id.toString(), currentSearchShow?.name.toString())
+                getMyFollowings(currentSearchShow!!.id,
+                    currentSearchShow!!.name,
+                    currentSearchShow!!.size,
+                    currentSearchShow!!.isPrivate,
+                    currentSearchShow!!.about)
             }
         }
-        fun setData(name : String, size : String, comm_id : String, isPrivate : Boolean, position: Int){
+        fun setData(name : String, size : String, comm_id : String, isPrivate : Boolean, about: String, position: Int){
             itemView.txtName.text = name
             itemView.txtSize.text = size
 
@@ -56,12 +60,12 @@ class CommunityAdapter(val context : Context, val userList: ArrayList<CommShowBo
                 .load(R.drawable.tea)
                 .apply(RequestOptions().circleCrop())
                 .into(itemView.profileImage)
-            this.currentSearchShow = CommShowBody(name, size, comm_id, isPrivate)
+            this.currentSearchShow = CommShowBody(name, size, comm_id, isPrivate, about)
             this.currentPosition = position
         }
     }
 
-    private fun getMyFollowings(comm_id: String, comm_name: String){
+    private fun getMyFollowings(comm_id: String, comm_name: String, comm_size: String, comm_private: Boolean, comm_about: String){
         val purApp = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
 
         val res = context.getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
@@ -102,6 +106,9 @@ class CommunityAdapter(val context : Context, val userList: ArrayList<CommShowBo
                         val intent = Intent(context, ShowCommActivity::class.java)
                         intent.putExtra("comm_id", comm_id)
                         intent.putExtra("comm_name", comm_name)
+                        intent.putExtra("comm_size", comm_size)
+                        intent.putExtra("comm_private", comm_private)
+                        intent.putExtra("comm_about", comm_about)
                         context.startActivity(intent)
                     }
                 }

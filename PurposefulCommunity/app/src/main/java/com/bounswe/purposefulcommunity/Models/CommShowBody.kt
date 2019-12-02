@@ -4,4 +4,6 @@ data class CommShowBody(
     val name: String,
     val size: String,
     val id: String,
-    val isPrivate: Boolean)
+    val isPrivate: Boolean,
+    val about: String
+)

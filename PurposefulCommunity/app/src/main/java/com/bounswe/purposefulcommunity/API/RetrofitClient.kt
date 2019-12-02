@@ -58,7 +58,7 @@ interface ApiInterface {
     @Headers("Content-Type:application/json")
     @GET("/community/follow-community")
     fun followCommunity(
-        @Header("communityId") communityId: String,
+        @Query("communityId") communityId: String,
         @Header("token") token: String
     ): retrofit2.Call<ResponseBody>
 

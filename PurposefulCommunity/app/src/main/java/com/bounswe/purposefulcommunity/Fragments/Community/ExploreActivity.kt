@@ -69,10 +69,10 @@ class ExploreActivity : AppCompatActivity() {
                     val res: List<CommunityBody>? = response.body()
 
                     for(i in res.orEmpty()){
-                        users.add(CommShowBody(i.name, i.size.toString(), i.id, i.isPrivate))
+                        users.add(CommShowBody(i.name, i.size.toString(), i.id, i.isPrivate, i.description))
                     }
                     if(users.isEmpty()){
-                        Toast.makeText(this@ExploreActivity, "No community found!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ExploreActivity, "No community is found!", Toast.LENGTH_SHORT).show()
                     }
                     adapter.notifyDataSetChanged()
 
@@ -82,7 +82,12 @@ class ExploreActivity : AppCompatActivity() {
             }
         })
     }
+    override fun onResume() {
+        getCommunities()
+        super.onResume()
+    }
     override fun onSupportNavigateUp(): Boolean {
+        finish()
         onBackPressed()
         return true
     }

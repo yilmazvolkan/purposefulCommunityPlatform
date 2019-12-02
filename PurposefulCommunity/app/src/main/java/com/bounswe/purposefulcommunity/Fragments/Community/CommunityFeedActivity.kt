@@ -13,7 +13,7 @@ import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
 import com.bounswe.purposefulcommunity.Adapters.CommunityAdapter
 import com.bounswe.purposefulcommunity.Models.CommShowBody
-import com.bounswe.purposefulcommunity.Models.CommunityBody
+import com.bounswe.purposefulcommunity.Models.GetOneCommBody
 import com.bounswe.purposefulcommunity.R
 import kotlinx.android.synthetic.main.activity_feed_community.*
 import retrofit2.Call
@@ -28,14 +28,14 @@ class CommunityFeedActivity : AppCompatActivity() {
         setContentView(R.layout.activity_feed_community)
 
         val actionBar = supportActionBar
-        actionBar!!.title = getString(R.string.communities)
+        actionBar!!.title = getString(R.string.my_communities)
         actionBar.setDisplayHomeAsUpEnabled(true)
 
         fab.setOnClickListener {
             createCommunity()
         }
 
-        getCommunities()
+        getMyCommunities()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -60,13 +60,13 @@ class CommunityFeedActivity : AppCompatActivity() {
             R.anim.slide_out_left
         )
     }
-    private fun getCommunities(){
+    private fun getMyCommunities(){
         val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
         val tokenV = res.getString("token", "Data Not Found!")
         val purApp = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
 
-        purApp.getComList(tokenV!!).enqueue(object : Callback<List<CommunityBody>> {
-            override fun onFailure(call: Call<List<CommunityBody>>, t: Throwable) {
+        purApp.getMyFollowing(tokenV!!).enqueue(object : Callback<List<GetOneCommBody>> {
+            override fun onFailure(call: Call<List<GetOneCommBody>>, t: Throwable) {
                 if(t.cause is ConnectException){
                     Toast.makeText(
                         this@CommunityFeedActivity,
@@ -82,7 +82,7 @@ class CommunityFeedActivity : AppCompatActivity() {
                     ).show()
                 }
             }
-            override fun onResponse(call: Call<List<CommunityBody>>, response: Response<List<CommunityBody>>) {
+            override fun onResponse(call: Call<List<GetOneCommBody>>, response: Response<List<GetOneCommBody>>) {
                 if (response.code() == 200) {
                     val rv = findViewById<RecyclerView>(R.id.recyclerView)
                     rv.layoutManager = LinearLayoutManager(this@CommunityFeedActivity, RecyclerView.VERTICAL, false)
@@ -92,21 +92,25 @@ class CommunityFeedActivity : AppCompatActivity() {
                     var adapter = CommunityAdapter(this@CommunityFeedActivity, users)
                     rv.adapter = adapter
 
-                    val res: List<CommunityBody>? = response.body()
+                    val res: List<GetOneCommBody>? = response.body()
 
                     for(i in res.orEmpty()){
-                        users.add(CommShowBody(i.name, i.size.toString(), i.id, i.isPrivate))
+                        users.add(CommShowBody(i.name, i.size.toString(), i.id, i.isPrivate, i.description))
                     }
                     if(users.isEmpty()){
-                        Toast.makeText(this@CommunityFeedActivity, "No users found!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@CommunityFeedActivity, "No community is found!", Toast.LENGTH_SHORT).show()
                     }
                     adapter.notifyDataSetChanged()
 
                 } else {
-                    Toast.makeText(this@CommunityFeedActivity, "Com get failed.!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CommunityFeedActivity, "You communities cannot retrieve!", Toast.LENGTH_SHORT).show()
                 }
             }
         })
+    }
+    override fun onResume() {
+        getMyCommunities()
+        super.onResume()
     }
     override fun finish() {
         super.finish()
