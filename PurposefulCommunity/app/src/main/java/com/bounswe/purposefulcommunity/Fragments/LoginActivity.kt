@@ -74,6 +74,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: Call<SignInRes>, response: Response<SignInRes>) {
                 if (response.code() == 200) {
                     editor.putString("token", response.body()?.token)
+                    editor.putString("user_id", response.body()?.id)
                     editor.commit()
 
                     Toast.makeText(this@LoginActivity, "Login success!", Toast.LENGTH_SHORT).show()

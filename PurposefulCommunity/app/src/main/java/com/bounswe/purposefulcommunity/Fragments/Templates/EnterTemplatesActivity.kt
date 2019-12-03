@@ -33,6 +33,7 @@ class EnterTemplatesActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
             }
         }
     }
+
     private fun templateCreator(size : Int, aa: ArrayAdapter<String>){
         for(i in 1..size){
             if(i == 1){
