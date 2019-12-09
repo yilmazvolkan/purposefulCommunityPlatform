@@ -45,13 +45,13 @@ public class UserController {
     }
 
     @ApiOperation(value = "Get an user informations with the user id", response = UserResource.class)
-    @PostMapping("/get/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<UserResource> login(@PathVariable("id") UUID userId){
         return ResponseEntity.ok(service.getUserById(userId));
     }
 
     @ApiOperation(value = "Get an user informations with the email", response = UserResource.class)
-    @PostMapping("/get-with-mail/{email}")
+    @GetMapping("/get-with-mail/{email}")
     public ResponseEntity<UserResource> login(@PathVariable("email") String email){
         return ResponseEntity.ok(service.getUserByEmail(email));
     }
@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "Reset password request for an user with email", response = String.class)
-    @PostMapping("/reset-password-request")
+    @GetMapping("/reset-password-request")
     public ResponseEntity<String> resetPasswordRequest(@RequestParam String email){
         service.sendResetPasswordsToken(email);
         return ResponseEntity.ok(MAIL_SENT_TO_THAT_ADDRESS+email);
@@ -71,21 +71,21 @@ public class UserController {
 
 
     @ApiOperation(value = "Reset password with token and new password", response = String.class)
-    @PostMapping("/confirm-reset-password/{token}")
+    @GetMapping("/confirm-reset-password/{token}")
     public ResponseEntity<UserResource> resetPassword(@PathVariable String token){
         return ResponseEntity.ok(service.getUserByToken(token));
     }
 
 
     @ApiOperation(value = "Reset password with token and new password", response = String.class)
-    @PostMapping("/reset-password")
+    @GetMapping("/reset-password")
     public ResponseEntity<String> resetPassword(@RequestHeader String token, String password){
         service.resetPassword(token,password);
         return ResponseEntity.ok("Password changed");
     }
 
     @ApiOperation(value = "Login an user with the needed information", response = LoginResource.class)
-    @PostMapping("/confirm-register/{token}")
+    @GetMapping("/confirm-register/{token}")
     public ResponseEntity<String> confirmRegister(@PathVariable("token") String token){
         service.confirmRegister(token);
         return ResponseEntity.ok(USER_IS_CONFIRMED);

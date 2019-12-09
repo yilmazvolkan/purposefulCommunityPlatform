@@ -61,6 +61,12 @@ public class CommunityController {
         return ResponseEntity.ok(service.followCommunity(communityId,jwtResolver.getIdFromToken(token)));
     }
 
+    @ApiOperation(value = "Unfollow a community with communityId and token", response = SmallSizeCommunityResource.class)
+    @GetMapping("/unfollow-community")
+    public ResponseEntity<SmallSizeCommunityResource> unfollowCommunity(@RequestHeader String token,@RequestParam UUID communityId) throws IllegalAccessException {
+        return ResponseEntity.ok(service.unfollowCommunity(communityId,jwtResolver.getIdFromToken(token)));
+    }
+
     @ApiOperation(value = "Get all builders of community with communityId and token", response = UserResource.class,responseContainer = "List")
     @GetMapping("/builder/get-all")
     public ResponseEntity<List<UserResource>> getBuilders(@RequestHeader String token,@RequestParam UUID communityId){
