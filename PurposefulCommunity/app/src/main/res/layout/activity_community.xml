@@ -52,6 +52,7 @@
                     android:orientation="vertical"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:clickable="false"
                     android:background="@color/colorPrimary"
                     android:layout_height="match_parent">
                     <TextView

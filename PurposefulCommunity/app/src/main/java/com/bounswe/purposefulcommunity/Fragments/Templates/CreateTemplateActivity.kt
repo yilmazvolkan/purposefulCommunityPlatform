@@ -16,6 +16,8 @@ class CreateTemplateActivity : AppCompatActivity() {
         actionBar!!.title = "Create Template"
         actionBar.setDisplayHomeAsUpEnabled(true)
 
+        val communityID = intent.getStringExtra("comm_temp_id")
+
         btn_enter_fields.setOnClickListener {
             val name = editTempName.text.toString()
             val size = editFieldNumber.text.toString()
@@ -23,6 +25,7 @@ class CreateTemplateActivity : AppCompatActivity() {
                 val intent = Intent(this@CreateTemplateActivity, EnterTemplatesActivity::class.java)
                 intent.putExtra("temp_name", name)
                 intent.putExtra("temp_size", size)
+                intent.putExtra("comm_temp_id", communityID)
                 startActivity(intent)
                 overridePendingTransition(
                     R.anim.slide_in_right,

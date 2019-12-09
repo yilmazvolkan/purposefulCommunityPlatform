@@ -42,4 +42,8 @@
     <string name="log_out">Log Out</string>
     <string name="upload_photo">Upload Photo</string>
     <string name="leave">Leave</string>
+
+    <string name="type">Type</string>
+    <string name="date">Date</string>
+    <string name="templates">Existing Templates</string>
 </resources>

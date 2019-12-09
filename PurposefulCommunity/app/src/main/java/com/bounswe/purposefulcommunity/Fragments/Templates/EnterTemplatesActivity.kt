@@ -9,10 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
 import com.bounswe.purposefulcommunity.Models.AddTempBody
-import com.bounswe.purposefulcommunity.Models.CommunityBody
 import com.bounswe.purposefulcommunity.Models.CreateTemplateBody
 import com.bounswe.purposefulcommunity.R
 import kotlinx.android.synthetic.main.activity_enter_templates.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -53,25 +53,25 @@ class EnterTemplatesActivity : AppCompatActivity() {
     private fun templateSetter(size : Int){
         for(i in 1..size){
             if(i == 1){
-                results.add(AddTempBody(editPropName1.text.toString(), w3ctypes[type1.selectedItemPosition]))
+                results.add(AddTempBody(w3ctypes[type1.selectedItemPosition], editPropName1.text.toString()))
             }
             else if(i == 2){
-                results.add(AddTempBody(editPropName2.text.toString(), w3ctypes[type2.selectedItemPosition]))
+                results.add(AddTempBody(w3ctypes[type2.selectedItemPosition], editPropName2.text.toString()))
             }
             else if(i == 3){
-                results.add(AddTempBody(editPropName3.text.toString(), w3ctypes[type3.selectedItemPosition]))
+                results.add(AddTempBody(w3ctypes[type3.selectedItemPosition], editPropName3.text.toString()))
             }
             else if(i == 4){
-                results.add(AddTempBody(editPropName4.text.toString(), w3ctypes[type4.selectedItemPosition]))
+                results.add(AddTempBody(w3ctypes[type4.selectedItemPosition], editPropName4.text.toString()))
             }
             else if(i == 5){
-                results.add(AddTempBody(editPropName5.text.toString(), w3ctypes[type5.selectedItemPosition]))
+                results.add(AddTempBody(w3ctypes[type5.selectedItemPosition], editPropName5.text.toString()))
             }
             else if(i == 6){
-                results.add(AddTempBody(editPropName6.text.toString(), w3ctypes[type6.selectedItemPosition]))
+                results.add(AddTempBody(w3ctypes[type6.selectedItemPosition], editPropName6.text.toString()))
             }
             else if(i == 7){
-                results.add(AddTempBody(editPropName7.text.toString(), w3ctypes[type7.selectedItemPosition]))
+                results.add(AddTempBody(w3ctypes[type7.selectedItemPosition], editPropName7.text.toString()))
             }
         }
     }
@@ -116,8 +116,8 @@ class EnterTemplatesActivity : AppCompatActivity() {
 
         val tempBody = CreateTemplateBody(communityId, results, name, userID!!)
 
-        purApp.createTemp(tempBody, tokenV!!).enqueue(object : Callback<CommunityBody> {
-            override fun onFailure(call: Call<CommunityBody>, t: Throwable) {
+        purApp.createTemp(tempBody, tokenV!!).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 if(t.cause is ConnectException){
                     Toast.makeText(
                         this@EnterTemplatesActivity,
@@ -133,11 +133,11 @@ class EnterTemplatesActivity : AppCompatActivity() {
                     ).show()
                 }
             }
-            override fun onResponse(call: Call<CommunityBody>, response: Response<CommunityBody>) {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == 200) {
                     Toast.makeText(this@EnterTemplatesActivity, "Template is created successfully!", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this@EnterTemplatesActivity, "Template create failed!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@EnterTemplatesActivity, "Template create is failed!", Toast.LENGTH_SHORT).show()
                 }
             }
         })
