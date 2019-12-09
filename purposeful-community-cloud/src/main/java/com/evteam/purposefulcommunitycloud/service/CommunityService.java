@@ -51,10 +51,10 @@ public class CommunityService {
         return mapper.toResource(repository.saveAndFlush(community));
     }
 
-    public CommunityResource getCommunity(UUID communityId, UUID userId) {
+    public CommunityResource getCommunity(UUID communityId, UUID userId) throws IllegalAccessException {
         Community community = repository.findCommunityById(communityId);
         if (community.getIsPrivate() && !community.getFollowers().contains(userRepository.findUserById(userId))) {
-            throw new RuntimeException(COMMUNITY_IS_PRIVATE);
+            throw new IllegalAccessException(COMMUNITY_IS_PRIVATE);
         }
         return mapper.toResource(community);
     }

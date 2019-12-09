@@ -37,9 +37,9 @@ public class CommunityController {
         return ResponseEntity.ok(service.createCommunity(dto,jwtResolver.getIdFromToken(token)));
     }
 
-    @ApiOperation(value = "Get community with the token, for now private communities can be acccesed by only creator.", response = CommunityResource.class)
+    @ApiOperation(value = "Get community with the token", response = CommunityResource.class)
     @GetMapping("/get/{id}")
-    public ResponseEntity<CommunityResource> get(@RequestHeader String token,@PathVariable("id") UUID communityId){
+    public ResponseEntity<CommunityResource> get(@RequestHeader String token,@PathVariable("id") UUID communityId) throws IllegalAccessException {
         return ResponseEntity.ok(service.getCommunity(communityId,jwtResolver.getIdFromToken(token)));
     }
 
