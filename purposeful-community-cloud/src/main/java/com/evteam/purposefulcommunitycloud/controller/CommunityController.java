@@ -37,9 +37,9 @@ public class CommunityController {
         return ResponseEntity.ok(service.createCommunity(dto,jwtResolver.getIdFromToken(token)));
     }
 
-    @ApiOperation(value = "Get community with the token, for now private communities can be acccesed by only creator.", response = CommunityResource.class)
+    @ApiOperation(value = "Get community with the token", response = CommunityResource.class)
     @GetMapping("/get/{id}")
-    public ResponseEntity<CommunityResource> get(@RequestHeader String token,@PathVariable("id") UUID communityId){
+    public ResponseEntity<CommunityResource> get(@RequestHeader String token,@PathVariable("id") UUID communityId) throws IllegalAccessException {
         return ResponseEntity.ok(service.getCommunity(communityId,jwtResolver.getIdFromToken(token)));
     }
 
@@ -59,6 +59,12 @@ public class CommunityController {
     @GetMapping("/follow-community")
     public ResponseEntity<CommunityResource> followCommunity(@RequestHeader String token,@RequestParam UUID communityId){
         return ResponseEntity.ok(service.followCommunity(communityId,jwtResolver.getIdFromToken(token)));
+    }
+
+    @ApiOperation(value = "Unfollow a community with communityId and token", response = SmallSizeCommunityResource.class)
+    @GetMapping("/unfollow-community")
+    public ResponseEntity<SmallSizeCommunityResource> unfollowCommunity(@RequestHeader String token,@RequestParam UUID communityId) throws IllegalAccessException {
+        return ResponseEntity.ok(service.unfollowCommunity(communityId,jwtResolver.getIdFromToken(token)));
     }
 
     @ApiOperation(value = "Get all builders of community with communityId and token", response = UserResource.class,responseContainer = "List")

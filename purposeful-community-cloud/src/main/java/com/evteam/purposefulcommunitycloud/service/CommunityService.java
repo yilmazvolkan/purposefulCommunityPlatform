@@ -51,10 +51,11 @@ public class CommunityService {
         return mapper.toResource(repository.saveAndFlush(community));
     }
 
-    public CommunityResource getCommunity(UUID communityId, UUID userId) {
+    public CommunityResource getCommunity(UUID communityId, UUID userId) throws IllegalAccessException {
         Community community = repository.findCommunityById(communityId);
-        if (community.getIsPrivate() && !community.getFollowers().contains(userRepository.findUserById(userId))) {
-            throw new RuntimeException(COMMUNITY_IS_PRIVATE);
+        if (community.getIsPrivate() &&
+                !(community.getFollowers().contains(userRepository.findUserById(userId))||(community.getCreator().getId().equals(userId)))) {
+            throw new IllegalAccessException(COMMUNITY_IS_PRIVATE);
         }
         return mapper.toResource(community);
     }
@@ -112,5 +113,18 @@ public class CommunityService {
     public List<CommunityResource> getSelfFollowings(UUID userId){
         List<Community> communities=repository.findCommunitiesByFollowers(userRepository.findUserById(userId));
         return mapper.toResource(communities);
+    }
+
+    public SmallSizeCommunityResource unfollowCommunity(UUID communityId, UUID userId) throws IllegalAccessException {
+        Community community=repository.getOne(communityId);
+        User user=userRepository.findUserById(userId);
+        if(!community.getFollowers().contains(user)){
+            throw new  IllegalAccessException(USER_ALREADY_UNFOLLOWED_THIS_COMMUNITY);
+        }
+        List<User> followers=community.getFollowers();
+        followers.remove(user);
+        community.setFollowers(followers);
+        repository.save(community);
+        return smallMapper.toResource(community);
     }
 }
