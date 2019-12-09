@@ -18,7 +18,7 @@ import static com.evteam.purposefulcommunitycloud.constant.GeneralConstants.ID_L
  * on 11 Kas 2019
  */
 @MappedSuperclass
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Setter
 @Getter
 @NoArgsConstructor
