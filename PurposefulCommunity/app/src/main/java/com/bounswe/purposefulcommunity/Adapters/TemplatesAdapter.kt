@@ -37,7 +37,9 @@ class TemplatesAdapter(val context : Context, val userList: ArrayList<ShowTempBo
         }
         fun setData(id : String, name : String, createdDate : String,  position: Int){
             itemView.txtTempName.text = name
-            itemView.txtCreatedDate.text = createdDate
+            val hour = createdDate.substring(11, 16)
+            val dat = createdDate.substring(0, 10)
+            itemView.txtCreatedDate.text = hour + "    " + dat
 
             this.currentSearchShow = ShowTempBody(id, createdDate, name)
             this.currentPosition = position
