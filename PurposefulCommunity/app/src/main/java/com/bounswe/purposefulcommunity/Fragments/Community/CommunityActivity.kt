@@ -59,6 +59,7 @@ class CommunityActivity : AppCompatActivity() {
         add_temp.setOnClickListener {
             val intent = Intent(this@CommunityActivity, CreateTemplateActivity::class.java)
             intent.putExtra("comm_temp_id", communityID)
+            intent.putExtra("comm_temp_name", communityName)
             startActivity(intent)
             overridePendingTransition(
                 R.anim.slide_in_right,

@@ -1,6 +1,7 @@
 package com.bounswe.purposefulcommunity.Fragments.Templates
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -8,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
+import com.bounswe.purposefulcommunity.Fragments.Community.CommunityActivity
 import com.bounswe.purposefulcommunity.Models.AddTempBody
 import com.bounswe.purposefulcommunity.Models.CreateTemplateBody
 import com.bounswe.purposefulcommunity.R
@@ -35,6 +37,7 @@ class EnterTemplatesActivity : AppCompatActivity() {
         val tempName = intent.getStringExtra("temp_name")
         val tempSize = intent.getStringExtra("temp_size")
         val communityID = intent.getStringExtra("comm_temp_id")
+        val communityName = intent.getStringExtra("comm_temp_name")
 
         val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, types)
 
@@ -43,11 +46,10 @@ class EnterTemplatesActivity : AppCompatActivity() {
         templateCreator(tempSize!!.toInt(), aa)
 
         create_send.setOnClickListener {
-            //if(templateIsValid()){
+            if(templateIsValid(tempSize!!.toInt())){
                 templateSetter(tempSize.toInt())
-            //TODO  ID null geliyor
-                createTemplate(communityID!!, tempName!!)
-            //}
+                createTemplate(communityID!!, tempName!!, communityName!!)
+            }
         }
     }
     private fun templateSetter(size : Int){
@@ -107,7 +109,7 @@ class EnterTemplatesActivity : AppCompatActivity() {
             }
         }
     }
-    private fun createTemplate(communityId: String, name: String){
+    private fun createTemplate(communityId: String, name: String, communityName: String){
         val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
         val tokenV = res.getString("token", "Data Not Found!")
         val userID = res.getString("user_id", "Data Not Found!")
@@ -136,58 +138,62 @@ class EnterTemplatesActivity : AppCompatActivity() {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == 200) {
                     Toast.makeText(this@EnterTemplatesActivity, "Template is created successfully!", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this@EnterTemplatesActivity, CommunityActivity::class.java)
+                    intent.putExtra("comm_id", communityId)
+                    intent.putExtra("comm_name", communityName)
+                    startActivity(intent)
                 } else {
                     Toast.makeText(this@EnterTemplatesActivity, "Template create is failed!", Toast.LENGTH_SHORT).show()
                 }
             }
         })
     }
-    private fun templateIsValid():Boolean{
+    private fun templateIsValid(size: Int):Boolean{
         var isValid = true
 
-        if (editPropName1.text.toString().isEmpty()){
+        if (size > 0 && editPropName1.text.toString().isEmpty()){
             layPropName1.isErrorEnabled = true
             layPropName1.error = "Name 1 cannot be empty!"
             isValid = false
         }else{
             layPropName1.isErrorEnabled = false
         }
-        if (editPropName2.text.toString().isEmpty()){
+        if (size > 1 && editPropName2.text.toString().isEmpty()){
             layPropName2.isErrorEnabled = true
             layPropName2.error = "Name 2 cannot be empty!"
             isValid = false
         }else{
             layPropName2.isErrorEnabled = false
         }
-        if (editPropName3.text.toString().isEmpty()){
+        if (size > 2 && editPropName3.text.toString().isEmpty()){
             layPropName3.isErrorEnabled = true
             layPropName3.error = "Name 3 cannot be empty!"
             isValid = false
         }else{
             layPropName3.isErrorEnabled = false
         }
-        if (editPropName4.text.toString().isEmpty()){
+        if (size > 3 && editPropName4.text.toString().isEmpty()){
             layPropName4.isErrorEnabled = true
             layPropName4.error = "Name 4 cannot be empty!"
             isValid = false
         }else{
             layPropName4.isErrorEnabled = false
         }
-        if (editPropName5.text.toString().isEmpty()){
+        if (size > 4 && editPropName5.text.toString().isEmpty()){
             layPropName5.isErrorEnabled = true
             layPropName5.error = "Name 5 cannot be empty!"
             isValid = false
         }else{
             layPropName5.isErrorEnabled = false
         }
-        if (editPropName6.text.toString().isEmpty()){
+        if (size > 5 && editPropName6.text.toString().isEmpty()){
             layPropName6.isErrorEnabled = true
             layPropName6.error = "Name 6 cannot be empty!"
             isValid = false
         }else{
             layPropName6.isErrorEnabled = false
         }
-        if (editPropName7.text.toString().isEmpty()){
+        if (size > 6 && editPropName7.text.toString().isEmpty()){
             layPropName7.isErrorEnabled = true
             layPropName7.error = "Name 7 cannot be empty!"
             isValid = false

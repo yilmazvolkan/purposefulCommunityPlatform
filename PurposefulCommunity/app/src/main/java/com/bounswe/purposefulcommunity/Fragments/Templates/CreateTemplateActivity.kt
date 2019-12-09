@@ -17,6 +17,7 @@ class CreateTemplateActivity : AppCompatActivity() {
         actionBar.setDisplayHomeAsUpEnabled(true)
 
         val communityID = intent.getStringExtra("comm_temp_id")
+        val communityName = intent.getStringExtra("comm_temp_name")
 
         btn_enter_fields.setOnClickListener {
             val name = editTempName.text.toString()
@@ -26,6 +27,7 @@ class CreateTemplateActivity : AppCompatActivity() {
                 intent.putExtra("temp_name", name)
                 intent.putExtra("temp_size", size)
                 intent.putExtra("comm_temp_id", communityID)
+                intent.putExtra("comm_temp_name", communityName)
                 startActivity(intent)
                 overridePendingTransition(
                     R.anim.slide_in_right,
