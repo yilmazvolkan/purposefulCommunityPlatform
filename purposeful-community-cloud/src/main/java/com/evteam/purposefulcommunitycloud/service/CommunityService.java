@@ -53,7 +53,8 @@ public class CommunityService {
 
     public CommunityResource getCommunity(UUID communityId, UUID userId) throws IllegalAccessException {
         Community community = repository.findCommunityById(communityId);
-        if (community.getIsPrivate() && !community.getFollowers().contains(userRepository.findUserById(userId))) {
+        if (community.getIsPrivate() &&
+                !(community.getFollowers().contains(userRepository.findUserById(userId))||(community.getCreator().getId().equals(userId)))) {
             throw new IllegalAccessException(COMMUNITY_IS_PRIVATE);
         }
         return mapper.toResource(community);
