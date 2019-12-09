@@ -3,11 +3,14 @@ package com.bounswe.purposefulcommunity.Fragments.Community
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
+import com.bounswe.purposefulcommunity.Fragments.LoginActivity
 import com.bounswe.purposefulcommunity.Fragments.Templates.CreateTemplateActivity
 import com.bounswe.purposefulcommunity.Models.GetOneCommBody
 import com.bounswe.purposefulcommunity.R
@@ -46,7 +49,35 @@ class CommunityActivity : AppCompatActivity() {
             )
         }
     }
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_upload -> {
+            Toast.makeText(this, "Successfully logged out", Toast.LENGTH_LONG).show()
+            val intent = Intent(this@CommunityActivity, LoginActivity::class.java)
 
+            val preferences = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
+            val editor = preferences.edit()
+            editor.putString("token", " ")
+            editor.commit()
+
+            startActivity(intent)
+            finish()
+            true
+        }
+        R.id.action_leave -> {
+            //TODO add unfollow community here
+            true
+        }
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
+    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.options_menu, menu)
+        return true
+    }
     private fun getOneCommunities(communityID: String){
         val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
         val tokenV = res.getString("token", "Data Not Found!")
@@ -91,6 +122,21 @@ class CommunityActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun pickImageFromGallery() {
+        //Intent to pick image
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+    }
+
+    companion object {
+        //image pick code
+        private val IMAGE_PICK_CODE = 1000;
+        //Permission code
+        private val PERMISSION_CODE = 1001;
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
