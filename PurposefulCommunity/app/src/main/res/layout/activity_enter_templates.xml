@@ -276,7 +276,7 @@
                     android:layout_weight="4" />
             </LinearLayout>
             <Button
-                android:id="@+id/create_temp"
+                android:id="@+id/create_send"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"

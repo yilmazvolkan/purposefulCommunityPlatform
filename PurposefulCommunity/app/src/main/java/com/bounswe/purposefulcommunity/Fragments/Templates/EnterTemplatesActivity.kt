@@ -1,14 +1,28 @@
 package com.bounswe.purposefulcommunity.Fragments.Templates
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bounswe.mercatus.API.ApiInterface
+import com.bounswe.mercatus.API.RetrofitInstance
+import com.bounswe.purposefulcommunity.Models.AddTempBody
+import com.bounswe.purposefulcommunity.Models.CommunityBody
+import com.bounswe.purposefulcommunity.Models.CreateTemplateBody
 import com.bounswe.purposefulcommunity.R
 import kotlinx.android.synthetic.main.activity_enter_templates.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.net.ConnectException
 
-class EnterTemplatesActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class EnterTemplatesActivity : AppCompatActivity() {
+
+    private var types = arrayOf("Text", "Boolean", "Decimal", "Rational", "Duration", "Date-Time", "Date", "Time")
+    private var w3ctypes = arrayOf("STRING", "BOOLEAN", "DECIMAL", "FLOAT", "DURATION", "DATE_TIME", "DATE", "TIME")
+    private val results = ArrayList<AddTempBody>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,20 +34,47 @@ class EnterTemplatesActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
 
         val tempName = intent.getStringExtra("temp_name")
         val tempSize = intent.getStringExtra("temp_size")
+        val communityID = intent.getStringExtra("comm_temp_id")
 
-        var types = arrayOf("Text", "Boolean", "Decimal", "Rational", "Duration", "Date-Time", "Date", "Time")
         val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, types)
 
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         templateCreator(tempSize!!.toInt(), aa)
-        create_temp.setOnClickListener {
-            if(templateIsValid()){
 
+        create_send.setOnClickListener {
+            //if(templateIsValid()){
+                templateSetter(tempSize.toInt())
+            //TODO  ID null geliyor
+                createTemplate(communityID!!, tempName!!)
+            //}
+        }
+    }
+    private fun templateSetter(size : Int){
+        for(i in 1..size){
+            if(i == 1){
+                results.add(AddTempBody(editPropName1.text.toString(), w3ctypes[type1.selectedItemPosition]))
+            }
+            else if(i == 2){
+                results.add(AddTempBody(editPropName2.text.toString(), w3ctypes[type2.selectedItemPosition]))
+            }
+            else if(i == 3){
+                results.add(AddTempBody(editPropName3.text.toString(), w3ctypes[type3.selectedItemPosition]))
+            }
+            else if(i == 4){
+                results.add(AddTempBody(editPropName4.text.toString(), w3ctypes[type4.selectedItemPosition]))
+            }
+            else if(i == 5){
+                results.add(AddTempBody(editPropName5.text.toString(), w3ctypes[type5.selectedItemPosition]))
+            }
+            else if(i == 6){
+                results.add(AddTempBody(editPropName6.text.toString(), w3ctypes[type6.selectedItemPosition]))
+            }
+            else if(i == 7){
+                results.add(AddTempBody(editPropName7.text.toString(), w3ctypes[type7.selectedItemPosition]))
             }
         }
     }
-
     private fun templateCreator(size : Int, aa: ArrayAdapter<String>){
         for(i in 1..size){
             if(i == 1){
@@ -66,7 +107,41 @@ class EnterTemplatesActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
             }
         }
     }
+    private fun createTemplate(communityId: String, name: String){
+        val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
+        val tokenV = res.getString("token", "Data Not Found!")
+        val userID = res.getString("user_id", "Data Not Found!")
 
+        val purApp = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
+
+        val tempBody = CreateTemplateBody(communityId, results, name, userID!!)
+
+        purApp.createTemp(tempBody, tokenV!!).enqueue(object : Callback<CommunityBody> {
+            override fun onFailure(call: Call<CommunityBody>, t: Throwable) {
+                if(t.cause is ConnectException){
+                    Toast.makeText(
+                        this@EnterTemplatesActivity,
+                        "Check your connection!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else{
+                    Toast.makeText(
+                        this@EnterTemplatesActivity,
+                        "Something bad happened!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            override fun onResponse(call: Call<CommunityBody>, response: Response<CommunityBody>) {
+                if (response.code() == 200) {
+                    Toast.makeText(this@EnterTemplatesActivity, "Template is created successfully!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@EnterTemplatesActivity, "Template create failed!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
     private fun templateIsValid():Boolean{
         var isValid = true
 
@@ -120,13 +195,6 @@ class EnterTemplatesActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
             layPropName7.isErrorEnabled = false
         }
         return isValid
-    }
-    override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
-        // use position to know the selected item
-    }
-
-    override fun onNothingSelected(arg0: AdapterView<*>) {
-
     }
 
     override fun onSupportNavigateUp(): Boolean {

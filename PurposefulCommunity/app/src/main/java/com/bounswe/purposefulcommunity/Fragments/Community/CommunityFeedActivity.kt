@@ -103,7 +103,7 @@ class CommunityFeedActivity : AppCompatActivity() {
                     adapter.notifyDataSetChanged()
 
                 } else {
-                    Toast.makeText(this@CommunityFeedActivity, "You communities cannot retrieve!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CommunityFeedActivity, "Your communities cannot retrieve!", Toast.LENGTH_SHORT).show()
                 }
             }
         })
