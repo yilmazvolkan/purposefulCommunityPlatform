@@ -141,5 +141,24 @@ public class UserService {
         repository.save(user);
     }
 
-    // TODO: 17 Ara 2019 get profile
+
+    public UserResource getUserById(UUID id){
+        return registerMapper.toResource(repository.findUserById(id));
+    }
+
+    public UserResource getUserByEmail(String email) {
+        return registerMapper.toResource(repository.findByEmail(email));
+    }
+
+    @Modifying
+    @Transactional
+    public UserResource updateUserProfile(RegisterDto dto,UUID userId){
+        User user=repository.getOne(userId);
+        user.setEmail( dto.getEmail() );
+        user.setPassword( dto.getPassword() );
+        user.setName( dto.getName() );
+        user.setSurname( dto.getSurname() );
+        return registerMapper.toResource(repository.save(user));
+    }
+
 }
