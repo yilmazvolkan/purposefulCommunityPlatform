@@ -50,7 +50,7 @@ public class CSInstanceController {
     }
 
     @ApiOperation(value = "Get data instances of created by a user with token",response = DataInstanceResource.class,responseContainer = "List")
-    @GetMapping("/get/self-instance")
+    @GetMapping("/get/self-instances")
     public ResponseEntity getSelfInstances(@RequestHeader String token){
         return ResponseEntity.ok(service.getSelfInstances(jwtResolver.getIdFromToken(token)));
     }
