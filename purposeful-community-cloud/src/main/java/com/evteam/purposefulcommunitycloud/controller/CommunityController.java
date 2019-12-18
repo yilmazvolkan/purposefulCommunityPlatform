@@ -55,10 +55,22 @@ public class CommunityController {
         return ResponseEntity.ok(service.addBuilders(communityId,idsOfUsers,jwtResolver.getIdFromToken(token)));
     }
 
+    @ApiOperation(value = "Delete a builder of community with builder id and token", response = CommunityResource.class)
+    @DeleteMapping("/builder/delete")
+    public ResponseEntity<CommunityResource> deleteBuilders(@RequestHeader String token,@RequestBody UUID builderId,@RequestParam UUID communityId){
+        return ResponseEntity.ok(service.deleteBuilders(communityId,builderId,jwtResolver.getIdFromToken(token)));
+    }
+
     @ApiOperation(value = "Follow a community with communityId and token", response = CommunityResource.class)
     @GetMapping("/follow-community")
     public ResponseEntity<CommunityResource> followCommunity(@RequestHeader String token,@RequestParam UUID communityId){
         return ResponseEntity.ok(service.followCommunity(communityId,jwtResolver.getIdFromToken(token)));
+    }
+
+    @ApiOperation(value = "Unfollow a community with communityId and token", response = String.class)
+    @DeleteMapping("/unfollow-community")
+    public ResponseEntity unfollowCommunity(@RequestHeader String token,@RequestParam UUID communityId){
+        return ResponseEntity.ok(service.unfollowCommunity(communityId,jwtResolver.getIdFromToken(token)));
     }
 
     @ApiOperation(value = "Get all builders of community with communityId and token", response = UserResource.class,responseContainer = "List")
