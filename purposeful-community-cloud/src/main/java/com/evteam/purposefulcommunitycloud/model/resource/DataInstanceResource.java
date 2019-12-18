@@ -19,6 +19,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 public class DataInstanceResource {
+    private String createdDate;
     private UUID id;
     private UserResource creator;
     private JSONObject instanceFields;

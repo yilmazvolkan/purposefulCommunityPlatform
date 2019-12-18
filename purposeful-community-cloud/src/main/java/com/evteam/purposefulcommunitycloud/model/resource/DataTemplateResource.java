@@ -21,9 +21,9 @@ public class DataTemplateResource {
 
     private UUID id;
 
-    private ZonedDateTime createdDate;
+    private String createdDate;
 
-    private ZonedDateTime lastModifiedDate;
+    private String lastModifiedDate;
 
     private String name;
 

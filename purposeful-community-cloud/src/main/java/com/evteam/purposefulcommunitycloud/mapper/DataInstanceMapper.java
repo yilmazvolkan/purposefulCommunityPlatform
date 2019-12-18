@@ -9,7 +9,7 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,unmappedSourcePolicy = ReportingPolicy.IGNORE,uses = {DataTemplateMapper.class})
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,unmappedSourcePolicy = ReportingPolicy.IGNORE,uses = {DataTemplateMapper.class, DateMapper.class})
 public interface DataInstanceMapper extends Converter<DataInstanceDto, DataInstance, DataInstanceResource> {
 
     List<DataInstanceResource> toResource(List<DataInstance> dataInstances);

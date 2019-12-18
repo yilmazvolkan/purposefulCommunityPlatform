@@ -21,7 +21,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class DataFieldResource {
 
-    UUID id;
+    private UUID id;
 
     private FieldType fieldType;
 

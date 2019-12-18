@@ -10,7 +10,7 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,unmappedSourcePolicy = ReportingPolicy.IGNORE,uses = {DataFieldMapper.class})
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, unmappedSourcePolicy = ReportingPolicy.IGNORE, uses = {DataFieldMapper.class, DateMapper.class})
 public interface DataTemplateMapper extends Converter<DataTemplateDto, DataTemplate, DataTemplateResource> {
 
     @Mapping(source = "fields", target = "fieldResources")
