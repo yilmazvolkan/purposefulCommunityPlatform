@@ -1,7 +1,6 @@
 package com.evteam.purposefulcommunitycloud.controller;
 
 import com.evteam.purposefulcommunitycloud.model.dto.DataTemplateDto;
-import com.evteam.purposefulcommunitycloud.model.entity.DataTemplate;
 import com.evteam.purposefulcommunitycloud.model.resource.DataFieldResource;
 import com.evteam.purposefulcommunitycloud.model.resource.DataTemplateResource;
 import com.evteam.purposefulcommunitycloud.security.JwtResolver;
@@ -22,7 +21,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping(value = {"/data-template"})
-@Api(value = "Community Specific Data", tags = {"Community Specific Data Operations"})
+@Api(value = "Community Specific Data Template", tags = {"Community Specific Data Template Operations"})
 public class CSDataController {
 
     @Autowired
