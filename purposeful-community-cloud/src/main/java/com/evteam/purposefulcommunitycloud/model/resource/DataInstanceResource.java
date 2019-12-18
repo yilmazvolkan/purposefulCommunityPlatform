@@ -1,32 +1,25 @@
 package com.evteam.purposefulcommunitycloud.model.resource;
 
-import com.evteam.purposefulcommunitycloud.constant.FieldType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.json.simple.JSONObject;
 
 import javax.annotation.Resource;
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
 /**
  * Created by Emir Gökdemir
- * on 17 Kas 2019
+ * on 17 Ara 2019
  */
 @Resource
 @AllArgsConstructor
 @Getter
 @Setter
 @NoArgsConstructor
-public class DataFieldResource {
-
-    UUID id;
-
-    private FieldType fieldType;
-
-    private String name;
-
-    private Boolean isRequired;
-
+public class DataInstanceResource {
+    private UUID id;
+    private UserResource creator;
+    private JSONObject instanceFields;
 }

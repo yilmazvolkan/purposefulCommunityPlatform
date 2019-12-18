@@ -9,35 +9,26 @@ import org.hibernate.annotations.TypeDef;
 import org.json.simple.JSONObject;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Emir Gökdemir
- * on 16 Kas 2019
+ * on 17 Ara 2019
  */
+
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "data_template")
+@Table(name = "data_instance")
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
-public class DataTemplate extends AbstractEntity {
-    @NotNull
-    private String name;
+public class DataInstance extends AbstractEntity {
 
     @ManyToOne
-    @JoinColumn(name = "community_id")
-    private Community community;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
     private User creator;
 
-    @OneToMany(mappedBy = "template")
-    private List<DataField> fields;
+    @ManyToOne
+    private DataTemplate template;
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    private JSONObject instanceContext;
+    private JSONObject instanceFields;
 }
