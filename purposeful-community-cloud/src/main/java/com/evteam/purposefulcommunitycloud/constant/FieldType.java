@@ -1,5 +1,7 @@
 package com.evteam.purposefulcommunitycloud.constant;
 
+import java.util.Locale;
+
 public enum FieldType {
     STRING,
     BOOLEAN,
@@ -9,5 +11,9 @@ public enum FieldType {
     DURATION,
     DATE_TIME,
     TIME,
-    DATE
+    DATE;
+
+    public String toLowerCaseString() {
+        return name().toLowerCase(Locale.ENGLISH);
+    }
 }

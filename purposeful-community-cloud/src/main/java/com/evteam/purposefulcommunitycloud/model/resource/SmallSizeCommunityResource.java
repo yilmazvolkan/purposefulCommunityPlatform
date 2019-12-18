@@ -20,7 +20,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class SmallSizeCommunityResource {
 
-    UUID id;
+    private UUID id;
+
+    private String createdDate;
 
     private String name;
 

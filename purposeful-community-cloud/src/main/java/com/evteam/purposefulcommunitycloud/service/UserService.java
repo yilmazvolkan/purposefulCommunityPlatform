@@ -141,6 +141,7 @@ public class UserService {
         repository.save(user);
     }
 
+
     public UserResource getUserById(UUID id){
         return registerMapper.toResource(repository.findUserById(id));
     }

@@ -14,7 +14,7 @@ import java.util.List;
  * on 17 Kas 2019
  */
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,unmappedSourcePolicy = ReportingPolicy.IGNORE,uses = {RegisterMapper.class})
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,unmappedSourcePolicy = ReportingPolicy.IGNORE,uses = {RegisterMapper.class, DateMapper.class})
 public interface CommunityMapper extends Converter<CommunityDto, Community, CommunityResource> {
 
     @Mapping(source = "creator", target = "creatorUser")

@@ -17,4 +17,5 @@ import lombok.Setter;
 public class DataFieldDto {
     private String name;
     private FieldType fieldType;
+    private Boolean isRequired;
 }

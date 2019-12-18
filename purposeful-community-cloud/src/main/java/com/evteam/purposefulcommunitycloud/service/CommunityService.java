@@ -13,6 +13,7 @@ import com.evteam.purposefulcommunitycloud.repository.CommunityRepository;
 import com.evteam.purposefulcommunitycloud.repository.UserRepository;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -48,7 +49,9 @@ public class CommunityService {
         Community community = mapper.toEntity(dto);
         User creator = userRepository.findUserById(userId);
         community.setCreator(creator);
-        return mapper.toResource(repository.saveAndFlush(community));
+        community=repository.saveAndFlush(community);
+        followCommunity(community.getId(),userId);
+        return mapper.toResource(community);
     }
 
     public CommunityResource getCommunity(UUID communityId, UUID userId) throws IllegalAccessException {
@@ -68,7 +71,7 @@ public class CommunityService {
     public CommunityResource addBuilders(UUID communityId,List<UUID> idsOfBuilders,UUID creatorId){
         Community community=repository.getOne(communityId);
         if(!community.getCreator().getId().equals(creatorId)){
-            throw new RuntimeException(ONLY_CREATOR_CAN_ADD_BUILDER);
+            throw new RuntimeException(ONLY_CREATOR_CAN_EDIT_BUILDER);
         }
         List<User> builders=community.getBuilders();
         for(UUID builderId: CollectionUtils.emptyIfNull(idsOfBuilders)){
@@ -77,6 +80,17 @@ public class CommunityService {
         }
         community.setBuilders(builders);
         repository.save(community);
+        return mapper.toResource(community);
+    }
+
+    @Modifying
+    @Transactional
+    public CommunityResource deleteBuilders(UUID communityId, UUID builderId, UUID creatorId) {
+        Community community=repository.getOne(communityId);
+        if(!community.getCreator().getId().equals(creatorId)){
+            throw new RuntimeException(ONLY_CREATOR_CAN_EDIT_BUILDER);
+        }
+        community.getBuilders().remove(userRepository.findUserById(builderId));
         return mapper.toResource(community);
     }
 
@@ -115,6 +129,8 @@ public class CommunityService {
         return mapper.toResource(communities);
     }
 
+    @Transactional
+    @Modifying
     public SmallSizeCommunityResource unfollowCommunity(UUID communityId, UUID userId) throws IllegalAccessException {
         Community community=repository.getOne(communityId);
         User user=userRepository.findUserById(userId);

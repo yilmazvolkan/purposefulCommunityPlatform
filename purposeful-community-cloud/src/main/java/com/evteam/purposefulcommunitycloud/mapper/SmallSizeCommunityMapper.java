@@ -9,7 +9,7 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,unmappedSourcePolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,unmappedSourcePolicy = ReportingPolicy.IGNORE, uses = {DateMapper.class})
 public interface SmallSizeCommunityMapper extends Converter<CommunityDto, Community, SmallSizeCommunityResource> {
 
     List<SmallSizeCommunityResource> toResource(List<Community> communities);

@@ -3,6 +3,7 @@ package com.evteam.purposefulcommunitycloud.model.resource;
 import com.evteam.purposefulcommunitycloud.model.entity.DataField;
 import lombok.Getter;
 import lombok.Setter;
+import org.json.simple.JSONObject;
 
 import javax.annotation.Resource;
 import java.time.ZonedDateTime;
@@ -20,12 +21,13 @@ public class DataTemplateResource {
 
     private UUID id;
 
-    private ZonedDateTime createdDate;
+    private String createdDate;
 
-    private ZonedDateTime lastModifiedDate;
+    private String lastModifiedDate;
 
     private String name;
 
     private Set<DataFieldResource> fieldResources;
 
+    private JSONObject instanceContext;
 }

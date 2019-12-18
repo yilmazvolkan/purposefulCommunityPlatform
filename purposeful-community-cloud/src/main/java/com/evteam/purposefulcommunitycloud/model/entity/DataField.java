@@ -26,6 +26,9 @@ public class DataField extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private FieldType fieldType;
 
-//    @ManyToMany(mappedBy = "fields")
-//    Set<DataTemplate> templates;
+    private Boolean isRequired=false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "template_id")
+    private DataTemplate template;
 }
