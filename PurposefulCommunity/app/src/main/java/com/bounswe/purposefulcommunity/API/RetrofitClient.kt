@@ -63,9 +63,9 @@ interface ApiInterface {
         @Header("token") token: String
     ): retrofit2.Call<ResponseBody>
 
-
     // Upload image to Community
     @Headers("Content-Type:application/json")
+    @Multipart
     @POST("/image/upload-community-image")
     fun uploadImage(
         @Query("communityId") communityId: String,

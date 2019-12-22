@@ -2,6 +2,8 @@ package com.bounswe.purposefulcommunity.Fragments.Community
 
 import android.content.Context
 import android.os.Bundle
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,12 +14,14 @@ import com.bounswe.purposefulcommunity.Adapters.CommunityAdapter
 import com.bounswe.purposefulcommunity.Models.CommShowBody
 import com.bounswe.purposefulcommunity.Models.CommunityBody
 import com.bounswe.purposefulcommunity.R
+import kotlinx.android.synthetic.main.activity_explore.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.net.ConnectException
 
 class ExploreActivity : AppCompatActivity() {
+    private var hasHeader: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +78,7 @@ class ExploreActivity : AppCompatActivity() {
                     if(users.isEmpty()){
                         Toast.makeText(this@ExploreActivity, "No community is found!", Toast.LENGTH_SHORT).show()
                     }
+                    runLayoutAnimation()
                     adapter.notifyDataSetChanged()
 
                 } else {
@@ -81,6 +86,21 @@ class ExploreActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+    private fun runLayoutAnimation() = recyclerView.apply {
+        layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
+        adapter?.notifyDataSetChanged()
+        scheduleLayoutAnimation()
+
+        if (hasHeader) {
+            layoutAnimationListener = object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {
+                    layoutManager?.findViewByPosition(0)?.clearAnimation()
+                }
+                override fun onAnimationEnd(animation: Animation?) = Unit
+                override fun onAnimationRepeat(animation: Animation?) = Unit
+            }
+        }
     }
     override fun onResume() {
         getCommunities()

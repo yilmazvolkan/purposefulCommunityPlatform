@@ -21,21 +21,26 @@ import com.bounswe.purposefulcommunity.R
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_community.*
 import kotlinx.android.synthetic.main.activity_show_comm.communityImage
+import okhttp3.MediaType
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.net.ConnectException
 
 class CommunityActivity : AppCompatActivity() {
+
+    private var communityID: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_community)
 
         val communityName = intent.getStringExtra("comm_name")
-        val communityID = intent.getStringExtra("comm_id")
+        communityID = intent.getStringExtra("comm_id")!!
 
         val actionBar = supportActionBar
         actionBar!!.title = communityName
@@ -169,14 +174,22 @@ class CommunityActivity : AppCompatActivity() {
         })
     }
 
-    private fun uploadImage(communityID: String, image: MultipartBody.Part){
+    private fun uploadImage(communityID: String, image: String){
         val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
         val tokenV = res.getString("token", "Data Not Found!")
-        val userID = res.getString("user_id", "Data Not Found!")
 
         val purApp = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
+        //val path = Context.EXTER
+        val file = File(image)
+        val requestFile: RequestBody = RequestBody.create(
+            MediaType.parse
+            ("multipart/form-data"), file)
 
-        purApp.uploadImage(communityID, image, tokenV!!).enqueue(object : Callback<ResponseBody> {
+        val body: MultipartBody.Part = MultipartBody.Part.createFormData(
+            "image", file.name.trim(), requestFile)
+
+
+        purApp.uploadImage(communityID, body, tokenV!!).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 if(t.cause is ConnectException){
                     Toast.makeText(
@@ -188,7 +201,7 @@ class CommunityActivity : AppCompatActivity() {
                 else{
                     Toast.makeText(
                         this@CommunityActivity,
-                        "Something bad happened!",
+                        t.message,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -220,10 +233,48 @@ class CommunityActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
             communityImage.setImageURI(data?.data)
 
-            //uploadImage("adqssa", data!!.data!!)
+            uploadImage(communityID, data!!.dataString!!)
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
+
+    /*private fun getPathFromURI(uri: Uri) {
+        var path: String = uri.path // uri = any content Uri
+
+        val databaseUri: Uri
+        val selection: String?
+        val selectionArgs: Array<String>?
+        if (path.contains("/document/image:")) { // files selected from "Documents"
+            databaseUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            selection = "_id=?"
+            selectionArgs = arrayOf(DocumentsContract.getDocumentId(uri).split(":")[1])
+        } else { // files selected from all other sources, especially on Samsung devices
+            databaseUri = uri
+            selection = null
+            selectionArgs = null
+        }
+        try {
+            val projection = arrayOf(
+                MediaStore.Images.Media.DATA,
+                MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.ORIENTATION,
+                MediaStore.Images.Media.DATE_TAKEN
+            ) // some example data you can query
+            val cursor = contentResolver.query(
+                databaseUri,
+                projection, selection, selectionArgs, null
+            )
+            if (cursor.moveToFirst()) {
+                val columnIndex = cursor.getColumnIndex(projection[0])
+                imagePath = cursor.getString(columnIndex)
+                // Log.e("path", imagePath);
+                imagesPathList.add(imagePath)
+            }
+            cursor.close()
+        } catch (e: Exception) {
+            Log.e(TAG, e.message, e)
+        }
+    }*/
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
