@@ -11,7 +11,8 @@ public enum FieldType {
     DURATION,
     DATE_TIME,
     TIME,
-    DATE;
+    DATE,
+    GEOLOCATION;
 
     public String toLowerCaseString() {
         return name().toLowerCase(Locale.ENGLISH);
