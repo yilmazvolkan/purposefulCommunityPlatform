@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
 import com.bounswe.purposefulcommunity.Adapters.CommunityAdapter
+import com.bounswe.purposefulcommunity.Fragments.LoginActivity
 import com.bounswe.purposefulcommunity.Models.CommShowBody
 import com.bounswe.purposefulcommunity.Models.GetOneCommBody
 import com.bounswe.purposefulcommunity.R
@@ -33,7 +34,6 @@ class CommunityFeedActivity : AppCompatActivity() {
 
         val actionBar = supportActionBar
         actionBar!!.title = getString(R.string.my_communities)
-        actionBar.setDisplayHomeAsUpEnabled(true)
 
         fab.setOnClickListener {
             createCommunity()
@@ -47,14 +47,32 @@ class CommunityFeedActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val intent = Intent(this@CommunityFeedActivity, ExploreActivity::class.java)
-        startActivity(intent)
-        overridePendingTransition(
-            R.anim.slide_in_right,
-            R.anim.slide_out_left
-        )
-        return super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.explore -> {
+            val intent = Intent(this@CommunityFeedActivity, ExploreActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
+            true
+        }
+        R.id.action_logout -> {
+            val preferences = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
+            val editor = preferences.edit()
+            editor.putString("token", " ")
+            editor.apply()
+            val intent = Intent(this@CommunityFeedActivity, LoginActivity::class.java)
+            startActivity(intent)
+            Toast.makeText(this, "Log out success!", Toast.LENGTH_LONG).show()
+            finish()
+            true
+        }
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
     }
     private fun createCommunity(){
         val intent = Intent(this@CommunityFeedActivity, CreateCommActivity::class.java)
