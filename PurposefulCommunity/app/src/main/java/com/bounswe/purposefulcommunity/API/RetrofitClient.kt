@@ -73,6 +73,7 @@ interface ApiInterface {
         @Header("token") token: String
     ): retrofit2.Call<ResponseBody>
 
+    ////////// Template
     // Create Community Template
     @Headers("Content-Type:application/json")
     @POST("/data-template/create-csd")
@@ -89,6 +90,15 @@ interface ApiInterface {
         @Header("token") token: String
     ): retrofit2.Call<List<GetTempBody>>
 
+    // Get a Template fields request
+    @Headers("Content-Type:application/json")
+    @GET("/data-template/fields/{id}")
+    fun getFields(
+        @Path("id") id: String,
+        @Header("token") token: String
+    ): retrofit2.Call<List<GetFieldsBody>>
+
+    ////////// Instance
 }
 class RetrofitInstance {
     companion object {

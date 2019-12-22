@@ -33,7 +33,7 @@
     <string name="property_name">Property Name</string>
     <string name="property_type">Property Type</string>
     <string name="create">Create</string>
-    <string name="title_activity_enter_templates">EnterTemplatesActivity</string>
+    <string name="title_activity_enter_templates">Create Type</string>
 
     <string name="about">About</string>
     <string name="join">Join</string>
@@ -45,7 +45,7 @@
 
     <string name="type">Type</string>
     <string name="date">Date</string>
-    <string name="templates">Existing Templates</string>
+    <string name="templates">Types</string>
     <string name="add">Add</string>
     <string name="upload">Upload</string>
 </resources>

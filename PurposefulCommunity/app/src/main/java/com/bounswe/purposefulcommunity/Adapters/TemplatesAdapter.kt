@@ -1,13 +1,14 @@
 package com.bounswe.purposefulcommunity.Adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bounswe.purposefulcommunity.Fragments.Templates.ShowTemplateActivity
 import com.bounswe.purposefulcommunity.Models.ShowTempBody
 import com.bounswe.purposefulcommunity.R
-import kotlinx.android.synthetic.main.item_layout.view.eachItem
 import kotlinx.android.synthetic.main.item_temp.view.*
 
 class TemplatesAdapter(val context : Context, val userList: ArrayList<ShowTempBody>): RecyclerView.Adapter<TemplatesAdapter.ViewHolder>() {
@@ -31,13 +32,16 @@ class TemplatesAdapter(val context : Context, val userList: ArrayList<ShowTempBo
         var currentSearchShow : ShowTempBody? = null
         var currentPosition : Int = 0
         init {
-            itemView.eachItem.setOnClickListener {
-
+            itemView.eachTempItem.setOnClickListener {
+                val intent = Intent(context, ShowTemplateActivity::class.java)
+                intent.putExtra("temp_id", currentSearchShow?.id.toString())
+                intent.putExtra("temp_name", currentSearchShow?.name.toString())
+                context.startActivity(intent)
             }
         }
         fun setData(id : String, name : String, createdDate : String,  position: Int){
             itemView.txtTempName.text = name
-            val newDate = "Date: " + createdDate
+            val newDate = "Created: " + createdDate
             itemView.txtCreatedDate.text = newDate
 
             this.currentSearchShow = ShowTempBody(id, createdDate, name)

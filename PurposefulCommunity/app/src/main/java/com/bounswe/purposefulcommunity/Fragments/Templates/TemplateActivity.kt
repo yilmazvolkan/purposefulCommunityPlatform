@@ -40,6 +40,7 @@ class TemplateActivity : AppCompatActivity() {
 
         val actionBar = supportActionBar
         actionBar!!.title = getString(R.string.title_activity_enter_templates)
+        actionBar.setDisplayHomeAsUpEnabled(true)
 
         val rv = findViewById<RecyclerView>(R.id.recyclerViewShowTemplates)
         rv.layoutManager = LinearLayoutManager(this@TemplateActivity, RecyclerView.VERTICAL, false)
@@ -52,7 +53,7 @@ class TemplateActivity : AppCompatActivity() {
             val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, types)
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             val dialogBuilder = AlertDialog.Builder(this)
-                .setTitle("Data")
+                .setTitle("Add Data")
                 .setCancelable(true)
                 .create()
             val editView = layoutInflater.inflate(R.layout.item_show_temp, null)
@@ -156,5 +157,13 @@ class TemplateActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 }
