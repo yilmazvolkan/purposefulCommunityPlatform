@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
 import com.bounswe.purposefulcommunity.Fragments.Instances.ShowTemplatesActivity
-import com.bounswe.purposefulcommunity.Fragments.Templates.CreateTemplateActivity
+import com.bounswe.purposefulcommunity.Fragments.Templates.TemplateActivity
 import com.bounswe.purposefulcommunity.Models.GetOneCommBody
 import com.bounswe.purposefulcommunity.R
 import com.bumptech.glide.Glide
@@ -62,7 +62,7 @@ class CommunityActivity : AppCompatActivity() {
         }
 
         add_temp.setOnClickListener {
-            val intent = Intent(this@CommunityActivity, CreateTemplateActivity::class.java)
+            val intent = Intent(this@CommunityActivity, TemplateActivity::class.java)
             intent.putExtra("comm_temp_id", communityID)
             intent.putExtra("comm_temp_name", communityName)
             startActivity(intent)
