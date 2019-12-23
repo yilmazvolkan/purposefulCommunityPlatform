@@ -10,11 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
-import com.bounswe.purposefulcommunity.Adapters.TempAdapter
+import com.bounswe.purposefulcommunity.Adapters.FieldsAdapter
 import com.bounswe.purposefulcommunity.Models.AddTempBody
 import com.bounswe.purposefulcommunity.Models.GetFieldsBody
 import com.bounswe.purposefulcommunity.R
 import kotlinx.android.synthetic.main.activity_explore.*
+import kotlinx.android.synthetic.main.activity_show_template.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,10 +36,14 @@ class ShowTemplateActivity : AppCompatActivity() {
         actionBar.setDisplayHomeAsUpEnabled(true)
 
         if(tempID!!.isNotEmpty()){
-            getMyCommunities(tempID)
+            getFields(tempID)
+        }
+
+        fabAddInst.setOnClickListener {
+
         }
     }
-    private fun getMyCommunities(id: String){
+    private fun getFields(id: String){
         val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
         val tokenV = res.getString("token", "Data Not Found!")
         val purApp = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
@@ -65,24 +70,24 @@ class ShowTemplateActivity : AppCompatActivity() {
                     val rv = findViewById<RecyclerView>(R.id.recyclerViewFields)
                     rv.layoutManager = LinearLayoutManager(this@ShowTemplateActivity, RecyclerView.VERTICAL, false)
 
-                    val users = ArrayList<AddTempBody>()
+                    val fields = ArrayList<AddTempBody>()
 
-                    var adapter = TempAdapter(this@ShowTemplateActivity, users)
+                    var adapter = FieldsAdapter(this@ShowTemplateActivity, fields)
                     rv.adapter = adapter
 
                     val res: List<GetFieldsBody>? = response.body()
 
                     for(i in res.orEmpty()){
-                        users.add(AddTempBody(i.fieldType, i.isRequired, i.name))
+                        fields.add(AddTempBody(i.fieldType, i.isRequired, i.name))
                     }
-                    if(users.isEmpty()){
-                        Toast.makeText(this@ShowTemplateActivity, "No community is found!", Toast.LENGTH_SHORT).show()
+                    if(fields.isEmpty()){
+                        Toast.makeText(this@ShowTemplateActivity, "No field is found!", Toast.LENGTH_SHORT).show()
                     }
                     //runLayoutAnimation()
                     adapter.notifyDataSetChanged()
 
                 } else {
-                    Toast.makeText(this@ShowTemplateActivity, "Your communities cannot retrieve!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ShowTemplateActivity, "Your fields cannot retrieve!", Toast.LENGTH_SHORT).show()
                 }
             }
         })

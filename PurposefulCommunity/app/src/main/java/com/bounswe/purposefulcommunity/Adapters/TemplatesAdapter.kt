@@ -41,7 +41,7 @@ class TemplatesAdapter(val context : Context, val userList: ArrayList<ShowTempBo
         }
         fun setData(id : String, name : String, createdDate : String,  position: Int){
             itemView.txtTempName.text = name
-            val newDate = "Created: " + createdDate
+            val newDate = "Created: $createdDate"
             itemView.txtCreatedDate.text = newDate
 
             this.currentSearchShow = ShowTempBody(id, createdDate, name)
