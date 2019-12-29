@@ -8,7 +8,6 @@ import com.evteam.purposefulcommunitycloud.model.entity.DataInstance;
 import com.evteam.purposefulcommunitycloud.model.entity.DataTemplate;
 import com.evteam.purposefulcommunitycloud.model.resource.DataInstanceResource;
 import com.evteam.purposefulcommunitycloud.model.resource.DataTemplateResource;
-import com.evteam.purposefulcommunitycloud.repository.CommunityRepository;
 import com.evteam.purposefulcommunitycloud.repository.DataInstanceRepository;
 import com.evteam.purposefulcommunitycloud.repository.DataTemplateRepository;
 import com.evteam.purposefulcommunitycloud.repository.UserRepository;
@@ -62,19 +61,6 @@ public class CSInstanceService {
             }
         }
         return instanceMapper.toResource(instanceRepository.save(instance));
-    }
-
-    public List<DataInstanceResource> searchByFieldNameAndValue(String fieldName, String value, UUID userId) {
-        List<DataInstance> instances = instanceRepository.searchByFieldNameAndValue(fieldName, value);
-//        List<DataInstance> instances=entityManager.createNativeQuery("SELECT * FROM data_instance WHERE instance_fields ->> ':fieldName' like '%:value%'")
-//                .setParameter("fieldName",fieldName)
-//                .setParameter("value",value)
-//                .getResultList();
-//        for(DataInstance instance:instances){
-//            instance.getTemplate().getCommunity().getFollowers().contains(userRepository.findUserById(userId));
-//        }
-        // TODO: 17 Ara 2019 private community'ler gelmeyecek
-        return instanceMapper.toResource(instances);
     }
 
     @Transactional
