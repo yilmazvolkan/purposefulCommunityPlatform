@@ -121,7 +121,7 @@ class CreateInstanceActivity : AppCompatActivity() {
             else if(fields[i].fieldType == "BOOLEAN"){
                 editModel.setEditTextValue("True or False")
             }
-            else if(fields[i].fieldType == "Float"){
+            else if(fields[i].fieldType == "FLOAT"){
                 editModel.setEditTextValue("Rational")
             }
             else{
@@ -144,35 +144,26 @@ class CreateInstanceActivity : AppCompatActivity() {
 
         for (i in 0 until editModelArrayList.size) {
 
-            if(editModelArrayList[i].getEditTextValue()!!.isDigitsOnly()){
-                if(fields[i].fieldType == "DECIMAL"){
-                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue()!!.toInt())
-                }
-                else if(fields[i].fieldType == "FLOAT"){
+            if(fields[i].fieldType == "FLOAT"){
+                if(editModelArrayList[i].getEditTextValue()!!.matches("-?\\d+(\\.\\d+)?".toRegex())){
                     jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue()!!.toFloat())
-                }
-                else if(fields[i].fieldType == "STRING"){
-                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
-                }
-                else{
-                    isValid = false
-                    Toast.makeText(this@CreateInstanceActivity, "Invalid input!", Toast.LENGTH_SHORT).show()
-                }
-            }
-            else if(editModelArrayList[i].getEditTextValue()!!.matches("-?\\d+(\\.\\d+)?".toRegex())){
-                if(fields[i].fieldType == "FLOAT"){
-                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue()!!.toFloat())
-                }
-                else if(fields[i].fieldType == "STRING"){
-                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
                 }
                 else{
                     isValid = false
                     Toast.makeText(this@CreateInstanceActivity, "Invalid number input!", Toast.LENGTH_SHORT).show()
                 }
             }
-            else if(editModelArrayList[i].getEditTextValue()!!.matches("[0-9]{2}:[0-9]{2}:[0-9]{2}".toRegex())){
-                if(fields[i].fieldType == "TIME" || fields[i].fieldType == "STRING"){
+            else if(fields[i].fieldType == "DECIMAL"){
+                if(editModelArrayList[i].getEditTextValue()!!.isDigitsOnly()){
+                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue()!!.toInt())
+                }
+                else{
+                    isValid = false
+                    Toast.makeText(this@CreateInstanceActivity, "Invalid number input!", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else if(fields[i].fieldType == "TIME"){
+                if(editModelArrayList[i].getEditTextValue()!!.matches("[0-9]{2}:[0-9]{2}:[0-9]{2}".toRegex())){
                     jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
                 }
                 else{
@@ -180,8 +171,8 @@ class CreateInstanceActivity : AppCompatActivity() {
                     Toast.makeText(this@CreateInstanceActivity, "Invalid time input!", Toast.LENGTH_SHORT).show()
                 }
             }
-            else if(editModelArrayList[i].getEditTextValue()!!.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}".toRegex())){
-                if(fields[i].fieldType == "DATE" || fields[i].fieldType == "STRING"){
+            else if(fields[i].fieldType == "DATE"){
+                if(editModelArrayList[i].getEditTextValue()!!.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}".toRegex())){
                     jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
                 }
                 else{
@@ -189,8 +180,8 @@ class CreateInstanceActivity : AppCompatActivity() {
                     Toast.makeText(this@CreateInstanceActivity, "Invalid date input!", Toast.LENGTH_SHORT).show()
                 }
             }
-            else if(editModelArrayList[i].getEditTextValue()!!.matches("[0-9]{2}-[0-9]{2}-[0-9]{4}T[0-9]{2}:[0-9]{2}:[0-9]{2}".toRegex())){
-                if(fields[i].fieldType == "DATE_TIME" || fields[i].fieldType == "STRING"){
+            else if(fields[i].fieldType == "DATE_TIME"){
+                if(editModelArrayList[i].getEditTextValue()!!.matches("[0-9]{2}-[0-9]{2}-[0-9]{4}T[0-9]{2}:[0-9]{2}:[0-9]{2}".toRegex())){
                     jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
                 }
                 else{
@@ -198,17 +189,15 @@ class CreateInstanceActivity : AppCompatActivity() {
                     Toast.makeText(this@CreateInstanceActivity, "Invalid date/time input!", Toast.LENGTH_SHORT).show()
                 }
             }
-            else if(editModelArrayList[i].getEditTextValue()!!.equals("true", true)
-                        || editModelArrayList[i].getEditTextValue()!!.equals("false", true)){
-                if(fields[i].fieldType == "BOOLEAN"){
+            else if(fields[i].fieldType == "BOOLEAN"){
+                if(editModelArrayList[i].getEditTextValue()!!.equals("true", true)
+                    || editModelArrayList[i].getEditTextValue()!!.equals("false", true)){
+
                     jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue()!!.toBoolean())
-                }
-                else if(fields[i].fieldType == "STRING"){
-                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
                 }
                 else{
                     isValid = false
-                    Toast.makeText(this@CreateInstanceActivity, "Invalid input!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CreateInstanceActivity, "Invalid date/time input!", Toast.LENGTH_SHORT).show()
                 }
             }
             else{
