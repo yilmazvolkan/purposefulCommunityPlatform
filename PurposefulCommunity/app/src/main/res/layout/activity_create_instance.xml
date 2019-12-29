@@ -6,4 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.Instances.CreateInstanceActivity">
 
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewInstanceValues"
+        android:layoutAnimation="@anim/layout_animation_fall_down"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabSaveIns"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewInstanceValues"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerViewInstanceValues"
+        app:srcCompat="@drawable/ic_add_white_24dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
