@@ -41,13 +41,15 @@ public class CSDataService {
     @Transactional
     public DataTemplateResource createCSDTemplate(DataTemplateDto templateDto, UUID userId) {
         JSONObject contextOfFields=new JSONObject();
+        contextOfFields.put("xsd","http://www.w3.org/2001/XMLSchema#");
         JSONObject templatesNameId= new JSONObject();
         if(templateDto.getTemplatesNameTemplateId()!=null){
             for (Map.Entry<String,UUID> entry:CollectionUtils.emptyIfNull(templateDto.getTemplatesNameTemplateId().entrySet())){
                 DataTemplate template=templateRepository.findDataTemplateById(entry.getValue());
                 JSONObject templateContext=template.getInstanceContext();
                 templateContext.remove("xsd");
-                contextOfFields.put(entry.getKey(),templateContext);
+                contextOfFields.putAll(templateContext);
+                contextOfFields.put(entry.getKey(),"xsd:ItemList");
                 templatesNameId.put(entry.getKey(),entry.getValue().toString());
             }
         }
@@ -55,7 +57,6 @@ public class CSDataService {
         dataTemplate.setTemplatesNameId(templatesNameId);
         dataTemplate.setCreator(userRepository.findUserById(userId));
         dataTemplate.setCommunity(communityRepository.findCommunityById(templateDto.getCommunityId()));
-        contextOfFields.put("xsd","http://www.w3.org/2001/XMLSchema#");
         for (DataField field : CollectionUtils.emptyIfNull(dataTemplate.getFields())) {
             field.setTemplate(dataTemplate);
             fieldRepository.save(field);
