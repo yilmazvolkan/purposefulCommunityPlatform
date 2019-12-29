@@ -7,6 +7,7 @@ import org.json.simple.JSONObject;
 
 import javax.annotation.Resource;
 import java.time.ZonedDateTime;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -30,4 +31,7 @@ public class DataTemplateResource {
     private Set<DataFieldResource> fieldResources;
 
     private JSONObject instanceContext;
+
+    private JSONObject templatesNameId;
+
 }

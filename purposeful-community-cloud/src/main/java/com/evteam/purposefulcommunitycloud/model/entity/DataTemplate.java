@@ -10,8 +10,7 @@ import org.json.simple.JSONObject;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Emir Gökdemir
@@ -31,7 +30,7 @@ public class DataTemplate extends AbstractEntity {
     private Community community;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "creator_id")
     private User creator;
 
     @OneToMany(mappedBy = "template")
@@ -40,4 +39,8 @@ public class DataTemplate extends AbstractEntity {
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     private JSONObject instanceContext;
+
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
+    private JSONObject templatesNameId;
 }
