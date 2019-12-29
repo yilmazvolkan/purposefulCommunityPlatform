@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -69,12 +68,6 @@ public class CSInstanceController {
         } catch (IllegalAccessException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
-    }
-
-    @ApiOperation(value = "Search data instances with field name,value and token ",response = DataInstanceResource.class, responseContainer = "List")
-    @GetMapping("/search/name-value")
-    public ResponseEntity<List<DataInstanceResource>> searchByFieldsNameAndValue(@RequestHeader String token, @RequestParam String name, @RequestParam String value) {
-        return ResponseEntity.ok(service.searchByFieldNameAndValue(name, value, jwtResolver.getIdFromToken(token)));
     }
 
 }
