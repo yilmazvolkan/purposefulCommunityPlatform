@@ -31,8 +31,8 @@ import java.net.ConnectException
 class TemplateActivity : AppCompatActivity() {
 
     private val templates = ArrayList<AddTempBody>()
-    private var types = arrayOf("Text", "Boolean", "Decimal", "Rational", "Duration", "Date-Time", "Date", "Time")
-    private var w3ctypes = arrayOf("STRING", "BOOLEAN", "DECIMAL", "FLOAT", "DURATION", "DATE_TIME", "DATE", "TIME")
+    private var types = arrayOf("Text", "Boolean", "Decimal", "Rational", "Date-Time", "Date", "Time")
+    private var w3ctypes = arrayOf("STRING", "BOOLEAN", "DECIMAL", "FLOAT", "DATE_TIME", "DATE", "TIME")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -108,6 +108,14 @@ interface ApiInterface {
         @Body info: CreateInstanceBody,
         @Header("token") token: String
     ): retrofit2.Call<ResponseBody>
+
+    // Get Community Instance List request
+    @Headers("Content-Type:application/json")
+    @GET("/data-instance/get/community-instances/{community-id}")
+    fun getAllInstances(
+        @Path("community-id") id: String,
+        @Header("token") token: String
+    ): retrofit2.Call<List<GetFieldsBody>>
 }
 class RetrofitInstance {
     companion object {

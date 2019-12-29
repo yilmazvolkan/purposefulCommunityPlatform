@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.isDigitsOnly
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bounswe.mercatus.API.ApiInterface
@@ -72,11 +73,6 @@ class CreateInstanceActivity : AppCompatActivity() {
                     val res: List<GetFieldsBody>? = response.body()
 
                     val fields = ArrayList<AddTempBody>()
-                    editModelArrayList = populateList(res!!.size)
-
-                    var adapter = InstanceAdapter(this@CreateInstanceActivity, fields, editModelArrayList)
-                    rv.adapter = adapter
-
 
                     for(i in res.orEmpty()){
                         fields.add(AddTempBody(i.fieldType, i.isRequired, i.name))
@@ -84,13 +80,14 @@ class CreateInstanceActivity : AppCompatActivity() {
                     if(fields.isEmpty()){
                         Toast.makeText(this@CreateInstanceActivity, "No field is found!", Toast.LENGTH_SHORT).show()
                     }
+                    editModelArrayList = populateList(fields.size, fields)
+
+                    var adapter = InstanceAdapter(this@CreateInstanceActivity, fields, editModelArrayList)
+                    rv.adapter = adapter
                     //runLayoutAnimation()
                     adapter.notifyDataSetChanged()
 
                     fabSaveIns.setOnClickListener {
-                        for (i in 0 until editModelArrayList.size) {
-                            Toast.makeText(this@CreateInstanceActivity, editModelArrayList[i].getEditTextValue(), Toast.LENGTH_SHORT).show()
-                        }
                         createInstance(fields, id)
                     }
 
@@ -100,16 +97,38 @@ class CreateInstanceActivity : AppCompatActivity() {
             }
         })
     }
-    private fun populateList(size : Int): ArrayList<EditModel> {
+    private fun populateList(size: Int, fields : ArrayList<AddTempBody>): ArrayList<EditModel> {
 
         val list = ArrayList<EditModel>()
 
-        for (i in 1..size) {
+        for (i in 0 until size) {
             val editModel = EditModel()
-            editModel.setEditTextValue(i.toString())
+            if(fields[i].fieldType == "TIME"){
+                editModel.setEditTextValue("hh:mm:ss")
+            }
+            else if(fields[i].fieldType == "DATE"){
+                editModel.setEditTextValue("yyyy:MM:dd")
+            }
+            else if(fields[i].fieldType == "DATE_TIME"){
+                editModel.setEditTextValue("yyyy:MM:ddThh:mm:ss")
+            }
+            else if(fields[i].fieldType == "DECIMAL"){
+                editModel.setEditTextValue("Number")
+            }
+            else if(fields[i].fieldType == "STRING"){
+                editModel.setEditTextValue("Text")
+            }
+            else if(fields[i].fieldType == "BOOLEAN"){
+                editModel.setEditTextValue("True or False")
+            }
+            else if(fields[i].fieldType == "Float"){
+                editModel.setEditTextValue("Rational")
+            }
+            else{
+                editModel.setEditTextValue("Value")
+            }
             list.add(editModel)
         }
-
         return list
     }
 
@@ -121,37 +140,111 @@ class CreateInstanceActivity : AppCompatActivity() {
 
         val jsonRes = JsonObject()
 
-        for (i in 0 until editModelArrayList.size) {
-            jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
-        }
-        val instanceBody = CreateInstanceBody(jsonRes, templateId)
+        var isValid = true
 
-        purApp.createInstance(instanceBody, tokenV!!).enqueue(object : Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                if(t.cause is ConnectException){
-                    Toast.makeText(
-                        this@CreateInstanceActivity,
-                        "Check your connection!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+        for (i in 0 until editModelArrayList.size) {
+
+            if(editModelArrayList[i].getEditTextValue()!!.isDigitsOnly()){
+                if(fields[i].fieldType == "DECIMAL"){
+                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue()!!.toInt())
+                }
+                else if(fields[i].fieldType == "FLOAT"){
+                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue()!!.toFloat())
+                }
+                else if(fields[i].fieldType == "STRING"){
+                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
                 }
                 else{
-                    Toast.makeText(
-                        this@CreateInstanceActivity,
-                        "Something bad happened!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    isValid = false
+                    Toast.makeText(this@CreateInstanceActivity, "Invalid input!", Toast.LENGTH_SHORT).show()
                 }
             }
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.code() == 200) {
-                    Toast.makeText(this@CreateInstanceActivity, "Instance is created successfully!", Toast.LENGTH_SHORT).show()
-                    onSupportNavigateUp()
-                } else {
-                    Toast.makeText(this@CreateInstanceActivity, "Instance create is failed!", Toast.LENGTH_SHORT).show()
+            else if(editModelArrayList[i].getEditTextValue()!!.matches("-?\\d+(\\.\\d+)?".toRegex())){
+                if(fields[i].fieldType == "FLOAT"){
+                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue()!!.toFloat())
+                }
+                else if(fields[i].fieldType == "STRING"){
+                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
+                }
+                else{
+                    isValid = false
+                    Toast.makeText(this@CreateInstanceActivity, "Invalid number input!", Toast.LENGTH_SHORT).show()
                 }
             }
-        })
+            else if(editModelArrayList[i].getEditTextValue()!!.matches("[0-9]{2}:[0-9]{2}:[0-9]{2}".toRegex())){
+                if(fields[i].fieldType == "TIME" || fields[i].fieldType == "STRING"){
+                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
+                }
+                else{
+                    isValid = false
+                    Toast.makeText(this@CreateInstanceActivity, "Invalid time input!", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else if(editModelArrayList[i].getEditTextValue()!!.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}".toRegex())){
+                if(fields[i].fieldType == "DATE" || fields[i].fieldType == "STRING"){
+                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
+                }
+                else{
+                    isValid = false
+                    Toast.makeText(this@CreateInstanceActivity, "Invalid date input!", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else if(editModelArrayList[i].getEditTextValue()!!.matches("[0-9]{2}-[0-9]{2}-[0-9]{4}T[0-9]{2}:[0-9]{2}:[0-9]{2}".toRegex())){
+                if(fields[i].fieldType == "DATE_TIME" || fields[i].fieldType == "STRING"){
+                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
+                }
+                else{
+                    isValid = false
+                    Toast.makeText(this@CreateInstanceActivity, "Invalid date/time input!", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else if(editModelArrayList[i].getEditTextValue()!!.equals("true", true)
+                        || editModelArrayList[i].getEditTextValue()!!.equals("false", true)){
+                if(fields[i].fieldType == "BOOLEAN"){
+                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue()!!.toBoolean())
+                }
+                else if(fields[i].fieldType == "STRING"){
+                    jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
+                }
+                else{
+                    isValid = false
+                    Toast.makeText(this@CreateInstanceActivity, "Invalid input!", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else{
+                jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
+            }
+        }
+        if(isValid){
+            val instanceBody = CreateInstanceBody(jsonRes, templateId)
+
+            purApp.createInstance(instanceBody, tokenV!!).enqueue(object : Callback<ResponseBody> {
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    if(t.cause is ConnectException){
+                        Toast.makeText(
+                            this@CreateInstanceActivity,
+                            "Check your connection!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    else{
+                        Toast.makeText(
+                            this@CreateInstanceActivity,
+                            "Something bad happened!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.code() == 200) {
+                        Toast.makeText(this@CreateInstanceActivity, "Instance is created successfully!", Toast.LENGTH_SHORT).show()
+                        onSupportNavigateUp()
+                    } else {
+                        Toast.makeText(this@CreateInstanceActivity, "Instance create is failed!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+        }
     }
     override fun onSupportNavigateUp(): Boolean {
         finish()

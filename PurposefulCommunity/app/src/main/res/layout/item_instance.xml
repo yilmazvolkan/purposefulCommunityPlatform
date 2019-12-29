@@ -25,6 +25,7 @@
 
                 <EditText
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:theme="@style/editText"
                     android:hint="@string/value"
                     android:id="@+id/txtInstanceValue"
                     android:paddingStart="4dp"
