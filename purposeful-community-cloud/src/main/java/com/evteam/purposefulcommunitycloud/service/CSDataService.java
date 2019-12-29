@@ -41,8 +41,19 @@ public class CSDataService {
     @Transactional
     public DataTemplateResource createCSDTemplate(DataTemplateDto templateDto, UUID userId) {
         JSONObject contextOfFields=new JSONObject();
+        JSONObject templatesNameId= new JSONObject();
+        if(templateDto.getTemplatesNameTemplateId()!=null){
+            for (Map.Entry<String,UUID> entry:CollectionUtils.emptyIfNull(templateDto.getTemplatesNameTemplateId().entrySet())){
+                DataTemplate template=templateRepository.findDataTemplateById(entry.getValue());
+                JSONObject templateContext=template.getInstanceContext();
+                templateContext.remove("xsd");
+                contextOfFields.put(entry.getKey(),templateContext);
+                templatesNameId.put(entry.getKey(),entry.getValue().toString());
+            }
+        }
         DataTemplate dataTemplate = templateMapper.toEntity(templateDto);
-        dataTemplate.setCreator(userRepository.findUserById(templateDto.getUserId()));
+        dataTemplate.setTemplatesNameId(templatesNameId);
+        dataTemplate.setCreator(userRepository.findUserById(userId));
         dataTemplate.setCommunity(communityRepository.findCommunityById(templateDto.getCommunityId()));
         contextOfFields.put("xsd","http://www.w3.org/2001/XMLSchema#");
         for (DataField field : CollectionUtils.emptyIfNull(dataTemplate.getFields())) {

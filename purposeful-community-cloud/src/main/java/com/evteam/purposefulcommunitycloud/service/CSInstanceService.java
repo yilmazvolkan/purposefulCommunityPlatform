@@ -51,7 +51,6 @@ public class CSInstanceService {
         instance.setCreator(userRepository.findUserById(userId));
         DataTemplate template = templateRepository.findDataTemplateById(dto.getTemplateId());
         instance.setTemplate(template);
-
         Map<String, Object> instanceFields = instance.getInstanceFields();
         instance.getInstanceFields().put("@context", template.getInstanceContext());
         Set<String> keySet = instanceFields.keySet();
