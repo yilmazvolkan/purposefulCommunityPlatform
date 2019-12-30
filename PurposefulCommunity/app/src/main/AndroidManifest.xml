@@ -13,7 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Fragments.Templates.SelectTempActivity"></activity>
         <activity android:name=".Fragments.Instances.CreateInstanceActivity" />
         <activity android:name=".Fragments.Instances.ShowTemplateActivity" />
         <activity android:name=".Fragments.Templates.TemplateActivity" />
