@@ -1,6 +1,7 @@
 package com.evteam.purposefulcommunitycloud.service;
 
 import com.evteam.purposefulcommunitycloud.mapper.DataInstanceMapper;
+import com.evteam.purposefulcommunitycloud.model.FieldNameValueType;
 import com.evteam.purposefulcommunitycloud.model.dto.DataInstanceDto;
 import com.evteam.purposefulcommunitycloud.model.entity.Community;
 import com.evteam.purposefulcommunitycloud.model.entity.DataField;
@@ -11,7 +12,9 @@ import com.evteam.purposefulcommunitycloud.model.resource.DataTemplateResource;
 import com.evteam.purposefulcommunitycloud.repository.DataInstanceRepository;
 import com.evteam.purposefulcommunitycloud.repository.DataTemplateRepository;
 import com.evteam.purposefulcommunitycloud.repository.UserRepository;
+import com.evteam.purposefulcommunitycloud.utils.FieldNameValueTypeUtil;
 import org.apache.commons.collections4.CollectionUtils;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
@@ -45,6 +48,9 @@ public class CSInstanceService {
     @Autowired
     private DataInstanceMapper instanceMapper;
 
+    @Autowired
+    private FieldNameValueTypeUtil fieldNameValueTypeUtil;
+
 
     public DataInstanceResource createCSDInstance(DataInstanceDto dto, UUID userId) {
         DataInstance instance = instanceMapper.toEntity(dto);
@@ -59,6 +65,9 @@ public class CSInstanceService {
                 throw new IllegalArgumentException(REQUIRED_FIELDS_CANNOT_BE_BLANK);
             }
         }
+        List<FieldNameValueType> list=fieldNameValueTypeUtil.getFieldNameValueType(instance);
+        instance.setFieldNameValueTypes(new JSONObject());
+        instance.getFieldNameValueTypes().put("structure",list);
         return instanceMapper.toResource(instanceRepository.save(instance));
     }
 

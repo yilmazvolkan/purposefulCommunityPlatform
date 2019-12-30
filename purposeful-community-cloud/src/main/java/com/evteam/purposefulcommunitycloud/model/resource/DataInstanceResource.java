@@ -1,6 +1,5 @@
 package com.evteam.purposefulcommunitycloud.model.resource;
 
-import com.evteam.purposefulcommunitycloud.model.entity.DataTemplate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,4 +24,5 @@ public class DataInstanceResource {
     private UserResource creator;
     private JSONObject instanceFields;
     private DataTemplateResource template;
+    private JSONObject fieldNameValueTypes;
 }
