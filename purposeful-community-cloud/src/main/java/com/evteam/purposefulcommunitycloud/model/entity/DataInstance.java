@@ -31,4 +31,8 @@ public class DataInstance extends AbstractEntity {
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     private JSONObject instanceFields;
+
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
+    private JSONObject fieldNameValueTypes;
 }
