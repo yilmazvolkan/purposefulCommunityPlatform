@@ -23,6 +23,11 @@
         <item name="android:textSize">10sp</item>
     </style>
 
+    <style name="error_appearance_black" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
     <style name="editText" parent="AppTheme">
         <item name="colorAccent">@color/colorPrimary</item>
     </style>

@@ -115,7 +115,7 @@ interface ApiInterface {
     fun getAllInstances(
         @Path("community-id") id: String,
         @Header("token") token: String
-    ): retrofit2.Call<List<GetFieldsBody>>
+    ): retrofit2.Call<List<GetInstanceBody>>
 }
 class RetrofitInstance {
     companion object {

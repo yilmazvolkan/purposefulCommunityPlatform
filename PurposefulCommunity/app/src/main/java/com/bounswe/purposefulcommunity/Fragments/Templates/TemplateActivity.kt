@@ -6,10 +6,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +21,7 @@ import com.bounswe.purposefulcommunity.Adapters.TempAdapter
 import com.bounswe.purposefulcommunity.Fragments.Community.CommunityActivity
 import com.bounswe.purposefulcommunity.Models.AddTempBody
 import com.bounswe.purposefulcommunity.Models.CreateTemplateBody
+import com.bounswe.purposefulcommunity.Models.GetTempBody
 import com.bounswe.purposefulcommunity.R
 import kotlinx.android.synthetic.main.activity_template.*
 import kotlinx.android.synthetic.main.item_show_temp.*
@@ -31,11 +34,16 @@ import java.net.ConnectException
 class TemplateActivity : AppCompatActivity() {
 
     private val templates = ArrayList<AddTempBody>()
+    private var adapter = TempAdapter(this@TemplateActivity, templates)
     private var types = arrayOf("Text", "Boolean", "Decimal", "Rational", "Date-Time", "Date", "Time")
     private var w3ctypes = arrayOf("STRING", "BOOLEAN", "DECIMAL", "FLOAT", "DATE_TIME", "DATE", "TIME")
+    private var isFABOpen = false
+
+    private val getTemplates = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         setContentView(R.layout.activity_template)
 
         val actionBar = supportActionBar
@@ -44,12 +52,20 @@ class TemplateActivity : AppCompatActivity() {
 
         val rv = findViewById<RecyclerView>(R.id.recyclerViewShowTemplates)
         rv.layoutManager = LinearLayoutManager(this@TemplateActivity, RecyclerView.VERTICAL, false)
-        var adapter = TempAdapter(this@TemplateActivity, templates)
         rv.adapter = adapter
 
         val color = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
 
+        val communityID = intent.getStringExtra("comm_temp_id")
+        if(communityID != " "){
+            getTemplates(communityID!!)
+        }
+
         fabAddTemp.setOnClickListener {
+            animateFAB()
+        }
+        fabFromGeneric.setOnClickListener {
+
             val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, types)
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             val dialogBuilder = AlertDialog.Builder(this)
@@ -60,7 +76,7 @@ class TemplateActivity : AppCompatActivity() {
             dialogBuilder.setView(editView)
 
             dialogBuilder.setButton(AlertDialog.BUTTON_POSITIVE, "Add", DialogInterface.OnClickListener{
-                    dialog, id ->
+                    dialog, _ ->
                 val name = dialogBuilder.editPropertyName.text
                 val type = w3ctypes[dialogBuilder.typeSpinner.selectedItemPosition]
                 if(name.toString().isEmpty()){
@@ -73,7 +89,42 @@ class TemplateActivity : AppCompatActivity() {
                 }
             })
             dialogBuilder.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", DialogInterface.OnClickListener {
-                    dialog, id ->
+                    dialog, _ ->
+                dialog.dismiss()
+
+            })
+            dialogBuilder.show()
+            dialogBuilder.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(color)
+            dialogBuilder.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(color)
+            dialogBuilder.typeSpinner.adapter = aa
+        }
+        fabFromTemp.setOnClickListener {
+
+            val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, getTemplates)
+            aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            val dialogBuilder = AlertDialog.Builder(this)
+                .setTitle("Add Data")
+                .setCancelable(true)
+                .create()
+            val editView = layoutInflater.inflate(R.layout.item_show_temp, null)
+            dialogBuilder.setView(editView)
+
+            dialogBuilder.setButton(AlertDialog.BUTTON_POSITIVE, "Add", DialogInterface.OnClickListener{
+                    dialog, _ ->
+                val name = dialogBuilder.editPropertyName.text
+                val type = getTemplates[dialogBuilder.typeSpinner.selectedItemPosition]
+                if(name.toString().isEmpty()){
+                    Toast.makeText(this@TemplateActivity, "Name cannot be empty!", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    templates.add(AddTempBody(type, true, name.toString()))
+                    adapter.notifyDataSetChanged()
+                    dialog.dismiss()
+                }
+            })
+            dialogBuilder.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", DialogInterface.OnClickListener {
+                    dialog, _ ->
                 dialog.dismiss()
 
             })
@@ -97,7 +148,9 @@ class TemplateActivity : AppCompatActivity() {
                     val communityID = intent.getStringExtra("comm_temp_id")
                     val communityName = intent.getStringExtra("comm_temp_name")
 
-                    createTemplate(communityID!!, editTempName.text.toString(), communityName!!)
+                    if(communityID != " " && communityName != " "){
+                        createTemplate(communityID!!, editTempName.text.toString(), communityName!!)
+                    }
                 }
             }
             true
@@ -152,8 +205,69 @@ class TemplateActivity : AppCompatActivity() {
                     intent.putExtra("comm_id", communityId)
                     intent.putExtra("comm_name", communityName)
                     startActivity(intent)
+                    finish()
                 } else {
                     Toast.makeText(this@TemplateActivity, "Template create is failed!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+    private fun animateFAB(){
+        if(isFABOpen){
+            val fabAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_rotate_anticlock)
+            val fabAnimation2 = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_close)
+            fabAddTemp.startAnimation(fabAnimation)
+            fabFromTemp.startAnimation(fabAnimation2)
+            fabFromGeneric.startAnimation(fabAnimation2)
+            fabFromTemp.isClickable = false
+            fabFromGeneric.isClickable = false
+            isFABOpen = false
+        }
+        else{
+            val fabAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_rotate_clock)
+            val fabAnimation2 = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_open)
+            fabAddTemp.startAnimation(fabAnimation)
+            fabFromTemp.startAnimation(fabAnimation2)
+            fabFromGeneric.startAnimation(fabAnimation2)
+            fabFromTemp.isClickable = true
+            fabFromGeneric.isClickable = true
+            isFABOpen = true
+        }
+    }
+    private fun getTemplates(communityID: String){
+        val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
+        val tokenV = res.getString("token", "Data Not Found!")
+        val purApp = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
+
+        purApp.getTemplates(communityID, tokenV!!).enqueue(object : Callback<List<GetTempBody>> {
+            override fun onFailure(call: Call<List<GetTempBody>>, t: Throwable) {
+                if(t.cause is ConnectException){
+                    Toast.makeText(
+                        this@TemplateActivity,
+                        "Check your connection!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else{
+                    Toast.makeText(
+                        this@TemplateActivity,
+                        "Something bad happened!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            override fun onResponse(call: Call<List<GetTempBody>>, response: Response<List<GetTempBody>>) {
+                if (response.code() == 200) {
+                    val res: List<GetTempBody>? = response.body()
+                    for(i in res.orEmpty()){
+                        getTemplates.add(i.name)
+                    }
+                    if(getTemplates.isEmpty()){
+                        Toast.makeText(this@TemplateActivity, "No template is found!", Toast.LENGTH_SHORT).show()
+                    }
+
+                } else {
+                    Toast.makeText(this@TemplateActivity, "Templates cannot retrieve!", Toast.LENGTH_SHORT).show()
                 }
             }
         })

@@ -12,11 +12,16 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
+import com.bounswe.purposefulcommunity.Adapters.TemplatesAdapter
 import com.bounswe.purposefulcommunity.Fragments.Instances.ShowTemplatesActivity
 import com.bounswe.purposefulcommunity.Fragments.Templates.TemplateActivity
+import com.bounswe.purposefulcommunity.Models.GetInstanceBody
 import com.bounswe.purposefulcommunity.Models.GetOneCommBody
+import com.bounswe.purposefulcommunity.Models.ShowTempBody
 import com.bounswe.purposefulcommunity.R
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_community.*
@@ -65,12 +70,16 @@ class CommunityActivity : AppCompatActivity() {
             val intent = Intent(this@CommunityActivity, TemplateActivity::class.java)
             intent.putExtra("comm_temp_id", communityID)
             intent.putExtra("comm_temp_name", communityName)
+            intent.putExtra("type_new_name", " ")
+            intent.putExtra("type_name", " ")
             startActivity(intent)
             overridePendingTransition(
                 R.anim.slide_in_right,
                 R.anim.slide_out_left
             )
         }
+        getInstances(communityID)
+
         add_temp.isClickable = false
     }
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
@@ -275,6 +284,57 @@ class CommunityActivity : AppCompatActivity() {
             Log.e(TAG, e.message, e)
         }
     }*/
+
+    private fun getInstances(communityID: String){
+        val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
+        val tokenV = res.getString("token", "Data Not Found!")
+        val purApp = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
+
+        purApp.getAllInstances(communityID, tokenV!!).enqueue(object : Callback<List<GetInstanceBody>> {
+            override fun onFailure(call: Call<List<GetInstanceBody>>, t: Throwable) {
+                if(t.cause is ConnectException){
+                    Toast.makeText(
+                        this@CommunityActivity,
+                        "Check your connection!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else{
+                    Toast.makeText(
+                        this@CommunityActivity,
+                        "Something bad happened!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            override fun onResponse(call: Call<List<GetInstanceBody>>, response: Response<List<GetInstanceBody>>) {
+                if (response.code() == 200) {
+                    val rv = findViewById<RecyclerView>(R.id.recyclerViewCommunityInstances)
+                    rv.layoutManager = LinearLayoutManager(this@CommunityActivity, RecyclerView.VERTICAL, false)
+
+                    val users = ArrayList<ShowTempBody>()
+
+                    var adapter = TemplatesAdapter(this@CommunityActivity, users)
+                    rv.adapter = adapter
+
+                    val res: List<GetInstanceBody>? = response.body()
+
+                    for(i in res.orEmpty()){
+                        //users.add(ShowTempBody(i.id, i.createdDate, i.instanceFields.toString()))
+                        users.add(ShowTempBody(i.id, i.createdDate, i.instanceFields.toString()))
+                    }
+                    if(users.isEmpty()){
+                        Toast.makeText(this@CommunityActivity, "No instance is found!", Toast.LENGTH_SHORT).show()
+                    }
+                    adapter.notifyDataSetChanged()
+
+
+                } else {
+                    Toast.makeText(this@CommunityActivity, "Instances cannot retrieve!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true

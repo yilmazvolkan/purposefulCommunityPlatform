@@ -34,6 +34,7 @@
     <string name="property_type">Property Type</string>
     <string name="create">Create</string>
     <string name="title_activity_enter_templates">Create Type</string>
+    <string name="pick_type">Pick Type</string>
 
     <string name="about">About</string>
     <string name="join">Join</string>
