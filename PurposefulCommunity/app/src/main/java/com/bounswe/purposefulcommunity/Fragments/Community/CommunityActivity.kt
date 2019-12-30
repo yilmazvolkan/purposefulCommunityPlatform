@@ -70,8 +70,6 @@ class CommunityActivity : AppCompatActivity() {
             val intent = Intent(this@CommunityActivity, TemplateActivity::class.java)
             intent.putExtra("comm_temp_id", communityID)
             intent.putExtra("comm_temp_name", communityName)
-            intent.putExtra("type_new_name", " ")
-            intent.putExtra("type_name", " ")
             startActivity(intent)
             overridePendingTransition(
                 R.anim.slide_in_right,

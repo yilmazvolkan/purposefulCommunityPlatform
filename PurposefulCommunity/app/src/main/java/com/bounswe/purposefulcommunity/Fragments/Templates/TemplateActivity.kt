@@ -19,10 +19,7 @@ import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
 import com.bounswe.purposefulcommunity.Adapters.TempAdapter
 import com.bounswe.purposefulcommunity.Fragments.Community.CommunityActivity
-import com.bounswe.purposefulcommunity.Models.AddTempBody
-import com.bounswe.purposefulcommunity.Models.CreateTemplateBody
-import com.bounswe.purposefulcommunity.Models.GetTempBody
-import com.bounswe.purposefulcommunity.Models.OneTempBody
+import com.bounswe.purposefulcommunity.Models.*
 import com.bounswe.purposefulcommunity.R
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_template.*
@@ -35,16 +32,14 @@ import java.net.ConnectException
 
 class TemplateActivity : AppCompatActivity() {
 
-    private val templates = ArrayList<AddTempBody>()
-    private val templatesToSend = ArrayList<AddTempBody>()
+    private val templates = ArrayList<ShowTempUlBody>()
     private var adapter = TempAdapter(this@TemplateActivity, templates)
     private var types = arrayOf("Text", "Boolean", "Decimal", "Rational", "Date-Time", "Date", "Time")
     private var w3ctypes = arrayOf("STRING", "BOOLEAN", "DECIMAL", "FLOAT", "DATE_TIME", "DATE", "TIME")
     private var isFABOpen = false
 
-    private val getTemplates = ArrayList<String>()
+    private val getTemplate = ArrayList<String>()
     private val getTemplatesID = ArrayList<OneTempBody>()
-    private val selectedTemplates = ArrayList<OneTempBody>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,25 +74,21 @@ class TemplateActivity : AppCompatActivity() {
             val editView = layoutInflater.inflate(R.layout.item_show_temp, null)
             dialogBuilder.setView(editView)
 
-            dialogBuilder.setButton(AlertDialog.BUTTON_POSITIVE, "Add", DialogInterface.OnClickListener{
-                    dialog, _ ->
+            dialogBuilder.setButton(AlertDialog.BUTTON_POSITIVE, "Add") { dialog, _ ->
                 val name = dialogBuilder.editPropertyName.text
                 val type = w3ctypes[dialogBuilder.typeSpinner.selectedItemPosition]
                 if(name.toString().isEmpty()){
                     Toast.makeText(this@TemplateActivity, "Name cannot be empty!", Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    templates.add(AddTempBody(type, true, name.toString()))
-                    templatesToSend.add(AddTempBody(type, true, name.toString()))
+                } else{
+                    templates.add(ShowTempUlBody(type, true, name.toString(), "-1"))
                     adapter.notifyDataSetChanged()
                     dialog.dismiss()
                 }
-            })
-            dialogBuilder.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", DialogInterface.OnClickListener {
-                    dialog, _ ->
+            }
+            dialogBuilder.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel") { dialog, _ ->
                 dialog.dismiss()
 
-            })
+            }
             dialogBuilder.show()
             dialogBuilder.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(color)
             dialogBuilder.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(color)
@@ -105,7 +96,7 @@ class TemplateActivity : AppCompatActivity() {
         }
         fabFromTemp.setOnClickListener {
 
-            val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, getTemplates)
+            val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, getTemplate)
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
             val dialogBuilder = AlertDialog.Builder(this)
@@ -115,24 +106,20 @@ class TemplateActivity : AppCompatActivity() {
             val editView = layoutInflater.inflate(R.layout.item_show_temp, null)
             dialogBuilder.setView(editView)
 
-            dialogBuilder.setButton(AlertDialog.BUTTON_POSITIVE, "Add", DialogInterface.OnClickListener{
-                    dialog, _ ->
+            dialogBuilder.setButton(AlertDialog.BUTTON_POSITIVE, "Add") { dialog, _ ->
                 val name = dialogBuilder.editPropertyName.text
-                val type = getTemplates[dialogBuilder.typeSpinner.selectedItemPosition]
+                val type = getTemplate[dialogBuilder.typeSpinner.selectedItemPosition]
                 if(name.toString().isEmpty()){
                     Toast.makeText(this@TemplateActivity, "Name cannot be empty!", Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    templates.add(AddTempBody(type, true, name.toString()))
+                } else{
+                    templates.add(ShowTempUlBody(type, true, name.toString(), getTemplatesID[dialogBuilder.typeSpinner.selectedItemPosition].id))
                     adapter.notifyDataSetChanged()
                     dialog.dismiss()
                 }
-            })
-            dialogBuilder.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", DialogInterface.OnClickListener {
-                    dialog, _ ->
+            }
+            dialogBuilder.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel") { dialog, _ ->
                 dialog.dismiss()
-
-            })
+            }
             dialogBuilder.show()
             dialogBuilder.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(color)
             dialogBuilder.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(color)
@@ -183,10 +170,16 @@ class TemplateActivity : AppCompatActivity() {
         val userID = res.getString("user_id", "Data Not Found!")
 
         val purApp = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
-        val jsonRes = JsonObject()
 
-        for (i in 0 until selectedTemplates.size) {
-            jsonRes.addProperty(selectedTemplates[i].name, selectedTemplates[i].id)
+        val jsonRes = JsonObject()
+        val templatesToSend = ArrayList<AddTempBody>()
+        for (i in 0 until templates.size) {
+            if(templates[i].id == "-1"){
+                templatesToSend.add(AddTempBody(templates[i].fieldType, templates[i].isRequired, templates[i].name))
+            }
+            else{
+                jsonRes.addProperty(templates[i].name, templates[i].id)
+            }
         }
 
         val tempBody = CreateTemplateBody(communityId, templatesToSend, name, userID!!, jsonRes)
@@ -270,10 +263,10 @@ class TemplateActivity : AppCompatActivity() {
                 if (response.code() == 200) {
                     val res: List<GetTempBody>? = response.body()
                     for(i in res.orEmpty()){
-                        getTemplates.add(i.name)
+                        getTemplate.add(i.name) // For spinner
                         getTemplatesID.add((OneTempBody(i.name, i.id)))
                     }
-                    if(getTemplates.isEmpty()){
+                    if(getTemplate.isEmpty()){
                         Toast.makeText(this@TemplateActivity, "No template is found!", Toast.LENGTH_SHORT).show()
                     }
 

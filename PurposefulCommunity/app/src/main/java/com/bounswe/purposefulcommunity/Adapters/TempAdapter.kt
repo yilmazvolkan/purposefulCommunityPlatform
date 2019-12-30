@@ -5,15 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bounswe.purposefulcommunity.Models.AddTempBody
+import com.bounswe.purposefulcommunity.Models.ShowTempUlBody
 import com.bounswe.purposefulcommunity.R
-import kotlinx.android.synthetic.main.item_layout.view.eachItem
 import kotlinx.android.synthetic.main.template_item.view.*
 
-class TempAdapter(val context : Context, val tempList: ArrayList<AddTempBody>): RecyclerView.Adapter<TempAdapter.ViewHolder>() {
+class TempAdapter(val context : Context, val tempList: ArrayList<ShowTempUlBody>): RecyclerView.Adapter<TempAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setData(tempList[position].fieldType, tempList[position].isRequired, tempList[position].name, position)
+        holder.setData(tempList[position].fieldType, tempList[position].isRequired, tempList[position].name, tempList[position].id, position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,15 +27,10 @@ class TempAdapter(val context : Context, val tempList: ArrayList<AddTempBody>): 
     Each item in RecyclerView is called as viewholder.
      */
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        var currentSearchShow : AddTempBody? = null
+        var currentSearchShow : ShowTempUlBody? = null
         var currentPosition : Int = 0
-        init {
-            itemView.eachItem.setOnClickListener {
 
-            }
-
-        }
-        fun setData(fieldType : String, isRequired : Boolean, name : String,  position: Int){
+        fun setData(fieldType : String, isRequired : Boolean, name : String,  id: String, position: Int){
             itemView.txtTemplateName.text = name
             itemView.txtTemplateType.text = fieldType
 
@@ -47,7 +41,7 @@ class TempAdapter(val context : Context, val tempList: ArrayList<AddTempBody>): 
                     notifyItemRangeChanged(position, itemCount)
                 }
             }
-            this.currentSearchShow = AddTempBody(fieldType, isRequired, name)
+            this.currentSearchShow = ShowTempUlBody(fieldType, isRequired, name, id)
             this.currentPosition = position
         }
     }
