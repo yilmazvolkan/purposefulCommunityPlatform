@@ -70,7 +70,6 @@ class TemplateActivity : AppCompatActivity() {
             animateFAB()
         }
         fabFromGeneric.setOnClickListener {
-
             val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, types)
             aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             val dialogBuilder = AlertDialog.Builder(this)
