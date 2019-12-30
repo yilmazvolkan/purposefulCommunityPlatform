@@ -133,7 +133,14 @@ class ShowTemplateActivity : AppCompatActivity() {
                     val res: GetTempBody? = response.body()
                     val myListGeneric: List<GetFieldsBody> = res!!.fieldResources
 
-                    fields.add(AddTempBody(res.name, true, "Type Name"))
+                    var showName = ""
+                    for(i in myListGeneric) {
+                        showName += "${i.name}, "
+                    }
+                    if(showName.length > 3){
+                        showName = showName.substring(0, showName.length-2)
+                    }
+                    fields.add(AddTempBody(showName, true, res.name))
 
                     for(i in myListGeneric){
                         fields.add(AddTempBody(i.fieldType, i.isRequired, i.name))
