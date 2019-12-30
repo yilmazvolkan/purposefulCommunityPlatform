@@ -14,7 +14,9 @@ import com.bounswe.mercatus.API.RetrofitInstance
 import com.bounswe.purposefulcommunity.Adapters.FieldsAdapter
 import com.bounswe.purposefulcommunity.Models.AddTempBody
 import com.bounswe.purposefulcommunity.Models.GetFieldsBody
+import com.bounswe.purposefulcommunity.Models.GetTempBody
 import com.bounswe.purposefulcommunity.R
+import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_show_template.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,6 +25,8 @@ import java.net.ConnectException
 
 class ShowTemplateActivity : AppCompatActivity() {
     private var hasHeader: Boolean = false
+    private val fields = ArrayList<AddTempBody>()
+    private var adapter = FieldsAdapter(this@ShowTemplateActivity, fields)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,13 +54,13 @@ class ShowTemplateActivity : AppCompatActivity() {
             )
         }
     }
-    private fun getFields(id: String){
+    private fun getFields(communityID: String){
         val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
         val tokenV = res.getString("token", "Data Not Found!")
         val purApp = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
 
-        purApp.getFields(id, tokenV!!).enqueue(object : Callback<List<GetFieldsBody>> {
-            override fun onFailure(call: Call<List<GetFieldsBody>>, t: Throwable) {
+        purApp.getOneTempl(communityID, tokenV!!).enqueue(object : Callback<GetTempBody> {
+            override fun onFailure(call: Call<GetTempBody>, t: Throwable) {
                 if(t.cause is ConnectException){
                     Toast.makeText(
                         this@ShowTemplateActivity,
@@ -72,29 +76,73 @@ class ShowTemplateActivity : AppCompatActivity() {
                     ).show()
                 }
             }
-            override fun onResponse(call: Call<List<GetFieldsBody>>, response: Response<List<GetFieldsBody>>) {
+            override fun onResponse(call: Call<GetTempBody>, response: Response<GetTempBody>) {
                 if (response.code() == 200) {
                     val rv = findViewById<RecyclerView>(R.id.recyclerViewFields)
                     rv.layoutManager = LinearLayoutManager(this@ShowTemplateActivity, RecyclerView.VERTICAL, false)
-
-                    val fields = ArrayList<AddTempBody>()
-
-                    var adapter = FieldsAdapter(this@ShowTemplateActivity, fields)
                     rv.adapter = adapter
 
-                    val res: List<GetFieldsBody>? = response.body()
+                    val res: GetTempBody? = response.body()
+                    val myListGeneric: List<GetFieldsBody> = res!!.fieldResources
+                    val myListTypes: JsonObject = res.templatesNameId
+                    var isExist = true
+                    for (key in myListTypes.keySet()) {
+                        isExist = false
+                        getFieldsInner(myListTypes.get(key).toString().replace("\"", ""))
+                    }
 
-                    for(i in res.orEmpty()){
+                    for(i in myListGeneric){
                         fields.add(AddTempBody(i.fieldType, i.isRequired, i.name))
                     }
-                    if(fields.isEmpty()){
+                    if(fields.isEmpty() && isExist){
                         Toast.makeText(this@ShowTemplateActivity, "No field is found!", Toast.LENGTH_SHORT).show()
                     }
                     runLayoutAnimation()
                     adapter.notifyDataSetChanged()
 
                 } else {
-                    Toast.makeText(this@ShowTemplateActivity, "Your fields cannot retrieve!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ShowTemplateActivity, "Fields cannot retrieve!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+    private fun getFieldsInner(communityID: String){
+        val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
+        val tokenV = res.getString("token", "Data Not Found!")
+        val purApp = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
+
+        purApp.getOneTempl(communityID, tokenV!!).enqueue(object : Callback<GetTempBody> {
+            override fun onFailure(call: Call<GetTempBody>, t: Throwable) {
+                if(t.cause is ConnectException){
+                    Toast.makeText(
+                        this@ShowTemplateActivity,
+                        "Check your connection!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else{
+                    Toast.makeText(
+                        this@ShowTemplateActivity,
+                        "Something bad happened!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            override fun onResponse(call: Call<GetTempBody>, response: Response<GetTempBody>) {
+                if (response.code() == 200) {
+                    val res: GetTempBody? = response.body()
+                    val myListGeneric: List<GetFieldsBody> = res!!.fieldResources
+
+                    fields.add(AddTempBody(res.name, true, "Type Name"))
+
+                    for(i in myListGeneric){
+                        fields.add(AddTempBody(i.fieldType, i.isRequired, i.name))
+                    }
+                    runLayoutAnimation()
+                    adapter.notifyDataSetChanged()
+
+                } else {
+                    Toast.makeText(this@ShowTemplateActivity, "Fields cannot retrieve!", Toast.LENGTH_SHORT).show()
                 }
             }
         })

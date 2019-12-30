@@ -55,10 +55,6 @@ class ShowTemplatesActivity : AppCompatActivity() {
             }
             override fun onResponse(call: Call<List<GetTempBody>>, response: Response<List<GetTempBody>>) {
                 if (response.code() == 200) {
-                    val array: MutableList<String> = ArrayList()
-                    for (i in response.body()!!){
-                        array.add(i.name)
-                    }
                     val rv = findViewById<RecyclerView>(R.id.recyclerViewTemplates)
                     rv.layoutManager = LinearLayoutManager(this@ShowTemplatesActivity, RecyclerView.VERTICAL, false)
 

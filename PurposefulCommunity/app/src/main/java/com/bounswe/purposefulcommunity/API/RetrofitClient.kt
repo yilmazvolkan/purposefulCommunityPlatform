@@ -99,6 +99,14 @@ interface ApiInterface {
         @Header("token") token: String
     ): retrofit2.Call<List<GetFieldsBody>>
 
+    // Get one Template request
+    @Headers("Content-Type:application/json")
+    @GET("/data-template/{id}")
+    fun getOneTempl(
+        @Path("id") id: String,
+        @Header("token") token: String
+    ): retrofit2.Call<GetTempBody>
+
     ////////// Instance
 
     // Create Community Instance
