@@ -3,6 +3,8 @@ package com.bounswe.purposefulcommunity.Fragments.Instances
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
 import com.bounswe.purposefulcommunity.Adapters.FieldsAdapter
+import com.bounswe.purposefulcommunity.Fragments.Community.SearchActivity
 import com.bounswe.purposefulcommunity.Models.AddTempBody
 import com.bounswe.purposefulcommunity.Models.GetFieldsBody
 import com.bounswe.purposefulcommunity.Models.GetTempBody
@@ -52,6 +55,29 @@ class ShowTemplateActivity : AppCompatActivity() {
                 R.anim.slide_in_right,
                 R.anim.slide_out_left
             )
+        }
+    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.search_menu, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.search -> {
+            val tempID = intent.getStringExtra("temp_id")
+            val intent = Intent(this@ShowTemplateActivity, SearchActivity::class.java)
+            intent.putExtra("temp_id", tempID)
+            startActivity(intent)
+            overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
+            true
+        }
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
         }
     }
     private fun getFields(communityID: String){

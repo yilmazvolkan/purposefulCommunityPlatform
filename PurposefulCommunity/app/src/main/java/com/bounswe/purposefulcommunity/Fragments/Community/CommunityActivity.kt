@@ -103,7 +103,7 @@ class CommunityActivity : AppCompatActivity() {
             true
         }
         R.id.search -> {
-            val intent = Intent(this@CommunityActivity, SearchActivity::class.java)
+            val intent = Intent(this@CommunityActivity, ShowTemplatesActivity::class.java)
             intent.putExtra("comm_temp_id", communityID)
             startActivity(intent)
             overridePendingTransition(

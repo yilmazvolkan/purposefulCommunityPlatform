@@ -32,6 +32,6 @@
         app:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerViewInstanceValues"
         app:layout_constraintEnd_toEndOf="@+id/recyclerViewInstanceValues"
-        app:srcCompat="@drawable/ic_add_white_24dp" />
+        app:srcCompat="@drawable/ic_file_upload" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

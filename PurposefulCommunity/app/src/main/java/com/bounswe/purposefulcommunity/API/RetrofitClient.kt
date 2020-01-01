@@ -1,6 +1,7 @@
 package com.bounswe.mercatus.API
 
 import com.bounswe.purposefulcommunity.Models.*
+import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -124,6 +125,20 @@ interface ApiInterface {
         @Path("community-id") id: String,
         @Header("token") token: String
     ): retrofit2.Call<List<GetInstanceBody>>
+
+
+    ////////// Search
+
+    // Create Community Instance
+    @Headers("Content-Type:application/json")
+    @POST("/search/search/in-templates")
+    fun searchInstance(
+        @Query("or") or: Boolean,
+        @Query("templateId") templateId: String,
+        @Header("token") token: String,
+        @Body searchingValues: JsonObject
+    ): retrofit2.Call<ResponseBody>
+
 }
 class RetrofitInstance {
     companion object {
