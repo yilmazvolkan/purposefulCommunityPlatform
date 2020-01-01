@@ -8,16 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
-import com.bounswe.purposefulcommunity.Models.AddTempBody
+import com.bounswe.purposefulcommunity.Models.AddTempSelectedBody
 import com.bounswe.purposefulcommunity.Models.EditModel
 import com.bounswe.purposefulcommunity.R
 import kotlinx.android.synthetic.main.item_instance.view.*
 
-class InstanceAdapter(val context : Context, val fieldList: ArrayList<AddTempBody>, val editModelArrayLists: ArrayList<EditModel>): RecyclerView.Adapter<InstanceAdapter.ViewHolder>() {
+class InstanceAdapter(val context : Context, val fieldList: ArrayList<AddTempSelectedBody>, val editModelArrayLists: ArrayList<EditModel>): RecyclerView.Adapter<InstanceAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.editText.setText(editModelArrayLists[position].getEditTextValue())
-        holder.setData(fieldList[position].fieldType, fieldList[position].isRequired, fieldList[position].name, position)
+        holder.setData(fieldList[position].fieldType, fieldList[position].isRequired, fieldList[position].name, fieldList[position].parent, position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,7 +33,7 @@ class InstanceAdapter(val context : Context, val fieldList: ArrayList<AddTempBod
      */
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         var editText: EditText
-        var currentSearchShow : AddTempBody? = null
+        var currentSearchShow : AddTempSelectedBody? = null
         var currentPosition : Int = 0
         init {
 
@@ -60,13 +60,10 @@ class InstanceAdapter(val context : Context, val fieldList: ArrayList<AddTempBod
             })
         }
 
-        fun setData(fieldType : String, isRequired : Boolean, name : String,  position: Int){
+        fun setData(fieldType : String, isRequired : Boolean, name : String,  parent: String, position: Int){
         itemView.txtInstanceName.text = name
-        this.currentSearchShow = AddTempBody(fieldType, isRequired, name)
+        this.currentSearchShow = AddTempSelectedBody(fieldType, isRequired, name, parent)
         this.currentPosition = position
         }
-    }
-    companion object {
-        lateinit var editModelArrayList: ArrayList<EditModel>
     }
 }
