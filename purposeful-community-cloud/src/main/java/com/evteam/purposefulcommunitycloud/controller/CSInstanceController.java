@@ -36,31 +36,31 @@ public class CSInstanceController {
         return ResponseEntity.ok(service.createCSDInstance(dto, jwtResolver.getIdFromToken(token)));
     }
 
-    @ApiOperation(value = "Get data instances of a community with id of community ",response = DataInstanceResource.class,responseContainer = "List")
-    @GetMapping("/get/community-instances/{community-id}")
-    public ResponseEntity getInstancesOfCommunity(@RequestHeader String token, @PathVariable("community-id") UUID communityId) {
-        return ResponseEntity.ok(service.getInstancesOfCommunity(communityId, jwtResolver.getIdFromToken(token)));
+    @ApiOperation(value = "Get data instances of a community with id of community ", response = DataInstanceResource.class, responseContainer = "List")
+    @GetMapping("/get/community-instances/{community-id}/{format}")
+    public ResponseEntity getInstancesOfCommunity(@RequestHeader String token, @PathVariable("community-id") UUID communityId, @PathVariable("format") String format) {
+        return ResponseEntity.ok(service.getInstancesOfCommunity(communityId, format, jwtResolver.getIdFromToken(token)));
     }
 
-    @ApiOperation(value = "Get data instances of a template with id of template ",response = DataInstanceResource.class,responseContainer = "List")
-    @GetMapping("/get/template-instances/{template-id}")
-    public ResponseEntity getInstancesOfTemplate(@RequestHeader String token, @PathVariable("template-id") UUID templateId) {
-        return ResponseEntity.ok(service.getInstancesOfTemplate(templateId, jwtResolver.getIdFromToken(token)));
+    @ApiOperation(value = "Get data instances of a template with id of template ", response = DataInstanceResource.class, responseContainer = "List")
+    @GetMapping("/get/template-instances/{template-id}/{format}")
+    public ResponseEntity getInstancesOfTemplate(@RequestHeader String token, @PathVariable("template-id") UUID templateId, @PathVariable("format") String format) {
+        return ResponseEntity.ok(service.getInstancesOfTemplate(templateId, format, jwtResolver.getIdFromToken(token)));
     }
 
-    @ApiOperation(value = "Get data instances of created by a user with token",response = DataInstanceResource.class,responseContainer = "List")
-    @GetMapping("/get/self-instances")
-    public ResponseEntity getSelfInstances(@RequestHeader String token){
-        return ResponseEntity.ok(service.getSelfInstances(jwtResolver.getIdFromToken(token)));
+    @ApiOperation(value = "Get data instances of created by a user with token", response = DataInstanceResource.class, responseContainer = "List")
+    @GetMapping("/get/self-instances/{format}")
+    public ResponseEntity getSelfInstances(@RequestHeader String token, @PathVariable("format") String format) {
+        return ResponseEntity.ok(service.getSelfInstances(format, jwtResolver.getIdFromToken(token)));
     }
 
-    @ApiOperation(value = "Get data instances of created by a user with token",response = DataInstanceResource.class)
-    @GetMapping("/get/instance/{instance-id}")
-    public ResponseEntity getInstance(@RequestHeader String token, @PathVariable("instance-id") UUID instanceId){
-        return ResponseEntity.ok(service.getInstance(instanceId,jwtResolver.getIdFromToken(token)));
+    @ApiOperation(value = "Get data instances of created by a user with token", response = DataInstanceResource.class)
+    @GetMapping("/get/instance/{instance-id}/{format}")
+    public ResponseEntity getInstance(@RequestHeader String token, @PathVariable("instance-id") UUID instanceId, @PathVariable("format") String format) {
+        return ResponseEntity.ok(service.getInstance(instanceId, format, jwtResolver.getIdFromToken(token)));
     }
 
-    @ApiOperation(value = "Delete data instances with field name,value and token ",response = String.class)
+    @ApiOperation(value = "Delete data instances with field name,value and token ", response = String.class)
     @DeleteMapping("/delete/instance/{instance-id}")
     public ResponseEntity deleteInstance(@RequestHeader String token, @PathVariable("instance-id") UUID instanceId) {
         try {
