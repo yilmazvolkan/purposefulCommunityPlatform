@@ -16,14 +16,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
-import com.bounswe.purposefulcommunity.Adapters.TemplatesAdapter
+import com.bounswe.purposefulcommunity.Adapters.ShowInstanceAdapter
 import com.bounswe.purposefulcommunity.Fragments.Instances.ShowTemplatesActivity
 import com.bounswe.purposefulcommunity.Fragments.Templates.TemplateActivity
-import com.bounswe.purposefulcommunity.Models.GetInstanceBody
+import com.bounswe.purposefulcommunity.Models.GetInstanceLDBody
 import com.bounswe.purposefulcommunity.Models.GetOneCommBody
-import com.bounswe.purposefulcommunity.Models.ShowTempBody
+import com.bounswe.purposefulcommunity.Models.ShowInstanceBody
+import com.bounswe.purposefulcommunity.Models.UpperInstanceShowBody
 import com.bounswe.purposefulcommunity.R
 import com.bumptech.glide.Glide
+import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_community.*
 import kotlinx.android.synthetic.main.activity_show_comm.communityImage
 import okhttp3.MediaType
@@ -298,8 +300,8 @@ class CommunityActivity : AppCompatActivity() {
         val tokenV = res.getString("token", "Data Not Found!")
         val purApp = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
 
-        purApp.getAllInstances(communityID, tokenV!!).enqueue(object : Callback<List<GetInstanceBody>> {
-            override fun onFailure(call: Call<List<GetInstanceBody>>, t: Throwable) {
+        purApp.getAllInstances(communityID, tokenV!!).enqueue(object : Callback<List<GetInstanceLDBody>> {
+            override fun onFailure(call: Call<List<GetInstanceLDBody>>, t: Throwable) {
                 if(t.cause is ConnectException){
                     Toast.makeText(
                         this@CommunityActivity,
@@ -315,28 +317,36 @@ class CommunityActivity : AppCompatActivity() {
                     ).show()
                 }
             }
-            override fun onResponse(call: Call<List<GetInstanceBody>>, response: Response<List<GetInstanceBody>>) {
+            override fun onResponse(call: Call<List<GetInstanceLDBody>>, response: Response<List<GetInstanceLDBody>>) {
                 if (response.code() == 200) {
                     val rv = findViewById<RecyclerView>(R.id.recyclerViewCommunityInstances)
                     rv.layoutManager = LinearLayoutManager(this@CommunityActivity, RecyclerView.VERTICAL, false)
 
-                    val users = ArrayList<ShowTempBody>()
+                    val users = ArrayList<UpperInstanceShowBody>()
+                    val innerFields = ArrayList<ShowInstanceBody>()
 
-                    var adapter = TemplatesAdapter(this@CommunityActivity, users)
-                    rv.adapter = adapter
+                    val resp: List<GetInstanceLDBody>? = response.body()
 
-                    val res: List<GetInstanceBody>? = response.body()
+                    for(i in resp.orEmpty()){
+                        val myListTypes: JsonObject = i.instanceFields
+                        val templates: JsonObject = i.template.templatesNameId
 
-                    for(i in res.orEmpty()){
-                        var naming =""
-                        for(j in i.fieldNameValueTypes.structure){
-                            naming += j.name + " "
+                        for (key in myListTypes.keySet()) {
+                            if(key != "@context" && templates.keySet().contains(key)){
+                                for (key2 in myListTypes.get(key).asJsonObject.keySet()) {
+                                    innerFields.add(ShowInstanceBody(key2, myListTypes.get(key).asJsonObject.get(key2).toString().replace("\"", ""), key))
+                                }
+                            }
+                            else if(key != "@context"){
+                                users.add(UpperInstanceShowBody(i.createdDate, key, myListTypes.get(key).toString().replace("\"", "")))
+                            }
                         }
-                        users.add(ShowTempBody(i.id, i.createdDate, naming))
                     }
                     if(users.isEmpty()){
                         Toast.makeText(this@CommunityActivity, "No instance is found!", Toast.LENGTH_SHORT).show()
                     }
+                    var adapter = ShowInstanceAdapter(this@CommunityActivity, users, innerFields)
+                    rv.adapter = adapter
                     adapter.notifyDataSetChanged()
 
 

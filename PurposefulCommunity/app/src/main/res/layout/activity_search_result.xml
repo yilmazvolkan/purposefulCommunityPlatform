@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.Instances.SearchActivity">
-
+    tools:context=".Fragments.Instances.SearchResultActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewInstanceSearch"
+        android:id="@+id/recyclerViewSearchResult"
         android:layoutAnimation="@anim/layout_animation_fall_down"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -22,16 +21,5 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewInstanceSearch"
-        app:layout_constraintEnd_toEndOf="@+id/recyclerViewInstanceSearch"
-        app:srcCompat="@drawable/ic_search" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

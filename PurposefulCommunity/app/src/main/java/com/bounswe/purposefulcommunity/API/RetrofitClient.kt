@@ -120,12 +120,11 @@ interface ApiInterface {
 
     // Get Community Instance List request
     @Headers("Content-Type:application/json")
-    @GET("/data-instance/get/community-instances/{community-id}/json")
+    @GET("/data-instance/get/community-instances/{community-id}/jsonld")
     fun getAllInstances(
         @Path("community-id") id: String,
         @Header("token") token: String
-    ): retrofit2.Call<List<GetInstanceBody>>
-
+    ): retrofit2.Call<List<GetInstanceLDBody>>
 
     ////////// Search
 
@@ -137,7 +136,7 @@ interface ApiInterface {
         @Query("templateId") templateId: String,
         @Header("token") token: String,
         @Body searchingValues: JsonObject
-    ): retrofit2.Call<ResponseBody>
+    ): retrofit2.Call<List<GetInstanceLDBody>>
 
 }
 class RetrofitInstance {

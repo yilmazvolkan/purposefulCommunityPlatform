@@ -1,6 +1,7 @@
-package com.bounswe.purposefulcommunity.Fragments.Community
+package com.bounswe.purposefulcommunity.Fragments.Instances
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -19,7 +20,6 @@ import com.bounswe.purposefulcommunity.Models.GetTempBody
 import com.bounswe.purposefulcommunity.R
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_search.*
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -359,11 +359,10 @@ class SearchActivity : AppCompatActivity() {
 
         for ((k, v) in items) {
             jsonRes.add(k, v)
-
         }
         items.clear()
         if(isValid){
-            purApp.searchInstance(true, templateId, tokenV!!, jsonRes).enqueue(object : Callback<ResponseBody> {
+            /*purApp.searchInstance(true, templateId, tokenV!!, jsonRes).enqueue(object : Callback<ResponseBody> {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     if(t.cause is ConnectException){
                         Toast.makeText(
@@ -388,6 +387,16 @@ class SearchActivity : AppCompatActivity() {
                     }
                 }
             })
+
+             */
+            val intent = Intent(this@SearchActivity, SearchResultActivity::class.java)
+            intent.putExtra("temp_id", templateId)
+            intent.putExtra("json_res", jsonRes.toString())
+            startActivity(intent)
+            overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
         }
     }
     private fun runLayoutAnimation() = recyclerViewInstanceSearch.apply {
