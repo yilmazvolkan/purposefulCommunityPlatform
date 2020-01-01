@@ -119,7 +119,7 @@ interface ApiInterface {
 
     // Get Community Instance List request
     @Headers("Content-Type:application/json")
-    @GET("/data-instance/get/community-instances/{community-id}")
+    @GET("/data-instance/get/community-instances/{community-id}/json")
     fun getAllInstances(
         @Path("community-id") id: String,
         @Header("token") token: String

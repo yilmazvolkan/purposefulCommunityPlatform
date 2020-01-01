@@ -53,7 +53,7 @@ class CommunityActivity : AppCompatActivity() {
 
         Glide.with(this).load(R.drawable.tea).centerCrop().into(communityImage)
 
-        getOneCommunities(communityID)
+        getOneCommunity(communityID)
 
 
         addCSD.setOnClickListener {
@@ -93,13 +93,23 @@ class CommunityActivity : AppCompatActivity() {
                 }
                 else{
                     //permission already granted
-                    pickImageFromGallery();
+                    pickImageFromGallery()
                 }
             }
             else{
                 //system OS is < Marshmallow
-                pickImageFromGallery();
+                pickImageFromGallery()
             }
+            true
+        }
+        R.id.search -> {
+            val intent = Intent(this@CommunityActivity, SearchActivity::class.java)
+            intent.putExtra("comm_temp_id", communityID)
+            startActivity(intent)
+            overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
             true
         }
         R.id.action_leave -> {
@@ -134,7 +144,7 @@ class CommunityActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.options_menu, menu)
         return true
     }
-    private fun getOneCommunities(communityID: String){
+    private fun getOneCommunity(communityID: String){
         val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
         val tokenV = res.getString("token", "Data Not Found!")
         val userID = res.getString("user_id", "Data Not Found!")
@@ -318,8 +328,11 @@ class CommunityActivity : AppCompatActivity() {
                     val res: List<GetInstanceBody>? = response.body()
 
                     for(i in res.orEmpty()){
-                        //users.add(ShowTempBody(i.id, i.createdDate, i.instanceFields.toString()))
-                        users.add(ShowTempBody(i.id, i.createdDate, i.instanceFields.toString()))
+                        var naming =""
+                        for(j in i.fieldNameValueTypes.structure){
+                            naming += j.name + " "
+                        }
+                        users.add(ShowTempBody(i.id, i.createdDate, naming))
                     }
                     if(users.isEmpty()){
                         Toast.makeText(this@CommunityActivity, "No instance is found!", Toast.LENGTH_SHORT).show()

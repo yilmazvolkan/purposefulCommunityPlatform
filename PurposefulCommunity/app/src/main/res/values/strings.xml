@@ -49,5 +49,6 @@
     <string name="templates">Types</string>
     <string name="add">Add</string>
     <string name="upload">Upload</string>
+    <string name="search">Search</string>
     <string name="value">Value</string>
 </resources>

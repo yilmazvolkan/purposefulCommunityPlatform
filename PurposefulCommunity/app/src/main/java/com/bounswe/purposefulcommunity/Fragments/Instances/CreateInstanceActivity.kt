@@ -189,7 +189,12 @@ class CreateInstanceActivity : AppCompatActivity() {
                 editModel.setEditTextValue("Rational")
             }
             else{
-                editModel.setEditTextValue("Value")
+                if(fields[i].parent == "NnNn"){
+                    editModel.setEditTextValue(" is a community type.")
+                }
+                else{
+                    editModel.setEditTextValue("Value")
+                }
             }
             list.add(editModel)
         }
@@ -347,7 +352,6 @@ class CreateInstanceActivity : AppCompatActivity() {
                     items[fields[i].parent] = jsonTemp
                 }
                 else if(fields[i].parent == "BbBb"){
-                    Toast.makeText(this@CreateInstanceActivity, fields[i].name, Toast.LENGTH_SHORT).show()
                     jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
                 }
             }

@@ -9,6 +9,6 @@ data class GetTempBody(
     val lastModifiedDate: String,
     val name: String,
     val fieldResources: List<GetFieldsBody>,
-    val templatesNameId: JsonObject,
-    val instanceContext: JsonObject
+    val instanceContext: JsonObject,
+    val templatesNameId: JsonObject
 )
