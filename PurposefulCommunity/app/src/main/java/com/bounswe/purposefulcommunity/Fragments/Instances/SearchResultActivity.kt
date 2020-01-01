@@ -26,6 +26,10 @@ class SearchResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_result)
         searchResult()
+
+        val actionBar = supportActionBar
+        actionBar!!.title = getString(R.string.search)
+        actionBar.setDisplayHomeAsUpEnabled(true)
     }
     private fun searchResult(){
         val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
@@ -89,5 +93,13 @@ class SearchResultActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
     }
 }
