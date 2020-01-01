@@ -1,6 +1,8 @@
 package com.bounswe.mercatus.API
 
 import com.bounswe.purposefulcommunity.Models.*
+import com.google.gson.JsonObject
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -62,13 +64,80 @@ interface ApiInterface {
         @Header("token") token: String
     ): retrofit2.Call<ResponseBody>
 
+    // Upload image to Community
+    @Headers("Content-Type:application/json")
+    @Multipart
+    @POST("/image/upload-community-image")
+    fun uploadImage(
+        @Query("communityId") communityId: String,
+        @Part file: MultipartBody.Part,
+        @Header("token") token: String
+    ): retrofit2.Call<ResponseBody>
+
+    ////////// Template
+
     // Create Community Template
     @Headers("Content-Type:application/json")
-    @POST("/community/create")
+    @POST("/data-template/create-csd")
     fun createTemp(
         @Body info: CreateTemplateBody,
         @Header("token") token: String
-    ): retrofit2.Call<CommunityBody>
+    ): retrofit2.Call<ResponseBody>
+
+    // Get Community Template  List request
+    @Headers("Content-Type:application/json")
+    @GET("/data-template/get-community-templates/{community-id}")
+    fun getTemplates(
+        @Path("community-id") id: String,
+        @Header("token") token: String
+    ): retrofit2.Call<List<GetTempBody>>
+
+    // Get a Template fields request
+    @Headers("Content-Type:application/json")
+    @GET("/data-template/fields/{id}")
+    fun getFields(
+        @Path("id") id: String,
+        @Header("token") token: String
+    ): retrofit2.Call<List<GetFieldsBody>>
+
+    // Get one Template request
+    @Headers("Content-Type:application/json")
+    @GET("/data-template/{id}")
+    fun getOneTempl(
+        @Path("id") id: String,
+        @Header("token") token: String
+    ): retrofit2.Call<GetTempBody>
+
+    ////////// Instance
+
+    // Create Community Instance
+    @Headers("Content-Type:application/json")
+    @POST("/data-instance/create/instance")
+    fun createInstance(
+        @Body info: CreateInstanceBody,
+        @Header("token") token: String
+    ): retrofit2.Call<ResponseBody>
+
+    // Get Community Instance List request
+    @Headers("Content-Type:application/json")
+    @GET("/data-instance/get/community-instances/{community-id}/jsonld")
+    fun getAllInstances(
+        @Path("community-id") id: String,
+        @Header("token") token: String
+    ): retrofit2.Call<List<GetInstanceLDBody>>
+
+    ////////// Search
+
+    // Create Community Instance
+    @Headers("Content-Type:application/json")
+    @POST("/search/search/in-templates")
+    fun searchInstance(
+        @Query("or") or: Boolean,
+        @Query("templateId") templateId: String,
+        @Header("token") token: String,
+        @Body searchingValues: JsonObject
+    ): retrofit2.Call<List<GetInstanceLDBody>>
+
 }
 class RetrofitInstance {
     companion object {

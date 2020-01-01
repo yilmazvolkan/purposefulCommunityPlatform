@@ -3,6 +3,8 @@
     package="com.bounswe.purposefulcommunity">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -11,10 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Fragments.Community.ExploreActivity"></activity>
+        <activity android:name=".Fragments.Instances.SearchResultActivity"></activity>
+        <activity android:name=".Fragments.Instances.SearchActivity" />
+        <activity android:name=".Fragments.Instances.CreateInstanceActivity" />
+        <activity android:name=".Fragments.Instances.ShowTemplateActivity" />
+        <activity android:name=".Fragments.Templates.TemplateActivity" />
+        <activity android:name=".Fragments.Instances.ShowTemplatesActivity" />
+        <activity android:name=".Fragments.Community.ExploreActivity" />
         <activity android:name=".Fragments.Community.CommunityActivity" />
-        <activity android:name=".Fragments.Templates.EnterTemplatesActivity" />
-        <activity android:name=".Fragments.Templates.CreateTemplateActivity" />
         <activity android:name=".Fragments.Community.CreateCommActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

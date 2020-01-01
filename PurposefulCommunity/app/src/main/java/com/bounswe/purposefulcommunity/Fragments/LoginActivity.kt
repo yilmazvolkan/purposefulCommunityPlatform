@@ -28,6 +28,14 @@ class LoginActivity : AppCompatActivity() {
         val actionBar = supportActionBar
         actionBar!!.title = getString(R.string.title_activity_login)
 
+        val sharedPreferences = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
+        if(sharedPreferences.getString("token"," ") !=" "){
+
+            val intent = Intent(this@LoginActivity, CommunityFeedActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         btn_login.setOnClickListener {
             val email = editMail.text.toString()
             val password = editPassword.text.toString()
@@ -74,6 +82,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: Call<SignInRes>, response: Response<SignInRes>) {
                 if (response.code() == 200) {
                     editor.putString("token", response.body()?.token)
+                    editor.putString("user_id", response.body()?.id)
                     editor.commit()
 
                     Toast.makeText(this@LoginActivity, "Login success!", Toast.LENGTH_SHORT).show()

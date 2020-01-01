@@ -24,8 +24,8 @@
     <string name="description">Description</string>
     <string name="priv">Private</string>
 
-    <string name="add_template">Add More Temp</string>
-    <string name="add_csd">Add More Csd</string>
+    <string name="add_template">Type</string>
+    <string name="add_csd">Post</string>
 
     <string name="template_name">Template Name</string>
     <string name="template_number">Number of Templates</string>
@@ -33,10 +33,22 @@
     <string name="property_name">Property Name</string>
     <string name="property_type">Property Type</string>
     <string name="create">Create</string>
-    <string name="title_activity_enter_templates">EnterTemplatesActivity</string>
+    <string name="title_activity_enter_templates">Create Type</string>
+    <string name="pick_type">Pick Type</string>
 
     <string name="about">About</string>
     <string name="join">Join</string>
 
     <string name="explore">Explore</string>
+    <string name="log_out">Log Out</string>
+    <string name="upload_photo">Upload Photo</string>
+    <string name="leave">Leave</string>
+
+    <string name="type">Type</string>
+    <string name="date">Date</string>
+    <string name="templates">Types</string>
+    <string name="add">Add</string>
+    <string name="upload">Upload</string>
+    <string name="search">Search</string>
+    <string name="value">Value</string>
 </resources>

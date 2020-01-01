@@ -1,24 +1,24 @@
 package com.bounswe.purposefulcommunity.Adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bounswe.purposefulcommunity.Models.AddTempBody
+import com.bounswe.purposefulcommunity.Fragments.Instances.ShowTemplateActivity
+import com.bounswe.purposefulcommunity.Models.ShowTempBody
 import com.bounswe.purposefulcommunity.R
-import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.item_layout.view.txtName
-import kotlinx.android.synthetic.main.template_item.view.*
+import kotlinx.android.synthetic.main.item_temp.view.*
 
-class TemplatesAdapter(val context : Context, val userList: ArrayList<AddTempBody>): RecyclerView.Adapter<TemplatesAdapter.ViewHolder>() {
+class TemplatesAdapter(val context : Context, val userList: ArrayList<ShowTempBody>): RecyclerView.Adapter<TemplatesAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setData(userList[position].name, userList[position].fieldType, position)
+        holder.setData(userList[position].id, userList[position].name, userList[position].createdDate, position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.dialog_temp, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_temp, parent, false)
         return ViewHolder(v)
     }
 
@@ -29,35 +29,23 @@ class TemplatesAdapter(val context : Context, val userList: ArrayList<AddTempBod
     Each item in RecyclerView is called as viewholder.
      */
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        var currentAddTempBody : AddTempBody? = null
+        var currentSearchShow : ShowTempBody? = null
         var currentPosition : Int = 0
+        init {
+            itemView.eachTempItem.setOnClickListener {
+                val intent = Intent(context, ShowTemplateActivity::class.java)
+                intent.putExtra("temp_id", currentSearchShow?.id.toString())
+                intent.putExtra("temp_name", currentSearchShow?.name.toString())
+                context.startActivity(intent)
+            }
+        }
+        fun setData(id : String, name : String, createdDate : String,  position: Int){
+            itemView.txtTempName.text = name
+            val newDate = "Created: $createdDate"
+            itemView.txtCreatedDate.text = newDate
 
-        fun setData(name : String, fieldType : String, position: Int){
-            itemView.txtName.text = name
-            itemView.txtType.text = fieldType
-
-            this.currentAddTempBody = AddTempBody(name, fieldType)
+            this.currentSearchShow = ShowTempBody(id, createdDate, name)
             this.currentPosition = position
         }
-    }
-
-    private fun isValidForm(layPropName: TextInputLayout, name: String, size: String, layPropType: TextInputLayout):Boolean{
-
-        var isValid = true
-        if (name.isEmpty()){
-            layPropName.isErrorEnabled = true
-            layPropName.error = "Name cannot be empty!"
-            isValid = false
-        }else{
-            layPropName.isErrorEnabled = false
-        }
-        if (size.isEmpty()){
-            layPropType.isErrorEnabled = true
-            layPropType.error = "Type cannot be empty!"
-            isValid = false
-        }else{
-            layPropType.isErrorEnabled = false
-        }
-        return isValid
     }
 }
