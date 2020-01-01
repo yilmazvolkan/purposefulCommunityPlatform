@@ -49,64 +49,6 @@ class CreateInstanceActivity : AppCompatActivity() {
         }
     }
 
-    /*private fun getFields2(id: String){
-        val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
-        val tokenV = res.getString("token", "Data Not Found!")
-        val purApp = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
-
-        purApp.getFields(id, tokenV!!).enqueue(object : Callback<List<GetFieldsBody>> {
-            override fun onFailure(call: Call<List<GetFieldsBody>>, t: Throwable) {
-                if(t.cause is ConnectException){
-                    Toast.makeText(
-                        this@CreateInstanceActivity,
-                        "Check your connection!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                else{
-                    Toast.makeText(
-                        this@CreateInstanceActivity,
-                        "Something bad happened!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-            override fun onResponse(call: Call<List<GetFieldsBody>>, response: Response<List<GetFieldsBody>>) {
-                if (response.code() == 200) {
-                    val rv = findViewById<RecyclerView>(R.id.recyclerViewInstanceValues)
-                    rv.layoutManager = LinearLayoutManager(this@CreateInstanceActivity, RecyclerView.VERTICAL, false)
-
-                    val res: List<GetFieldsBody>? = response.body()
-
-                    val fields = ArrayList<AddTempBody>()
-
-                    for(i in res.orEmpty()){
-                        fields.add(AddTempBody(i.fieldType, i.isRequired, i.name))
-                    }
-                    if(fields.isEmpty()){
-                        Toast.makeText(this@CreateInstanceActivity, "No field is found!", Toast.LENGTH_SHORT).show()
-                    }
-                    editModelArrayList = populateList(fields.size, fields)
-
-                    var adapter = InstanceAdapter(this@CreateInstanceActivity, fields, editModelArrayList)
-                    rv.adapter = adapter
-                    runLayoutAnimation()
-                    adapter.notifyDataSetChanged()
-
-                    fabSaveIns.setOnClickListener {
-                        createInstance(fields, id)
-                    }
-
-                } else {
-                    Toast.makeText(this@CreateInstanceActivity, "Your fields cannot retrieve!", Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
-    }
-
-     */
-
-
     private fun getFields(communityID: String){
         val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
         val tokenV = res.getString("token", "Data Not Found!")
