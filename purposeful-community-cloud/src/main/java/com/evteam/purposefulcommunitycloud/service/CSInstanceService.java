@@ -1,5 +1,6 @@
 package com.evteam.purposefulcommunitycloud.service;
 
+import com.evteam.purposefulcommunitycloud.mapper.DataInstanceJsonMapper;
 import com.evteam.purposefulcommunitycloud.mapper.DataInstanceMapper;
 import com.evteam.purposefulcommunitycloud.model.FieldNameValueType;
 import com.evteam.purposefulcommunitycloud.model.dto.DataInstanceDto;
@@ -7,12 +8,15 @@ import com.evteam.purposefulcommunitycloud.model.entity.Community;
 import com.evteam.purposefulcommunitycloud.model.entity.DataField;
 import com.evteam.purposefulcommunitycloud.model.entity.DataInstance;
 import com.evteam.purposefulcommunitycloud.model.entity.DataTemplate;
+import com.evteam.purposefulcommunitycloud.model.resource.DataInstanceJsonResource;
 import com.evteam.purposefulcommunitycloud.model.resource.DataInstanceResource;
 import com.evteam.purposefulcommunitycloud.model.resource.DataTemplateResource;
 import com.evteam.purposefulcommunitycloud.repository.DataInstanceRepository;
 import com.evteam.purposefulcommunitycloud.repository.DataTemplateRepository;
 import com.evteam.purposefulcommunitycloud.repository.UserRepository;
 import com.evteam.purposefulcommunitycloud.utils.FieldNameValueTypeUtil;
+import com.github.jsonldjava.core.JsonLdOptions;
+import com.github.jsonldjava.core.JsonLdProcessor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +51,9 @@ public class CSInstanceService {
 
     @Autowired
     private DataInstanceMapper instanceMapper;
+
+    @Autowired
+    private DataInstanceJsonMapper instanceJsonMapper;
 
     @Autowired
     private FieldNameValueTypeUtil fieldNameValueTypeUtil;
@@ -85,25 +92,38 @@ public class CSInstanceService {
         return "Successfully Deleted!";
     }
 
-    public List<DataInstanceResource> getInstancesOfCommunity(UUID communityId, UUID userId) {
+    public List<?> getInstancesOfCommunity(UUID communityId, String format, UUID userId) {
         List<DataTemplateResource> templates = dataService.getCommunityTemplates(communityId, userId);
+        if(format.toLowerCase().equals("json")){
+            List<DataInstanceJsonResource> resources = new ArrayList<>();
+            for (DataTemplateResource templateResource : CollectionUtils.emptyIfNull(templates)) {
+                resources.addAll((List<DataInstanceJsonResource>)getInstancesOfTemplate(templateResource.getId(),format, userId));
+            }
+            return resources;
+        }
         List<DataInstanceResource> resources = new ArrayList<>();
-
         for (DataTemplateResource templateResource : CollectionUtils.emptyIfNull(templates)) {
-            resources.addAll(getInstancesOfTemplate(templateResource.getId(), userId));
+            resources.addAll((List<DataInstanceResource>)getInstancesOfTemplate(templateResource.getId(),format, userId));
         }
         return resources;
     }
 
-    public List<DataInstanceResource> getInstancesOfTemplate(UUID templateId, UUID userId) {
+    public List<?> getInstancesOfTemplate(UUID templateId, String format, UUID userId) {
+        if(format.toLowerCase().equals("json")){
+           return instanceJsonMapper.toResource(instanceRepository.findDataInstancesByTemplate(templateRepository.findDataTemplateById(templateId)));
+        }
         return instanceMapper.toResource(instanceRepository.findDataInstancesByTemplate(templateRepository.findDataTemplateById(templateId)));
     }
 
-    public List<DataInstanceResource> getSelfInstances(UUID userId) {
+    public List<?> getSelfInstances(String format,UUID userId) {
+        if(format.toLowerCase().equals("json"))
+            return instanceJsonMapper.toResource(instanceRepository.findDataInstancesByCreator(userRepository.findUserById(userId)));
         return instanceMapper.toResource(instanceRepository.findDataInstancesByCreator(userRepository.findUserById(userId)));
     }
 
-    public DataInstanceResource getInstance(UUID instanceId, UUID userId) {
+    public Object getInstance(UUID instanceId, String format, UUID userId) {
+        if(format.toLowerCase().equals("json"))
+            return instanceJsonMapper.toResource(instanceRepository.findDataInstanceById(instanceId));
         return instanceMapper.toResource(instanceRepository.findDataInstanceById(instanceId));
     }
 

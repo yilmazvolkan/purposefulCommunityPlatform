@@ -18,10 +18,10 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DataInstanceResource {
+public class DataInstanceJsonResource {
     private String createdDate;
     private UUID id;
     private UserResource creator;
-    private JSONObject instanceFields;
     private DataTemplateResource template;
+    private JSONObject fieldNameValueTypes;
 }

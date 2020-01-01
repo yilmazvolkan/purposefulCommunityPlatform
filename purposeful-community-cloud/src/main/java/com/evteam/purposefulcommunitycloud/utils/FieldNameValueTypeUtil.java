@@ -39,7 +39,7 @@ public class FieldNameValueTypeUtil {
             FieldNameValueType fieldNameValueType=new FieldNameValueType();
             fieldNameValueType.setType(field.getFieldType());
             fieldNameValueType.setName(field.getName());
-            fieldNameValueType.setValue((String) instanceFields.get(field.getName()));
+            fieldNameValueType.setValue(instanceFields.get(field.getName()).toString());
             list.add(fieldNameValueType);
         }
         return list;
