@@ -64,6 +64,14 @@ interface ApiInterface {
         @Header("token") token: String
     ): retrofit2.Call<ResponseBody>
 
+    // unfollow a community request
+    @Headers("Content-Type:application/json")
+    @GET("/community/unfollow-community")
+    fun unfollowCommunity(
+        @Query("communityId") communityId: String,
+        @Header("token") token: String
+    ): retrofit2.Call<ResponseBody>
+
     // Upload image to Community
     @Headers("Content-Type:application/json")
     @Multipart

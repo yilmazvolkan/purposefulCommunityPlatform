@@ -115,7 +115,8 @@ class CommunityActivity : AppCompatActivity() {
             true
         }
         R.id.action_leave -> {
-            //TODO add unfollow community here
+            val communityName = intent.getStringExtra("comm_name")
+            unfollowCommunity(communityID, communityName!!)
             true
         }
         else -> {
@@ -352,6 +353,48 @@ class CommunityActivity : AppCompatActivity() {
 
                 } else {
                     Toast.makeText(this@CommunityActivity, "Instances cannot retrieve!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+    private fun unfollowCommunity(communityID: String, communityName: String){
+        val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
+        val tokenV = res.getString("token", "Data Not Found!")
+        val purApp = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
+
+        purApp.unfollowCommunity(communityID, tokenV!!).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                if(t.cause is ConnectException){
+                    Toast.makeText(
+                        this@CommunityActivity,
+                        "Check your connection!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else{
+                    Toast.makeText(
+                        this@CommunityActivity,
+                        t.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == 200) {
+                    Toast.makeText(this@CommunityActivity, "Unfollow successful!", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this@CommunityActivity, CommunityFeedActivity::class.java)
+                    startActivity(intent)
+                    overridePendingTransition(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left
+                    )
+                    finish()
+                }
+                else if(response.code() == 500){
+                    Toast.makeText(this@CommunityActivity, "You have already unfollowed the community!", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    Toast.makeText(this@CommunityActivity, "Join failed!", Toast.LENGTH_SHORT).show()
                 }
             }
         })
