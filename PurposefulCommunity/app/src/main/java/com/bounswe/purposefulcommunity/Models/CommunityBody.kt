@@ -8,4 +8,8 @@ data class CommunityBody(
     val name: String,
     val description: String,
     val size: Int,
-    val isPrivate: Boolean)
+    val isPrivate: Boolean,
+    val followers: List<CreatorBody>,
+    val builders: List<CreatorBody>,
+    val creatorUser: CreatorBody
+    )

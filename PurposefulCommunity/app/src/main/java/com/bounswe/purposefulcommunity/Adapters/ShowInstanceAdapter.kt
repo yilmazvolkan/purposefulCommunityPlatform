@@ -45,6 +45,12 @@ class ShowInstanceAdapter(val context : Context, val userList: ArrayList<UpperIn
             val param2 = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT)
             param2.weight = 6.0f
 
+            val tvDynamic0 = TextView(context)
+            tvDynamic0.textSize = 12f
+            tvDynamic0.setPadding(4)
+            tvDynamic0.text = "Related number of results: " + userList.size
+            itemView.InstanceOutCard.addView(tvDynamic0)
+
             val tvDynamic = TextView(context)
             tvDynamic.layoutParams = param2
             tvDynamic.textSize = 14f
