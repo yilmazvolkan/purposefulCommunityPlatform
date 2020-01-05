@@ -66,7 +66,6 @@ class SearchResultActivity : AppCompatActivity() {
                     val innerFields = ArrayList<ShowInstanceBody>()
 
                     val resp: List<GetInstanceLDBody>? = response.body()
-
                     for(i in resp.orEmpty()){
                         val myListTypes: JsonObject = i.instanceFields
                         val templates: JsonObject = i.template.templatesNameId
