@@ -62,13 +62,15 @@ class SearchResultActivity : AppCompatActivity() {
                     val rv = findViewById<RecyclerView>(R.id.recyclerViewSearchResult)
                     rv.layoutManager = LinearLayoutManager(this@SearchResultActivity, RecyclerView.VERTICAL, false)
 
-                    val users = ArrayList<UpperInstanceShowBody>()
-                    val innerFields = ArrayList<ShowInstanceBody>()
-
+                    val instances = ArrayList<UpperInstanceShowBody>()
                     val resp: List<GetInstanceLDBody>? = response.body()
+
                     for(i in resp.orEmpty()){
                         val myListTypes: JsonObject = i.instanceFields
                         val templates: JsonObject = i.template.templatesNameId
+
+                        val innerFields = ArrayList<ShowInstanceBody>()
+                        val fieldList =  ArrayList<ShowInstanceBody>()
 
                         for (key in myListTypes.keySet()) {
                             if(key != "@context" && templates.keySet().contains(key)){
@@ -77,14 +79,21 @@ class SearchResultActivity : AppCompatActivity() {
                                 }
                             }
                             else if(key != "@context"){
-                                users.add(UpperInstanceShowBody(i.createdDate, key, myListTypes.get(key).toString().replace("\"", "")))
+                                fieldList.add(ShowInstanceBody(key, myListTypes.get(key).toString().replace("\"", ""), "Self"))
+                                //users.add(UpperInstanceShowBody(i.createdDate, key, myListTypes.get(key).toString().replace("\"", "")))
                             }
                         }
+                        if(!i.name.isNullOrEmpty()){
+                            instances.add(UpperInstanceShowBody(i.name ,i.createdDate, fieldList, innerFields))
+                        }
+                        else{
+                            instances.add(UpperInstanceShowBody("Name" ,i.createdDate, fieldList, innerFields))
+                        }
                     }
-                    if(users.isEmpty()){
+                    if(instances.isEmpty()){
                         Toast.makeText(this@SearchResultActivity, "No instance is found!", Toast.LENGTH_SHORT).show()
                     }
-                    var adapter = ShowInstanceAdapter(this@SearchResultActivity, users, innerFields)
+                    var adapter = ShowInstanceAdapter(this@SearchResultActivity, instances)
                     rv.adapter = adapter
                     adapter.notifyDataSetChanged()
                 } else {

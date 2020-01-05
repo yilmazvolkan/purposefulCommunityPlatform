@@ -1,6 +1,7 @@
 package com.bounswe.purposefulcommunity.Fragments.Instances
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bounswe.mercatus.API.ApiInterface
 import com.bounswe.mercatus.API.RetrofitInstance
 import com.bounswe.purposefulcommunity.Adapters.InstanceAdapter
+import com.bounswe.purposefulcommunity.Fragments.Community.CommunityActivity
 import com.bounswe.purposefulcommunity.Models.*
 import com.bounswe.purposefulcommunity.R
 import com.google.gson.JsonObject
@@ -45,7 +47,9 @@ class CreateInstanceActivity : AppCompatActivity() {
 
 
         fabSaveIns.setOnClickListener {
-            createInstance(tempID)
+            if(instanceIsValid()){
+                createInstance(tempID)
+            }
         }
     }
 
@@ -190,7 +194,7 @@ class CreateInstanceActivity : AppCompatActivity() {
             }
             else{
                 if(fields[i].parent == "NnNn"){
-                    editModel.setEditTextValue(" is a community type.")
+                    editModel.setEditTextValue(" is a community type")
                 }
                 else{
                     editModel.setEditTextValue("Value")
@@ -362,7 +366,7 @@ class CreateInstanceActivity : AppCompatActivity() {
         }
         items.clear()
         if(isValid){
-            val instanceBody = CreateInstanceBody(jsonRes, templateId)
+            val instanceBody = CreateInstanceBody(jsonRes, templateId, editInstanceName.text.toString())
 
             purApp.createInstance(instanceBody, tokenV!!).enqueue(object : Callback<ResponseBody> {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -383,8 +387,19 @@ class CreateInstanceActivity : AppCompatActivity() {
                 }
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.code() == 200) {
+                        val commID = intent.getStringExtra("comm_id")
+                        val commName = intent.getStringExtra("comm_name")
+
                         Toast.makeText(this@CreateInstanceActivity, "Instance is created successfully!", Toast.LENGTH_SHORT).show()
-                        onSupportNavigateUp()
+
+                        val intent = Intent(this@CreateInstanceActivity, CommunityActivity::class.java)
+                        intent.putExtra("comm_id", commID)
+                        intent.putExtra("comm_name", commName)
+                        startActivity(intent)
+                        overridePendingTransition(
+                            R.anim.slide_in_right,
+                            R.anim.slide_out_left
+                        )
                     } else {
                         Toast.makeText(this@CreateInstanceActivity, "Instance create is failed!", Toast.LENGTH_SHORT).show()
                     }
@@ -406,6 +421,17 @@ class CreateInstanceActivity : AppCompatActivity() {
                 override fun onAnimationRepeat(animation: Animation?) = Unit
             }
         }
+    }
+    private fun instanceIsValid():Boolean {
+        var isValid = true
+        if (editInstanceName.text.toString().isEmpty()) {
+            layInstanceName.isErrorEnabled = true
+            layInstanceName.error = "Name cannot be empty!"
+            isValid = false
+        } else {
+            layInstanceName.isErrorEnabled = false
+        }
+        return isValid
     }
     override fun onSupportNavigateUp(): Boolean {
         finish()

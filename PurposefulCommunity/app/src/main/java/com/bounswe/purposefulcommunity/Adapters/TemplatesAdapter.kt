@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.item_temp.view.*
 class TemplatesAdapter(val context : Context, val userList: ArrayList<ShowTempBody>): RecyclerView.Adapter<TemplatesAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setData(userList[position].id, userList[position].name, userList[position].createdDate, position)
+        holder.setData(userList[position].id, userList[position].name, userList[position].createdDate, userList[position].commID, userList[position].commName, position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,15 +36,17 @@ class TemplatesAdapter(val context : Context, val userList: ArrayList<ShowTempBo
                 val intent = Intent(context, ShowTemplateActivity::class.java)
                 intent.putExtra("temp_id", currentSearchShow?.id.toString())
                 intent.putExtra("temp_name", currentSearchShow?.name.toString())
+                intent.putExtra("comm_id", currentSearchShow?.commID.toString())
+                intent.putExtra("comm_name", currentSearchShow?.commName.toString())
                 context.startActivity(intent)
             }
         }
-        fun setData(id : String, name : String, createdDate : String,  position: Int){
+        fun setData(id : String, name : String, createdDate : String,  commID: String, commName: String, position: Int){
             itemView.txtTempName.text = name
             val newDate = "Created: $createdDate"
             itemView.txtCreatedDate.text = newDate
 
-            this.currentSearchShow = ShowTempBody(id, createdDate, name)
+            this.currentSearchShow = ShowTempBody(id, createdDate, name, commID, commName)
             this.currentPosition = position
         }
     }

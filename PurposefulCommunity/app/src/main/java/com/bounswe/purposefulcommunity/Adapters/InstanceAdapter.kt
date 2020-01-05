@@ -62,9 +62,12 @@ class InstanceAdapter(val context : Context, val fieldList: ArrayList<AddTempSel
 
         fun setData(fieldType : String, isRequired : Boolean, name : String,  parent: String, position: Int){
         itemView.txtInstanceName.text = name
-        if(parent == "NnNn"){
+
+        /*if(editModelArrayLists[adapterPosition].getEditTextValue() == " is a community type"){
             itemView.txtInstanceValue.isFocusable = false
         }
+
+         */
         this.currentSearchShow = AddTempSelectedBody(fieldType, isRequired, name, parent)
         this.currentPosition = position
         }
