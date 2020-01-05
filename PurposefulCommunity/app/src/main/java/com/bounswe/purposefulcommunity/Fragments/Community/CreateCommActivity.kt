@@ -11,7 +11,6 @@ import com.bounswe.purposefulcommunity.Models.CommunityBody
 import com.bounswe.purposefulcommunity.Models.CreateCommBody
 import com.bounswe.purposefulcommunity.R
 import kotlinx.android.synthetic.main.activity_create_comm.*
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -73,7 +72,16 @@ class CreateCommActivity : AppCompatActivity() {
                 if (response.code() == 200) {
                     Toast.makeText(this@CreateCommActivity, "Community is created!", Toast.LENGTH_SHORT)
                         .show()
-                    followCommunity(response.body()!!.id, response.body()!!.name)
+                    //followCommunity(response.body()!!.id, response.body()!!.name)
+                    val intent = Intent(this@CreateCommActivity, CommunityActivity::class.java)
+                    intent.putExtra("comm_id", response.body()!!.id)
+                    intent.putExtra("comm_name", response.body()!!.name)
+                    startActivity(intent)
+                    overridePendingTransition(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left
+                    )
+                    finish()
                 }
                 else  {
                     Toast.makeText(this@CreateCommActivity, "Create failed", Toast.LENGTH_SHORT)
@@ -82,6 +90,7 @@ class CreateCommActivity : AppCompatActivity() {
             }
         })
     }
+    /*
     private fun followCommunity(communityID: String, communityName: String){
         val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
         val tokenV = res.getString("token", "Data Not Found!")
@@ -122,6 +131,8 @@ class CreateCommActivity : AppCompatActivity() {
             }
         })
     }
+
+     */
     private fun isValidForm(name: String, description: String, size: Int):Boolean{
 
         var isValid = true
@@ -150,6 +161,8 @@ class CreateCommActivity : AppCompatActivity() {
         }
         return isValid
     }
+
+
     override fun finish() {
         super.finish()
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
