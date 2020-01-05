@@ -24,4 +24,5 @@ public class DataInstanceResource {
     private UserResource creator;
     private JSONObject instanceFields;
     private DataTemplateResource template;
+    private String name;
 }

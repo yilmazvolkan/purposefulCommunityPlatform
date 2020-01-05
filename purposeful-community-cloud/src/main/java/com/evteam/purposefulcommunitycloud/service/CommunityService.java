@@ -17,6 +17,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -97,10 +98,13 @@ public class CommunityService {
     public CommunityResource followCommunity(UUID communityId, UUID userId){
         Community community=repository.getOne(communityId);
         User user=userRepository.findUserById(userId);
-        if(community.getFollowers().contains(user)){
+        List<User> followers=community.getFollowers();
+        if(followers==null){
+            followers=new ArrayList<>();
+        }
+        if(followers.contains(user)){
             throw new  RuntimeException(USER_ALREADY_FOLLOWED_THIS_COMMUNITY);
         }
-        List<User> followers=community.getFollowers();
         followers.add(user);
         community.setFollowers(followers);
         repository.save(community);

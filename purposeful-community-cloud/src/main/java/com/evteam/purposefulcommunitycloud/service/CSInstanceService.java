@@ -65,6 +65,7 @@ public class CSInstanceService {
         DataTemplate template = templateRepository.findDataTemplateById(dto.getTemplateId());
         instance.setTemplate(template);
         Map<String, Object> instanceFields = instance.getInstanceFields();
+//        JsonLdProcessor.compact(instance.getInstanceFields(),template.getInstanceContext(),new JsonLdOptions());
         instance.getInstanceFields().put("@context", template.getInstanceContext());
         Set<String> keySet = instanceFields.keySet();
         for (DataField field : template.getFields()) {

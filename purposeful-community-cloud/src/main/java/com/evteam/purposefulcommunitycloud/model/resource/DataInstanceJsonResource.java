@@ -22,6 +22,7 @@ public class DataInstanceJsonResource {
     private String createdDate;
     private UUID id;
     private UserResource creator;
+    private String name;
     private DataTemplateResource template;
     private JSONObject fieldNameValueTypes;
 }

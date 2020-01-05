@@ -19,4 +19,6 @@ public class DataInstanceDto {
 
     private JSONObject instanceFields;
 
+    private String name;
+
 }
