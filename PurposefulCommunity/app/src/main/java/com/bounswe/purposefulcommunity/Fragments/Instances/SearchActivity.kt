@@ -7,7 +7,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.isDigitsOnly
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bounswe.mercatus.API.ApiInterface
@@ -211,11 +210,11 @@ class SearchActivity : AppCompatActivity() {
 
         val items = HashMap<String, JsonObject>()
 
-        var isValid = true
+        //var isValid = true
 
         for (i in 0 until editModelArrayList.size) {
             if(fields[i].fieldType == "FLOAT"){
-                if(editModelArrayList[i].getEditTextValue()!!.matches("-?\\d+(\\.\\d+)?".toRegex())){
+                //if(editModelArrayList[i].getEditTextValue()!!.matches("-?\\d+(\\.\\d+)?".toRegex())){
                     if(fields[i].parent != "NnNn" && fields[i].parent != "BbBb"){
                         var jsonTemp = JsonObject()
                         if(items.containsKey(fields[i].parent)){
@@ -227,14 +226,16 @@ class SearchActivity : AppCompatActivity() {
                     else if(fields[i].parent == "BbBb"){
                         jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue()!!.toFloat())
                     }
-                }
+                /*}
                 else{
                     isValid = false
                     Toast.makeText(this@SearchActivity, "Invalid number input!", Toast.LENGTH_SHORT).show()
                 }
+
+                 */
             }
             else if(fields[i].fieldType == "DECIMAL"){
-                if(editModelArrayList[i].getEditTextValue()!!.isDigitsOnly()){
+                //if(editModelArrayList[i].getEditTextValue()!!.isDigitsOnly()){
                     if(fields[i].parent != "NnNn" && fields[i].parent != "BbBb"){
                         var jsonTemp = JsonObject()
                         if(items.containsKey(fields[i].parent)){
@@ -246,14 +247,16 @@ class SearchActivity : AppCompatActivity() {
                     else if(fields[i].parent == "BbBb"){
                         jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue()!!.toInt())
                     }
-                }
+                /*}
                 else{
                     isValid = false
                     Toast.makeText(this@SearchActivity, "Invalid number input!", Toast.LENGTH_SHORT).show()
                 }
+
+                 */
             }
             else if(fields[i].fieldType == "TIME"){
-                if(editModelArrayList[i].getEditTextValue()!!.matches("[0-9]{2}:[0-9]{2}:[0-9]{2}".toRegex())){
+                //if(editModelArrayList[i].getEditTextValue()!!.matches("[0-9]{2}:[0-9]{2}:[0-9]{2}".toRegex())){
                     if(fields[i].parent != "NnNn" && fields[i].parent != "BbBb"){
                         var jsonTemp = JsonObject()
                         if(items.containsKey(fields[i].parent)){
@@ -265,14 +268,16 @@ class SearchActivity : AppCompatActivity() {
                     else if(fields[i].parent == "BbBb"){
                         jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
                     }
-                }
-                else{
-                    isValid = false
-                    Toast.makeText(this@SearchActivity, "Invalid time input!", Toast.LENGTH_SHORT).show()
-                }
+            /*}
+            else{
+                isValid = false
+                Toast.makeText(this@SearchActivity, "Invalid time input!", Toast.LENGTH_SHORT).show()
+            }
+
+             */
             }
             else if(fields[i].fieldType == "DATE"){
-                if(editModelArrayList[i].getEditTextValue()!!.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}".toRegex())){
+                //if(editModelArrayList[i].getEditTextValue()!!.matches("[0-9]{4}-[0-9]{2}-[0-9]{2}".toRegex())){
                     if(fields[i].parent != "NnNn" && fields[i].parent != "BbBb"){
                         var jsonTemp = JsonObject()
                         if(items.containsKey(fields[i].parent)){
@@ -284,14 +289,16 @@ class SearchActivity : AppCompatActivity() {
                     else if(fields[i].parent == "BbBb"){
                         jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
                     }
-                }
+                /*}
                 else{
                     isValid = false
                     Toast.makeText(this@SearchActivity, "Invalid date input!", Toast.LENGTH_SHORT).show()
                 }
+
+                 */
             }
             else if(fields[i].fieldType == "DATE_TIME"){
-                if(editModelArrayList[i].getEditTextValue()!!.matches("[0-9]{2}-[0-9]{2}-[0-9]{4}T[0-9]{2}:[0-9]{2}:[0-9]{2}".toRegex())){
+                //if(editModelArrayList[i].getEditTextValue()!!.matches("[0-9]{2}-[0-9]{2}-[0-9]{4}T[0-9]{2}:[0-9]{2}:[0-9]{2}".toRegex())){
                     if(fields[i].parent != "NnNn" && fields[i].parent != "BbBb"){
                         var jsonTemp = JsonObject()
                         if(items.containsKey(fields[i].parent)){
@@ -303,11 +310,13 @@ class SearchActivity : AppCompatActivity() {
                     else if(fields[i].parent == "BbBb"){
                         jsonRes.addProperty(fields[i].name, editModelArrayList[i].getEditTextValue())
                     }
-                }
+                /*}
                 else{
                     isValid = false
                     Toast.makeText(this@SearchActivity, "Invalid date/time input!", Toast.LENGTH_SHORT).show()
                 }
+
+                 */
             }
             else if(fields[i].fieldType == "BOOLEAN"){
                 if(editModelArrayList[i].getEditTextValue()!!.equals("true", true)){
@@ -337,10 +346,12 @@ class SearchActivity : AppCompatActivity() {
                         jsonRes.addProperty(fields[i].name, false)
                     }
                 }
-                else{
+                /*else{
                     isValid = false
                     Toast.makeText(this@SearchActivity, "Invalid date/time input!", Toast.LENGTH_SHORT).show()
                 }
+
+                 */
             }
             else{
                 if(fields[i].parent != "NnNn" && fields[i].parent != "BbBb"){
@@ -361,34 +372,7 @@ class SearchActivity : AppCompatActivity() {
             jsonRes.add(k, v)
         }
         items.clear()
-        if(isValid){
-            /*purApp.searchInstance(true, templateId, tokenV!!, jsonRes).enqueue(object : Callback<ResponseBody> {
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    if(t.cause is ConnectException){
-                        Toast.makeText(
-                            this@SearchActivity,
-                            "Check your connection!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    else{
-                        Toast.makeText(
-                            this@SearchActivity,
-                            "Something bad happened!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                    if (response.code() == 200) {
-                        onSupportNavigateUp()
-                    } else {
-                        Toast.makeText(this@SearchActivity, "Search failed!", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            })
-
-             */
+        if(true){
             val intent = Intent(this@SearchActivity, SearchResultActivity::class.java)
             intent.putExtra("temp_id", templateId)
             intent.putExtra("json_res", jsonRes.toString())

@@ -34,8 +34,8 @@ class TemplateActivity : AppCompatActivity() {
 
     private val templates = ArrayList<ShowTempUlBody>()
     private var adapter = TempAdapter(this@TemplateActivity, templates)
-    private var types = arrayOf("Text", "Boolean", "Decimal", "Rational", "Date-Time", "Date", "Time")
-    private var w3ctypes = arrayOf("STRING", "BOOLEAN", "DECIMAL", "FLOAT", "DATE_TIME", "DATE", "TIME")
+    private var types = arrayOf("Text", "Boolean", "Decimal", "Rational", "Date-Time", "Date", "Time", "Geolocation")
+    private var w3ctypes = arrayOf("STRING", "BOOLEAN", "DECIMAL", "FLOAT", "DATE_TIME", "DATE", "TIME", "STRING")
     private var isFABOpen = false
 
     private val getTemplate = ArrayList<String>()

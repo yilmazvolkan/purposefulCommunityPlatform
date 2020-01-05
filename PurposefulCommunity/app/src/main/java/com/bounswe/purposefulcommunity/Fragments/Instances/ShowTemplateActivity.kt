@@ -36,7 +36,8 @@ class ShowTemplateActivity : AppCompatActivity() {
 
         val tempID = intent.getStringExtra("temp_id")
         val tempName = intent.getStringExtra("temp_name")
-
+        val commID = intent.getStringExtra("comm_id")
+        val commName = intent.getStringExtra("comm_name")
         val actionBar = supportActionBar
         actionBar!!.title = tempName
         actionBar.setDisplayHomeAsUpEnabled(true)
@@ -49,6 +50,8 @@ class ShowTemplateActivity : AppCompatActivity() {
             val intent = Intent(this@ShowTemplateActivity, CreateInstanceActivity::class.java)
             intent.putExtra("temp_id", tempID)
             intent.putExtra("temp_name", tempName)
+            intent.putExtra("comm_id", commID)
+            intent.putExtra("comm_name", commName)
             startActivity(intent)
             overridePendingTransition(
                 R.anim.slide_in_right,

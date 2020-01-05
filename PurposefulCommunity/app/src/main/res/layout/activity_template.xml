@@ -34,7 +34,7 @@
                     android:id="@+id/editTempName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:hint="@string/template_name"
                     android:theme="@style/editText"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -50,13 +50,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="8dp"
-                android:paddingBottom="40dp"
+                android:paddingBottom="80dp"
                 android:clipToPadding="false"/>
         </LinearLayout>
     </LinearLayout>

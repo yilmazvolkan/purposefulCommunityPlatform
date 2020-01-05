@@ -35,6 +35,7 @@ class ShowTemplatesActivity : AppCompatActivity() {
         val res = getSharedPreferences("TOKEN_INFO", Context.MODE_PRIVATE)
         val tokenV = res.getString("token", "Data Not Found!")
         val purApp = RetrofitInstance.getRetrofitInstance().create(ApiInterface::class.java)
+        val communityName = intent.getStringExtra("comm_temp_name")
 
         purApp.getTemplates(communityID, tokenV!!).enqueue(object : Callback<List<GetTempBody>> {
             override fun onFailure(call: Call<List<GetTempBody>>, t: Throwable) {
@@ -66,7 +67,7 @@ class ShowTemplatesActivity : AppCompatActivity() {
                     val res: List<GetTempBody>? = response.body()
 
                     for(i in res.orEmpty()){
-                        users.add(ShowTempBody(i.id, i.createdDate, i.name))
+                        users.add(ShowTempBody(i.id, i.createdDate, i.name, communityID, communityName!!))
                     }
                     if(users.isEmpty()){
                         Toast.makeText(this@ShowTemplatesActivity, "No template is found!", Toast.LENGTH_SHORT).show()

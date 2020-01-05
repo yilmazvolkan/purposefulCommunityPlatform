@@ -7,5 +7,6 @@ data class GetInstanceLDBody(
     val id: String,
     val creator: CreatorBody,
     val instanceFields: JsonObject,
-    val template: GetTempBody
+    val template: GetTempBody,
+    val name: String
 )

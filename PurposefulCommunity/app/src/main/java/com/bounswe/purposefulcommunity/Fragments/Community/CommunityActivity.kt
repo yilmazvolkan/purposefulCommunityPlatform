@@ -41,6 +41,7 @@ import java.net.ConnectException
 class CommunityActivity : AppCompatActivity() {
 
     private var communityID: String = ""
+    private var isFABOpen = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,16 +52,17 @@ class CommunityActivity : AppCompatActivity() {
 
         val actionBar = supportActionBar
         actionBar!!.title = communityName
+        actionBar!!
         actionBar.setDisplayHomeAsUpEnabled(true)
 
         Glide.with(this).load(R.drawable.tea).centerCrop().into(communityImage)
 
         getOneCommunity(communityID)
 
-
         addCSD.setOnClickListener {
             val intent = Intent(this@CommunityActivity, ShowTemplatesActivity::class.java)
             intent.putExtra("comm_temp_id", communityID)
+            intent.putExtra("comm_temp_name", communityName)
             startActivity(intent)
             overridePendingTransition(
                 R.anim.slide_in_right,
@@ -78,10 +80,61 @@ class CommunityActivity : AppCompatActivity() {
                 R.anim.slide_out_left
             )
         }
+        /*fabAddComm.setOnClickListener {
+            animateFAB()
+        }
+        fabAddPost.setOnClickListener {
+            val intent = Intent(this@CommunityActivity, ShowTemplatesActivity::class.java)
+            intent.putExtra("comm_temp_id", communityID)
+            intent.putExtra("comm_temp_name", communityName)
+            startActivity(intent)
+            overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
+        }
+        fabAddType.setOnClickListener {
+            val intent = Intent(this@CommunityActivity, TemplateActivity::class.java)
+            intent.putExtra("comm_temp_id", communityID)
+            intent.putExtra("comm_temp_name", communityName)
+            startActivity(intent)
+            overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
+        }
+
+         */
+
+
         getInstances(communityID)
 
         add_temp.isClickable = false
     }
+    /*private fun animateFAB(){
+        if(isFABOpen){
+            val fabAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_rotate_anticlock)
+            val fabAnimation2 = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_close)
+            fabAddComm.startAnimation(fabAnimation)
+            fabAddType.startAnimation(fabAnimation2)
+            fabAddPost.startAnimation(fabAnimation2)
+            fabAddType.isClickable = false
+            fabAddPost.isClickable = false
+            isFABOpen = false
+        }
+        else{
+            val fabAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_rotate_clock)
+            val fabAnimation2 = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_open)
+            fabAddComm.startAnimation(fabAnimation)
+            fabAddType.startAnimation(fabAnimation2)
+            fabAddPost.startAnimation(fabAnimation2)
+            fabAddType.isClickable = true
+            fabAddPost.isClickable = true
+            isFABOpen = true
+        }
+    }
+
+     */
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_upload -> {
             //check runtime permission
@@ -105,8 +158,10 @@ class CommunityActivity : AppCompatActivity() {
             true
         }
         R.id.search -> {
+            val communityName = intent.getStringExtra("comm_name")
             val intent = Intent(this@CommunityActivity, ShowTemplatesActivity::class.java)
             intent.putExtra("comm_temp_id", communityID)
+            intent.putExtra("comm_temp_name", communityName)
             startActivity(intent)
             overridePendingTransition(
                 R.anim.slide_in_right,
@@ -323,14 +378,17 @@ class CommunityActivity : AppCompatActivity() {
                     val rv = findViewById<RecyclerView>(R.id.recyclerViewCommunityInstances)
                     rv.layoutManager = LinearLayoutManager(this@CommunityActivity, RecyclerView.VERTICAL, false)
 
-                    val users = ArrayList<UpperInstanceShowBody>()
-                    val innerFields = ArrayList<ShowInstanceBody>()
+                    val instances = ArrayList<UpperInstanceShowBody>()
+
 
                     val resp: List<GetInstanceLDBody>? = response.body()
 
                     for(i in resp.orEmpty()){
                         val myListTypes: JsonObject = i.instanceFields
                         val templates: JsonObject = i.template.templatesNameId
+
+                        val innerFields = ArrayList<ShowInstanceBody>()
+                        val fieldList =  ArrayList<ShowInstanceBody>()
 
                         for (key in myListTypes.keySet()) {
                             if(key != "@context" && templates.keySet().contains(key)){
@@ -339,14 +397,21 @@ class CommunityActivity : AppCompatActivity() {
                                 }
                             }
                             else if(key != "@context"){
-                                users.add(UpperInstanceShowBody(i.createdDate, key, myListTypes.get(key).toString().replace("\"", "")))
+                                fieldList.add(ShowInstanceBody(key, myListTypes.get(key).toString().replace("\"", ""), "Self"))
+                                //users.add(UpperInstanceShowBody(i.createdDate, key, myListTypes.get(key).toString().replace("\"", "")))
                             }
                         }
+                        if(!i.name.isNullOrEmpty()){
+                            instances.add(UpperInstanceShowBody(i.name ,i.createdDate, fieldList, innerFields))
+                        }
+                        else{
+                            instances.add(UpperInstanceShowBody("Name" ,i.createdDate, fieldList, innerFields))
+                        }
                     }
-                    if(users.isEmpty()){
+                    if(instances.isEmpty()){
                         Toast.makeText(this@CommunityActivity, "No instance is found!", Toast.LENGTH_SHORT).show()
                     }
-                    var adapter = ShowInstanceAdapter(this@CommunityActivity, users, innerFields)
+                    var adapter = ShowInstanceAdapter(this@CommunityActivity, instances)
                     rv.adapter = adapter
                     adapter.notifyDataSetChanged()
 
